@@ -75,7 +75,7 @@ class WirelessDebugActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         // 协程作用域已取消，这里只做本地 socket 清理
-        if (manager.value.isInitialized()) manager.value.disconnect()
+        if (manager.isInitialized()) manager.disconnect()
     }
 
     private fun onConnect() {
@@ -89,7 +89,7 @@ class WirelessDebugActivity : AppCompatActivity() {
         log("> connect 127.0.0.1:$port")
 
         lifecycleScope.launch {
-            val r = manager.value.connect(port)
+            val r = manager.connect(port)
             b.btnConnect.isEnabled = true
             if (r.isSuccess) {
                 b.tvStatus.text = getString(R.string.wd_connected)
@@ -186,8 +186,8 @@ class WirelessDebugActivity : AppCompatActivity() {
         log("> $cmd $pkg")
 
         lifecycleScope.launch {
-            val r = if (suspend) manager.value.suspendPackage(pkg)
-            else manager.value.unsuspendPackage(pkg)
+            val r = if (suspend) manager.suspendPackage(pkg)
+            else manager.unsuspendPackage(pkg)
             suspendBtn.isEnabled = true
             unsuspendBtn.isEnabled = true
             if (r.isSuccess) {
@@ -204,7 +204,7 @@ class WirelessDebugActivity : AppCompatActivity() {
     /** 连接成功后刷新各包挂起状态。 */
     private fun refreshSuspended() {
         lifecycleScope.launch {
-            val r = manager.value.listSuspended()
+            val r = manager.listSuspended()
             if (!r.isSuccess) return@launch
             val suspended = r.getOrNull().orEmpty().toSet()
             for (p in packages) {
