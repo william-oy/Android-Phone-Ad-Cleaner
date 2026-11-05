@@ -4,7 +4,7 @@ import android.content.Context
 import com.adcleaner.app.model.BrandRule
 import kotlinx.serialization.json.Json
 
-/** 从 assets/rules/*.json 加载品牌规则。 */
+/** 从 assets/rules 目录的 JSON 文件加载品牌规则。 */
 object RuleLoader {
 
     private val json = Json { ignoreUnknownKeys = true; isLenient = true; coerceInputValues = true }

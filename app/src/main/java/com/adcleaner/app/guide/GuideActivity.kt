@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.adcleaner.app.databinding.ActivityGuideBinding
 
-/** 图文引导页：WebView 加载 assets/guides/*.html。 */
+/** 图文引导页：WebView 加载 assets/guides 目录的 HTML 文件。 */
 class GuideActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
