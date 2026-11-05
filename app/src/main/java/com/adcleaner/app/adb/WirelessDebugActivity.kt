@@ -75,7 +75,7 @@ class WirelessDebugActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         // 协程作用域已取消，这里只做本地 socket 清理
-        if (this::manager.isInitialized) manager.disconnect()
+        manager.disconnect()
     }
 
     private fun onConnect() {
