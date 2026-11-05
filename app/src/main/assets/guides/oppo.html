@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;font-size:16px;line-height:1.7;color:#1A1A2E;background:#F4F6FB;padding:14px}
+h1{font-size:22px;color:#1565C0;margin-bottom:6px}
+h2{font-size:18px;color:#0D47A1;margin:18px 0 8px;padding-left:10px;border-left:4px solid #00897B}
+p{margin:8px 0}
+.card{background:#fff;border-radius:14px;padding:16px;margin:10px 0;border:1px solid #E4E7EE}
+.path{background:#E3F2FD;border-radius:8px;padding:10px;margin:6px 0;font-size:15px}
+.path b{color:#1565C0}
+.warn{background:#FFF3E0;border-left:5px solid #FB8C00;border-radius:8px;padding:12px;margin:10px 0}
+.danger{background:#FFEBEE;border-left:5px solid #E53935;border-radius:8px;padding:12px;margin:10px 0}
+.ok{background:#E8F5E9;border-left:5px solid #43A047;border-radius:8px;padding:12px;margin:10px 0}
+table{width:100%;border-collapse:collapse;margin:8px 0;font-size:14px}
+th,td{border:1px solid #E4E7EE;padding:8px;text-align:left}
+th{background:#1565C0;color:#fff}
+.r{color:#E53935;font-weight:bold}.g{color:#43A047}
+code{background:#ECEFF1;padding:2px 6px;border-radius:4px}
+</style>
+</head>
+<body>
+<h1>OPPO / 一加 / realme（ColorOS）图文引导</h1>
+<p>ColorOS 16 叫「隐私」，17 起叫「隐私与安全」。一加/realme 入口名可能不同。</p>
+
+<div class="card">
+<h2>1. 广告跟踪（OAID）</h2>
+<div class="path">设置 → 隐私（/隐私与安全）→ 设备标识与广告 → 广告跟踪</div>
+<p><span class="r">关</span>：每个 App 一个开关，<b>没有总开关</b>，数量可能上百，要翻 5 屏，整页全关。</p>
+<div class="warn">⚠️ 新装的 App 默认开，装了新 App 要回来关一次。部分机型点搜索结果不跳转，走面板路径。</div>
+</div>
+
+<div class="card">
+<h2>2. 软件商店</h2>
+<div class="path">软件商店 → 我的 → 右上齿轮（或 oppo.intent.action.APP_SETTINGS 直达）</div>
+<table>
+<tr><th>位置</th><th>开关</th><th>操作</th></tr>
+<tr><td>服务管理</td><td>首页悬浮活动图标、首页活动弹窗、首页顶部轮播卡片、底部活动专区、游戏专区、签到福利等 30+ 项</td><td class="r">全关</td></tr>
+<tr><td>服务管理</td><td>帮助与客服、应用安全、应用工具、存储空间清理、下载更新</td><td class="g">保留</td></tr>
+<tr><td>隐私 → 个性化推荐</td><td>个性化推荐</td><td class="r">关</td></tr>
+</table>
+<div class="warn">⚠️ 一加/realme 商店没有「服务管理」，个性化推荐在「账号与隐私 → 隐私授权管理 → 个性化推荐」。</div>
+</div>
+
+<div class="card">
+<h2>3. 浏览器</h2>
+<div class="path">浏览器设置（直达 com.heytap.browser/.settings.component.BrowserPreferencesPage）</div>
+<table>
+<tr><th>位置</th><th>开关</th><th>操作</th></tr>
+<tr><td>主页设置 → 页面布局</td><td>选「简洁」</td><td class="r">关资讯流</td></tr>
+<tr><td>隐私 → 广告管理</td><td>开屏广告、资讯列表广告</td><td class="r">关</td></tr>
+<tr><td>隐私 → 个性化管理</td><td>个性化推荐</td><td class="r">关</td></tr>
+<tr><td>隐私 → 广告管理</td><td>摇一摇广告</td><td class="g">点不动属正常（系统置灰）</td></tr>
+</table>
+<div class="warn">⚠️ realme 简洁模式浏览器没有底部「我的」也没有菜单，只能直达 BrowserPreferencesPage。</div>
+</div>
+
+<div class="card">
+<h2>4. 下拉搜索</h2>
+<div class="path">桌面下滑 → 搜索页底部「设置」（或 scheme gs://search/setting 直达）</div>
+<table>
+<tr><th>子页</th><th>关</th><th>保留</th></tr>
+<tr><td>搜索范围</td><td>榜单、小说、购物、个性化推荐、精选资讯</td><td>APP内搜索、搜索建议、AI搜索、便捷服务</td></tr>
+<tr><td>首页卡片管理</td><td>未下载应用推荐、应用建议小卡、探索发现、活动皮肤</td><td>应用建议、本机资产推荐、便捷服务</td></tr>
+<tr><td>功能管理</td><td>搜索框提示词</td><td>—</td></tr>
+<tr><td>账号与隐私 → 隐私</td><td>个性化推荐</td><td>—</td></tr>
+</table>
+<div class="warn">⚠️ SearchSettingActivity 未导出，必须用 scheme <code>gs://search/setting</code>。<b>com.heytap.quicksearchbox 被挂起时 scheme 会落到「应用已被暂停」页</b>，运行前不能挂它。</div>
+<div class="warn">⚠️ 「APP内搜索」必须开着，关了搜不到本机应用。搜索页顶部提示「搜索结果受限」不要点「去开启」。</div>
+</div>
+
+<div class="card">
+<h2>5. 主题商店</h2>
+<div class="path">主题商店 → 我的 → 设置（右上）</div>
+<p><span class="r">关</span>：服务管理→消息与广告（消息通知、开屏广告）；隐私→个性化推荐设置</p>
+<div class="warn">⚠️ 「设置」入口随版本变：17.22.0beta2 是「设置,有1条新通知」文字行，要按包含匹配。「个性化推荐设置」点下去先弹确认框，确认后页面退回，回读前要重新进一次。</div>
+</div>
+
+<div class="card">
+<h2>6. 小布建议</h2>
+<div class="path">设置 → OPPO AI（/NEXT AI）→ 小布建议 → 内容资讯 → 资讯服务</div>
+<p><span class="r">关</span>：资讯服务、视界日报、小红书资讯</p>
+<p><span class="g">保留</span>：快递、航班、日程提醒、商圈服务、赛事、出行</p>
+<div class="warn">⚠️ 「内容资讯」是分组标题点不动，真正入口是下面的「资讯服务」行（显示「未开启」），点进去二级页才有开关。realme 入口叫「NEXT AI」。</div>
+</div>
+
+<div class="card">
+<h2>7. 负一屏（速览）</h2>
+<div class="path">桌面左滑 → 左上头像 → 设置</div>
+<p><span class="r">关</span>：搜索框提示词、热点资讯、推荐服务→轮播推荐选「不显示」、隐私→个性化推荐</p>
+<p><span class="g">保留</span>：推荐服务总开关（关了会删天气、步数、清理卡片）、服务动态、快捷服务</p>
+<div class="danger">⚠️ 负一屏设置页受 <code>OPPO_COMPONENT_SAFE</code> 私有权限保护，adb/am start 都被拒，<b>只能手动</b>：桌面左滑 → 左上头像 → 设置。</div>
+</div>
+
+<div class="card">
+<h2>8. 营销通知</h2>
+<div class="path">设置 → 通知与状态栏 → 通知管理 → 选 App → 点渠道名</div>
+<p><span class="r">关</span>：每个 App 里叫「内容与营销」的渠道；系统消息「精彩推荐」、云服务「专享优惠」「权益福利」、钱包「福利通知」、视频「重要营销信息」、负一屏「最新资讯通知」</p>
+<p><span class="g">保留</span>：订单、物流、更新、安全、聊天、快递、天气预警</p>
+<div class="warn">⚠️ 通知页宿主 ColorOS 14 起是 com.oplus.notificationmanager，11/12 是 com.coloros.notificationmanager。com.heytap.mcs 的「精彩推荐」「news」渠道开关是灰的，系统锁定。</div>
+</div>
+
+<div class="card">
+<h2>9. 广告包与快应用（增强模式）</h2>
+<table>
+<tr><th>包</th><th>作用</th><th>挂起后</th></tr>
+<tr><td>com.opos.ads</td><td>OPPO 广告服务</td><td>正常</td></tr>
+<tr><td>com.heytap.pictorial</td><td>乐划锁屏</td><td>锁屏杂志消失</td></tr>
+<tr><td>com.oppo.instant.local.service</td><td>快应用本地服务</td><td>快递卡片与详情页正常</td></tr>
+</table>
+<div class="danger">⚠️ <b>绝对不能挂</b>：com.oplus.appdetail（挂了所有第三方安装/卸载永久卡死）、com.heytap.quicksearchbox（下拉搜索）、com.coloros.assistantscreen（负一屏）、应用商店、com.nearme.instant.platform（快应用平台，挂了负一屏快递详情打不开）。</div>
+<div class="warn">⚠️ 乐划应先在应用内关闭锁屏功能再挂，先挂会无法进设置关功能。</div>
+</div>
+
+<div class="card">
+<h2>OPPO 的坑</h2>
+<div class="danger">⚠️ <b>com.oplus.appdetail 不能挂</b>：挂起它会导致所有第三方安装永久卡在「正在安装」，卸载也一样。已被别的工具挂的要用 unsuspend 还原。</div>
+<div class="warn">⚠️ <b>摇一摇广告点不动</b>：浏览器/商店「摇一摇广告」在上级开关关掉后仍显示开且 enabled=false，系统置灰，点不动属正常，不算独立关闭。</div>
+<div class="warn">⚠️ <b>负一屏 adb 起不来</b>：受 OPPO_COMPONENT_SAFE 私有权限保护，只能手动。</div>
+<div class="warn">⚠️ <b>「设置,有1条新通知」</b>：主题/游戏中心设置入口带通知角标，精确匹配找不到，要按包含匹配。</div>
+</div>
+</body>
+</html>

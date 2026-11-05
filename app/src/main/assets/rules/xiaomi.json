@@ -1,0 +1,256 @@
+{
+  "brand": "xiaomi",
+  "displayName": "小米 / 红米（HyperOS）",
+  "manufacturerKeywords": ["xiaomi", "redmi"],
+  "romIdentifiers": ["hyperos", "miui"],
+  "notes": "HyperOS 3 与 4 入口有差异，引擎多入口兜底；海外版 msa 包名是 com.miui.msa.global。",
+  "sections": [
+    {
+      "id": "system_ad",
+      "name": "系统广告",
+      "description": "关闭个性化广告推荐，打开限制广告跟踪",
+      "guidePath": "设置 → 隐私与安全 → 更多安全设置 → 广告服务",
+      "steps": [
+        {"action": "openSettings", "intent": {"action": "android.settings.SETTINGS"}},
+        {"action": "tap", "texts": ["隐私与安全", "隐私"]},
+        {"action": "goInto", "text": "更多安全设置", "scrolls": 4},
+        {"action": "goInto", "text": "广告服务"},
+        {"action": "switchOff", "targets": ["个性化广告推荐"], "protectedKeywords": ["限制广告跟踪", "防止广告追踪"]},
+        {"action": "switchOn", "targets": ["限制广告跟踪", "防止广告追踪"]},
+        {"action": "readBack", "targets": ["个性化广告推荐"]}
+      ],
+      "targets": ["个性化广告推荐"],
+      "protectedKeywords": ["限制广告跟踪", "防止广告追踪"],
+      "requiresAdb": false,
+      "pitfalls": [
+        "找不到「更多安全设置」时，用设置首页搜索「广告服务」直达 com.android.settings/.ad.AdServiceSettings",
+        "HyperOS 4 有两个广告总闸：广告服务页 + 「系统广告」页（设置搜索「系统广告」进），都要关",
+        "「限制广告跟踪」「防止广告追踪」是反的，要打开才是保护"
+      ]
+    },
+    {
+      "id": "app_store",
+      "name": "应用商店",
+      "description": "关闭个性化服务、新手帮助通知；保留应用更新",
+      "guidePath": "应用商店 → 我的 → 右上齿轮",
+      "steps": [
+        {"action": "launchApp", "intent": {"component": "com.xiaomi.market/.ui.MainTabActivity"}},
+        {"action": "tapTab", "text": "我的"},
+        {"action": "tapIcon"},
+        {"action": "goInto", "texts": ["隐私设置", "隐私"], "scrolls": 3},
+        {"action": "goInto", "text": "个性化服务"},
+        {"action": "switchOff", "targets": ["个性化服务", "个性化推荐"]},
+        {"action": "back"},
+        {"action": "goInto", "text": "通知设置"},
+        {"action": "switchOff", "targets": ["新手帮助"], "protectedKeywords": ["应用更新", "推送消息"]},
+        {"action": "readBack", "targets": ["个性化推荐"]}
+      ],
+      "targets": ["个性化服务", "个性化推荐", "新手帮助"],
+      "protectedKeywords": ["应用更新", "推送消息"],
+      "requiresAdb": false,
+      "pitfalls": [
+        "商店 4.129 需点进「个性化服务」子页再关里面的开关",
+        "「推送消息」是父开关，关了点赞/评论消息一起关，别关",
+        "「我的」标签冷启动要几秒才渲染，点早会扑空"
+      ]
+    },
+    {
+      "id": "security_center",
+      "name": "手机管家",
+      "description": "关闭个性化推荐、推荐内容",
+      "guidePath": "手机管家 → 右上齿轮",
+      "steps": [
+        {"action": "launchApp", "intent": {"component": "com.miui.securitycenter/.ui.MainSecurityCenterActivity"}},
+        {"action": "tapIcon"},
+        {"action": "goInto", "texts": ["隐私设置", "隐私"], "scrolls": 6},
+        {"action": "switchOff", "targets": ["个性化推荐"]},
+        {"action": "back"},
+        {"action": "goInto", "text": "垃圾清理"},
+        {"action": "switchOff", "targets": ["推荐内容"]},
+        {"action": "readBack", "targets": ["个性化推荐", "推荐内容"]}
+      ],
+      "targets": ["个性化推荐", "推荐内容"],
+      "requiresAdb": false,
+      "pitfalls": [
+        "部分版本（13.6.5）这两项都没了，跳过即可",
+        "K90 Pro Max 的「隐私设置」压在整页最末尾，要滚 6 屏"
+      ]
+    },
+    {
+      "id": "download_mgr",
+      "name": "下载管理",
+      "description": "关闭资源推荐、热榜推荐",
+      "guidePath": "下载管理 → 右上「更多」→ 设置 → 信息流设置",
+      "steps": [
+        {"action": "launchApp", "intent": {"component": "com.android.providers.downloads.ui/.DownloadList"}},
+        {"action": "tap", "texts": ["更多"]},
+        {"action": "goInto", "text": "设置"},
+        {"action": "goInto", "text": "信息流设置"},
+        {"action": "switchOff", "targets": ["资源推荐", "热榜推荐"]},
+        {"action": "readBack", "targets": ["资源推荐", "热榜推荐"]}
+      ],
+      "targets": ["资源推荐", "热榜推荐"],
+      "requiresAdb": false,
+      "pitfalls": ["部分版本页面没有齿轮，设置在右上「更多」弹窗里"]
+    },
+    {
+      "id": "theme",
+      "name": "主题",
+      "description": "关闭每次联网时通知、个性化推荐；保留自动更新",
+      "guidePath": "主题 → 我的 → 右上齿轮",
+      "steps": [
+        {"action": "launchApp", "intent": {"component": "com.android.thememanager/.ThemeResourceProxyTabActivity"}},
+        {"action": "tapTab", "text": "我的"},
+        {"action": "tapIcon"},
+        {"action": "switchOff", "targets": ["每次联网时通知"], "protectedKeywords": ["自动更新"]},
+        {"action": "goInto", "texts": ["隐私设置", "隐私"]},
+        {"action": "switchOff", "targets": ["个性化推荐"]},
+        {"action": "readBack", "targets": ["每次联网时通知", "个性化推荐"]}
+      ],
+      "targets": ["每次联网时通知", "个性化推荐"],
+      "protectedKeywords": ["自动更新"],
+      "requiresAdb": false,
+      "pitfalls": [
+        "com.miui.themestore 拉起后会跳到 com.android.thememanager，直达 ThemeResourceProxyTabActivity 最稳",
+        "msa 未挂起时开屏窗会抢焦点，建议先挂 msa 再跑这段"
+      ]
+    },
+    {
+      "id": "browser",
+      "name": "浏览器",
+      "description": "关闭个性化内容/广告推荐、猜你想搜、小说；保留我的网盘",
+      "guidePath": "浏览器 → 我的/菜单 → 齿轮 → 隐私和安全",
+      "steps": [
+        {"action": "openSettings", "intent": {"component": "com.android.browser/.preferences.activity.CustomizationPreferenceActivity"}},
+        {"action": "switchOff", "targets": ["个性化内容推荐", "个性化广告推荐"]},
+        {"action": "back"},
+        {"action": "launchApp", "intent": {"component": "com.android.browser/.BrowserActivity"}},
+        {"action": "tap", "texts": ["菜单"]},
+        {"action": "goInto", "text": "设置"},
+        {"action": "goInto", "text": "主页设置"},
+        {"action": "switchOff", "targets": ["宫格位推送"]},
+        {"action": "back"},
+        {"action": "goInto", "text": "搜索设置"},
+        {"action": "switchOff", "targets": ["显示猜你想搜模块"]},
+        {"action": "back"},
+        {"action": "goInto", "text": "功能设置"},
+        {"action": "switchOff", "targets": ["小说"], "protectedKeywords": ["我的网盘"]},
+        {"action": "readBack", "targets": ["个性化内容推荐", "个性化广告推荐"]}
+      ],
+      "targets": ["个性化内容推荐", "个性化广告推荐", "宫格位推送", "显示猜你想搜模块", "小说"],
+      "protectedKeywords": ["我的网盘"],
+      "requiresAdb": false,
+      "pitfalls": [
+        "新版浏览器工具栏最右「设置」点进去是页面布局子页，主设置要走 底部「菜单」→ 弹窗右上齿轮",
+        "「隐私和安全」在主设置页最底部，要滚 8 屏",
+        "浏览器会弹小米账号登录框，点「取消」"
+      ]
+    },
+    {
+      "id": "global_search",
+      "name": "全局搜索",
+      "description": "关闭搜索提示词、应用推荐、热搜榜单",
+      "guidePath": "桌面下滑 → 搜索页右上齿轮",
+      "steps": [
+        {"action": "openSettings", "intent": {"component": "com.android.quicksearchbox/.preferences.SearchSettingsPreferenceActivity"}},
+        {"action": "goInto", "text": "首页展示模块"},
+        {"action": "switchOff", "targets": ["搜索提示词", "推荐未安装应用"], "protectedKeywords": ["展示常用应用", "应用建议"]},
+        {"action": "back"},
+        {"action": "goInto", "texts": ["热搜榜单", "我的热榜"]},
+        {"action": "switchOff", "targets": ["推荐", "微博", "资讯", "全网", "影视", "音乐", "小说", "知乎", "千问"]},
+        {"action": "readBack", "targets": ["搜索提示词"]}
+      ],
+      "targets": ["搜索提示词", "推荐未安装应用", "推荐", "微博", "资讯", "全网", "影视", "音乐", "小说", "知乎", "千问"],
+      "protectedKeywords": ["展示常用应用", "应用建议"],
+      "requiresAdb": false,
+      "pitfalls": ["新版热榜点进去是「我的热榜」再分三页（热搜/生活/话题），全关后搜索页热搜榜整块消失"]
+    },
+    {
+      "id": "minus_screen",
+      "name": "负一屏",
+      "description": "关闭推荐卡片、热门活动、个性化推荐；保留搜索框、出行助手",
+      "guidePath": "桌面从左边缘向右滑 → 设置",
+      "steps": [
+        {"action": "openSettings", "intent": {"component": "com.miui.personalassistant/.settings.PASettingActivity"}},
+        {"action": "switchOff", "targets": ["推荐卡片", "热门活动"], "protectedKeywords": ["搜索框", "出行助手"]},
+        {"action": "goInto", "texts": ["隐私设置", "隐私"]},
+        {"action": "switchOff", "targets": ["个性化推荐"]},
+        {"action": "readBack", "targets": ["推荐卡片", "热门活动", "个性化推荐"]}
+      ],
+      "targets": ["推荐卡片", "热门活动", "个性化推荐"],
+      "protectedKeywords": ["搜索框", "出行助手"],
+      "requiresAdb": false,
+      "pitfalls": ["部分机型负一屏没有文字入口，长按也唤不出设置，只能直达 PASettingActivity"]
+    },
+    {
+      "id": "weather_calendar",
+      "name": "天气、日历",
+      "description": "关闭内容推广、个性化推荐；保留天气预警、异常天气提醒",
+      "guidePath": "天气/日历 → 设置 → 用户体验计划",
+      "steps": [
+        {"action": "launchApp", "intent": {"component": "com.miui.weather2/.ActivityWeatherMain"}},
+        {"action": "tap", "texts": ["更多", "更多设置"]},
+        {"action": "goInto", "text": "设置"},
+        {"action": "goInto", "text": "用户体验计划"},
+        {"action": "switchOff", "targets": ["天气视频卡片", "内容推广", "个性化推荐", "内容推荐"], "protectedKeywords": ["天气预警", "异常天气提醒"]},
+        {"action": "back"},
+        {"action": "launchApp", "intent": {"component": "com.android.calendar/.AllInOneActivity"}},
+        {"action": "tap", "texts": ["更多"]},
+        {"action": "goInto", "text": "设置"},
+        {"action": "goInto", "text": "用户体验计划"},
+        {"action": "switchOff", "targets": ["内容推广", "个性化推荐"], "protectedKeywords": ["天气预警", "异常天气提醒"]},
+        {"action": "readBack", "targets": ["内容推广"]}
+      ],
+      "targets": ["天气视频卡片", "内容推广", "个性化推荐", "内容推荐"],
+      "protectedKeywords": ["天气预警", "异常天气提醒"],
+      "requiresAdb": false,
+      "pitfalls": [
+        "日历「用户体验计划」在设置页倒数第二项，要滚到底",
+        "天气预警、异常天气提醒是安全功能，绝不碰"
+      ]
+    },
+    {
+      "id": "marketing_notify",
+      "name": "营销通知",
+      "description": "按渠道关营销推送；保留订单、物流、更新、聊天",
+      "guidePath": "设置 → 通知与控制中心 → 通知管理 → 选 App → 点渠道名",
+      "steps": [
+        {"action": "openSettings", "intent": {"action": "android.settings.APP_NOTIFICATION_SETTINGS"}},
+        {"action": "tap", "texts": ["通知管理", "通知与控制中心"]},
+        {"action": "scrollDown", "scrolls": 2},
+        {"action": "switchOff", "targets": ["内容与营销", "活动优惠", "福利通知", "专享优惠", "权益福利", "精彩推荐", "热门资讯", "热点推荐", "推荐内容", "资讯推送", "平台活动通知", "新闻资讯"], "protectedKeywords": ["订单", "物流", "更新", "安全", "聊天", "快递", "天气预警", "找机位", "机位推荐", "赛事", "直播提醒", "红包助手", "权限建议"], "scrolls": 8},
+        {"action": "readBack", "targets": ["内容与营销", "活动优惠"]}
+      ],
+      "targets": ["内容与营销", "活动优惠", "福利通知", "专享优惠", "权益福利", "精彩推荐", "热门资讯", "热点推荐", "推荐内容", "资讯推送", "平台活动通知", "新闻资讯"],
+      "protectedKeywords": ["订单", "物流", "更新", "安全", "聊天", "快递", "天气预警", "找机位", "机位推荐", "赛事", "直播提醒", "红包助手", "权限建议"],
+      "requiresAdb": false,
+      "pitfalls": ["小米渠道 id 形如 mipush|包名|数字，带竖线；刚重置的设备渠道还没创建，空清单不等于没广告"]
+    },
+    {
+      "id": "msa_suspend",
+      "name": "系统广告组件 msa（挂起）",
+      "description": "挂起 com.miui.systemAdSolution 并尝试断网；需增强模式",
+      "guidePath": "增强模式：开无线调试 → app 连接 → 挂起 msa",
+      "steps": [
+        {"action": "wait", "ms": 100, "note": "此段由增强模式（ADB）执行 pm suspend，无障碍不直接处理"}
+      ],
+      "targets": [],
+      "requiresAdb": true,
+      "pitfalls": [
+        "只挂起拦不住：系统 App 启动时会把它拉起，所以挂起后还要断网",
+        "断网规则重启后可能失效，重启后重跑",
+        "海外版包名是 com.miui.msa.global"
+      ]
+    }
+  ],
+  "adPackages": [
+    {"pkg": "com.miui.systemAdSolution", "name": "系统广告组件 msa", "effect": "天气、日历、商店等系统 App 的开屏与内置广告", "keepNetworkBlock": true, "restoreHint": "pm unsuspend --user 0 com.miui.systemAdSolution"},
+    {"pkg": "com.miui.msa.global", "name": "海外版 msa", "effect": "海外版 HyperOS 的系统广告组件", "keepNetworkBlock": true, "restoreHint": "pm unsuspend --user 0 com.miui.msa.global"}
+  ],
+  "pitfalls": [
+    {"title": "能读屏点不动（INJECT_EVENTS）", "desc": "小米需在开发者选项里打开「USB 调试（安全设置）」，否则读屏正常但点击被拒。本 app 用无障碍 dispatchGesture 不受此限，但若点不动先检查该项。", "severity": "warn"},
+    {"title": "两个广告总闸", "desc": "HyperOS 4 有「广告服务」页和「系统广告」页两个总闸，都要关，别只关一个。", "severity": "warn"},
+    {"title": "浏览器入口易错", "desc": "工具栏最右「设置」是页面布局子页，主设置走 底部「菜单」→ 弹窗右上齿轮。", "severity": "info"},
+    {"title": "主题跳包", "desc": "com.miui.themestore 拉起后跳到 com.android.thememanager，直达 ThemeResourceProxyTabActivity 最稳。", "severity": "info"}
+  ]
+}

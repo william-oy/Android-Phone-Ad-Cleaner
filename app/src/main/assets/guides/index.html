@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;font-size:16px;line-height:1.7;color:#1A1A2E;background:#F4F6FB;padding:14px}
+h1{font-size:22px;color:#1565C0;margin-bottom:6px}
+h2{font-size:18px;color:#0D47A1;margin:18px 0 8px;padding-left:10px;border-left:4px solid #00897B}
+h3{font-size:16px;color:#1A1A2E;margin:14px 0 6px}
+p{margin:8px 0}
+.card{background:#fff;border-radius:14px;padding:16px;margin:10px 0;border:1px solid #E4E7EE}
+.step{background:#fff;border-radius:12px;padding:14px 14px 14px 48px;margin:8px 0;border:1px solid #E4E7EE;position:relative}
+.step:before{content:attr(data-n);position:absolute;left:12px;top:14px;width:26px;height:26px;background:#1565C0;color:#fff;border-radius:50%;text-align:center;line-height:26px;font-size:14px;font-weight:bold}
+.warn{background:#FFF3E0;border-left:5px solid #FB8C00;border-radius:8px;padding:12px;margin:10px 0}
+.danger{background:#FFEBEE;border-left:5px solid #E53935;border-radius:8px;padding:12px;margin:10px 0}
+.ok{background:#E8F5E9;border-left:5px solid #43A047;border-radius:8px;padding:12px;margin:10px 0}
+code{background:#ECEFF1;padding:2px 6px;border-radius:4px;font-size:14px}
+.path{background:#E3F2FD;border-radius:8px;padding:10px;margin:6px 0;font-size:15px}
+.path b{color:#1565C0}
+table{width:100%;border-collapse:collapse;margin:8px 0;font-size:14px}
+th,td{border:1px solid #E4E7EE;padding:8px;text-align:left}
+th{background:#1565C0;color:#fff}
+.r{color:#E53935;font-weight:bold}.g{color:#43A047}.w{color:#FB8C00;font-weight:bold}
+.brand{display:inline-block;background:#1565C0;color:#fff;border-radius:20px;padding:4px 12px;margin:4px;font-size:14px}
+</style>
+</head>
+<body>
+<h1>去广告助手 · 使用引导</h1>
+<p>装好就能清，不用电脑、不用数据线、不用 root。</p>
+
+<div class="card">
+<h2>它是什么</h2>
+<p>一个安卓 app，用<strong>无障碍服务</strong>自动帮你关掉国产手机系统里的广告、热搜、资讯推荐和营销推送。它在本机读屏、自动点开关，<strong>不需要插线、不需要 USB 调试</strong>。</p>
+<p>思路源自开源项目 android-ad-cleaner（MIT），把原来「电脑 + ADB + 数据线」的方案改成「手机自己点」。</p>
+</div>
+
+<div class="card">
+<h2>第一步：开启无障碍权限</h2>
+<div class="step" data-n="1">打开 app，点「<b>开启无障碍权限</b>」</div>
+<div class="step" data-n="2">系统跳到无障碍设置页，找到「<b>去广告助手·自动点开关</b>」</div>
+<div class="step" data-n="3">点进去，打开开关，弹窗点「允许」</div>
+<div class="step" data-n="4">返回 app，顶部状态条变绿「<b>无障碍服务已就绪</b>」</div>
+<div class="warn">⚠️ 无障碍权限是安卓给辅助功能（如盲人读屏）的权限，本 app 用它来读屏幕文字、自动点开关。它不会收集你的信息，用完可以随时关掉。</div>
+</div>
+
+<div class="card">
+<h2>第二步：一键清理</h2>
+<div class="step" data-n="1">确认 app 已认出你的手机品牌（顶部显示「你的手机：小米/OPPO…」）</div>
+<div class="step" data-n="2">点「<b>一键清理广告</b>」大按钮</div>
+<div class="step" data-n="3">app 会自动打开各设置页、找到广告开关、关掉它，实时日志会显示进度</div>
+<div class="step" data-n="4">等进度跑完，回桌面看效果；个别 App 需重启后才生效</div>
+<div class="warn">⚠️ 清理期间不要手动操作手机，让 app 自己点。如果卡住，看下方品牌坑或点「图文使用引导」选你的品牌照着手动点。</div>
+</div>
+
+<div class="card">
+<h2>各品牌坑总览</h2>
+<p>选你的品牌看详细图文：</p>
+<div class="brand">小米 HyperOS</div>
+<div class="brand">OPPO ColorOS</div>
+<div class="brand">vivo OriginOS</div>
+<div class="brand">荣耀 MagicOS</div>
+<div class="brand">华为 HarmonyOS</div>
+<div class="brand">魅族 Flyme</div>
+<table>
+<tr><th>品牌</th><th>典型坑</th></tr>
+<tr><td>小米</td><td>需开「USB调试安全设置」否则点不动；两个广告总闸都要关</td></tr>
+<tr><td>OPPO</td><td>摇一摇广告点不动算系统锁定；com.oplus.appdetail 不能挂</td></tr>
+<tr><td>vivo</td><td>挂起需 root；通知总开关别点（会连订单一起关）</td></tr>
+<tr><td>荣耀</td><td>广告标识要「显示系统程序」再全关；应用市场切基本服务后设置消失</td></tr>
+<tr><td>华为</td><td>营销通知需人工审核；不挂广告包</td></tr>
+<tr><td>魅族</td><td>无可挂广告包；营销通知人工筛选</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h2>增强模式（挂起广告包，可选）</h2>
+<p>无障碍只能点开关。要彻底「挂起」广告组件包（如 com.opos.ads、com.miui.systemAdSolution），需要 ADB 权限。增强模式让 app 自己当 ADB client 连本机无线调试，<strong>仍不用电脑</strong>。详见「增强模式」引导页。</p>
+<div class="warn">⚠️ 增强模式需 Android 11+。挂起不等于进程立即退出，个别会被系统重新拉起。</div>
+</div>
+
+<div class="card">
+<h2>还原</h2>
+<div class="ok">✓ 挂起的广告包：进「增强模式」点还原（unsuspend）。</div>
+<div class="ok">✓ 应用内开关：打开「图文使用引导」选你的品牌，把清单里关掉的开关重新打开。</div>
+<div class="ok">✓ 还原不影响系统更新，也不会卸载任何应用。</div>
+</div>
+
+<div class="card">
+<h2>安全声明</h2>
+<p>· 只拨系统和 App 自带的开关；不卸载、不停用系统应用。</p>
+<p>· 挂起广告包用 pm suspend，一条命令可还原。</p>
+<p>· 不改 system 分区，不刷模块，不影响系统更新。</p>
+<p>· 不替你同意任何 App 协议；遇到协议页点「取消」。</p>
+<p>· 保护类开关（限制广告跟踪等）会<b>打开</b>，不是关。</p>
+<p>· 各厂商界面随系统更新变化，结果以你的手机为准。</p>
+</div>
+
+<div class="card">
+<h2>致谢</h2>
+<p>规则数据与品牌坑知识全部提炼自开源项目 <code>rddmwmddr/android-ad-cleaner</code>（MIT），感谢原作者与社区贡献者的真机实测。</p>
+</div>
+</body>
+</html>

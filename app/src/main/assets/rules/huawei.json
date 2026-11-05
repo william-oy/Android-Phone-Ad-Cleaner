@@ -1,0 +1,63 @@
+{
+  "brand": "huawei",
+  "displayName": "华为（HarmonyOS）",
+  "manufacturerKeywords": ["huawei", "honor"],
+  "romIdentifiers": ["harmonyos", "emui"],
+  "notes": "实测 HarmonyOS 4.2（ALN-AL00）。华为营销通知需人工审核渠道名，不自动批量关。本工具不挂起华为任何广告包，仅快应用可选挂起。",
+  "sections": [
+    {
+      "id": "system_ad",
+      "name": "系统广告与跟踪",
+      "description": "关闭智能推荐服务、允许全部应用跟踪",
+      "guidePath": "设置 → 隐私 → 华为广告 / 跟踪管理",
+      "steps": [
+        {"action": "openSettings", "intent": {"action": "android.settings.SETTINGS"}},
+        {"action": "tap", "text": "隐私"},
+        {"action": "goInto", "text": "华为广告"},
+        {"action": "switchOff", "targets": ["智能推荐服务"]},
+        {"action": "back"},
+        {"action": "goInto", "text": "跟踪管理"},
+        {"action": "switchOff", "targets": ["允许全部应用跟踪", "允许应用跟踪"]},
+        {"action": "readBack", "targets": ["智能推荐服务", "允许全部应用跟踪"]}
+      ],
+      "targets": ["智能推荐服务", "允许全部应用跟踪", "允许应用跟踪"],
+      "requiresAdb": false,
+      "pitfalls": ["华为原生通知页可能显示合并的「社交通讯/服务提醒/其他」分类，不能把整类关闭作为单渠道关闭的替代"]
+    },
+    {
+      "id": "marketing_notify",
+      "name": "营销通知（需人工审核）",
+      "description": "华为营销通知按渠道人工审核后关；不自动批量关",
+      "guidePath": "设置 → 通知管理 → 选 App → 渠道",
+      "steps": [
+        {"action": "openSettings", "intent": {"action": "android.settings.APP_NOTIFICATION_SETTINGS"}},
+        {"action": "tap", "text": "通知管理"},
+        {"action": "wait", "ms": 500, "note": "华为营销通知需人工审核每个渠道名与应用名，不将路况、直播、媒体发送等默认视为营销。请逐个 App 进入渠道页手动关营销渠道。"}
+      ],
+      "targets": ["营销", "活动优惠", "福利", "精彩推荐", "资讯"],
+      "protectedKeywords": ["订单", "物流", "更新", "安全", "聊天", "快递", "天气预警", "路况", "直播", "媒体发送"],
+      "requiresAdb": false,
+      "pitfalls": ["华为客户端不自动运行营销通知关闭，必须人工审核清单中的渠道名和应用名"]
+    },
+    {
+      "id": "quickapp_suspend",
+      "name": "快应用（挂起）",
+      "description": "挂起 com.huawei.fastapp；需增强模式 + 机主确认",
+      "guidePath": "增强模式：开无线调试 → app 连接 → 挂起快应用",
+      "steps": [
+        {"action": "wait", "ms": 100, "note": "此段由增强模式（ADB）执行 pm suspend com.huawei.fastapp，需机主确认"}
+      ],
+      "targets": [],
+      "requiresAdb": true,
+      "pitfalls": ["挂起后回读成功不保证长期不被系统重新拉起；华为不挂起其他广告包"]
+    }
+  ],
+  "adPackages": [
+    {"pkg": "com.huawei.fastapp", "name": "华为快应用", "effect": "广告跳转的快应用入口", "restoreHint": "pm unsuspend --user 0 com.huawei.fastapp"}
+  ],
+  "pitfalls": [
+    {"title": "营销通知需人工审核", "desc": "华为客户端不自动运行营销通知关闭，必须人工审核渠道名与应用名，不将路况、直播、媒体发送默认视为营销。", "severity": "warn"},
+    {"title": "不挂广告包", "desc": "本工具不挂起华为任何广告包，仅快应用 com.huawei.fastapp 可选挂起（需机主确认）。", "severity": "info"},
+    {"title": "版本适配有限", "desc": "仅 HarmonyOS 4.2（ALN-AL00）实测，其他版本入口可能不同。", "severity": "info"}
+  ]
+}

@@ -1,0 +1,175 @@
+{
+  "brand": "meizu",
+  "displayName": "魅族（Flyme）",
+  "manufacturerKeywords": ["meizu"],
+  "romIdentifiers": ["flyme"],
+  "notes": "实测魅族 21 Pro（Flyme 12.6.0.0A）。未确认可挂起的魅族广告包，不因包名猜测而挂起。营销通知需人工筛选回读。",
+  "sections": [
+    {
+      "id": "app_tracking",
+      "name": "应用跟踪控制",
+      "description": "关闭「允许应用跟踪」",
+      "guidePath": "设置 → 权限和隐私 → 应用跟踪控制",
+      "steps": [
+        {"action": "openSettings", "intent": {"action": "android.settings.SETTINGS"}},
+        {"action": "tap", "texts": ["权限和隐私", "权限"]},
+        {"action": "goInto", "text": "应用跟踪控制"},
+        {"action": "switchOff", "targets": ["允许应用跟踪"]},
+        {"action": "readBack", "targets": ["允许应用跟踪"]}
+      ],
+      "targets": ["允许应用跟踪"],
+      "requiresAdb": false
+    },
+    {
+      "id": "global_search",
+      "name": "全局搜索",
+      "description": "关插件热词、精选内容推送、个性化推荐",
+      "guidePath": "全局搜索 → 设置",
+      "steps": [
+        {"action": "openSettings", "intent": {"component": "com.meizu.flyme.search/.SearchSettingsActivity"}},
+        {"action": "switchOff", "targets": ["插件显示热词", "精选内容推送"]},
+        {"action": "goInto", "text": "搜索项设置"},
+        {"action": "switchOff", "targets": ["精选内容"]},
+        {"action": "back"},
+        {"action": "goInto", "text": "个性化推荐"},
+        {"action": "switchOff", "targets": ["内容推荐", "广告推荐"]},
+        {"action": "readBack", "targets": ["插件显示热词", "精选内容推送"]}
+      ],
+      "targets": ["插件显示热词", "精选内容推送", "精选内容", "内容推荐", "广告推荐"],
+      "protectedKeywords": ["本地应用", "设置", "联系人"],
+      "requiresAdb": false
+    },
+    {
+      "id": "browser",
+      "name": "浏览器",
+      "description": "极简版主页、关个性化推荐",
+      "guidePath": "浏览器 → 工具 → 设置",
+      "steps": [
+        {"action": "launchApp", "intent": {"component": "com.android.browser/.BrowserActivity"}},
+        {"action": "tap", "text": "工具"},
+        {"action": "goInto", "text": "设置"},
+        {"action": "goInto", "text": "主页展示"},
+        {"action": "tap", "text": "极简版"},
+        {"action": "back"},
+        {"action": "goInto", "text": "个性化推荐"},
+        {"action": "switchOff", "targets": ["内容推荐", "广告推荐"]},
+        {"action": "readBack", "targets": ["内容推荐"]}
+      ],
+      "targets": ["内容推荐", "广告推荐"],
+      "protectedKeywords": ["搜索引擎", "网页恢复", "风险网址拦截"],
+      "requiresAdb": false
+    },
+    {
+      "id": "app_store",
+      "name": "应用商店",
+      "description": "关个性化推荐（内容及广告）",
+      "guidePath": "应用商店 → 我的 → 设置 → 个性化推荐",
+      "steps": [
+        {"action": "launchApp", "intent": {"component": "com.meizu.mstore/.MainActivity"}},
+        {"action": "tapTab", "text": "我的"},
+        {"action": "tap", "text": "设置"},
+        {"action": "goInto", "text": "个性化推荐"},
+        {"action": "switchOff", "targets": ["内容推荐", "广告推荐"]},
+        {"action": "readBack", "targets": ["内容推荐", "广告推荐"]}
+      ],
+      "targets": ["内容推荐", "广告推荐"],
+      "protectedKeywords": ["WLAN自动更新", "应用更新通知", "预约通知", "评论通知"],
+      "requiresAdb": false,
+      "pitfalls": ["应用商店开屏广告未找到独立开关；关闭个性化广告不会消除全部广告"]
+    },
+    {
+      "id": "theme",
+      "name": "主题美化",
+      "description": "关个性化广告推荐",
+      "guidePath": "主题美化 → 头像 → 设置 → 个性化推荐",
+      "steps": [
+        {"action": "launchApp", "intent": {"component": "com.meizu.flyme.theme/.MainActivity"}},
+        {"action": "tap", "text": "头像"},
+        {"action": "tap", "text": "设置"},
+        {"action": "goInto", "text": "个性化推荐"},
+        {"action": "switchOff", "targets": ["广告推荐", "内容推荐"]},
+        {"action": "readBack", "targets": ["广告推荐"]}
+      ],
+      "targets": ["广告推荐", "内容推荐"],
+      "protectedKeywords": ["主题", "字体", "动态壁纸更新通知"],
+      "requiresAdb": false
+    },
+    {
+      "id": "weather",
+      "name": "天气",
+      "description": "关本地资讯、精选内容、开屏推荐、个性化推荐",
+      "guidePath": "天气 → 更多选项 → 设置",
+      "steps": [
+        {"action": "launchApp", "intent": {"component": "com.meizu.flyme.weather/.WeatherActivity"}},
+        {"action": "tap", "texts": ["更多选项", "更多"]},
+        {"action": "goInto", "text": "设置"},
+        {"action": "goInto", "text": "内容推荐"},
+        {"action": "switchOff", "targets": ["本地资讯", "精选内容推送", "允许展示开屏推荐"]},
+        {"action": "back"},
+        {"action": "goInto", "text": "个性化推荐"},
+        {"action": "switchOff", "targets": ["内容推荐", "广告推荐"]},
+        {"action": "readBack", "targets": ["本地资讯", "允许展示开屏推荐"]}
+      ],
+      "targets": ["本地资讯", "精选内容推送", "允许展示开屏推荐", "内容推荐", "广告推荐"],
+      "protectedKeywords": ["预警管理", "地震预警", "明日天气提醒"],
+      "requiresAdb": false
+    },
+    {
+      "id": "security_center",
+      "name": "手机管家",
+      "description": "关开屏推荐、应用下载推荐、个性化广告推荐",
+      "guidePath": "手机管家 → 设置",
+      "steps": [
+        {"action": "launchApp", "intent": {"component": "com.meizu.flyme.security/.MainActivity"}},
+        {"action": "tapIcon"},
+        {"action": "switchOff", "targets": ["允许展示开屏推荐", "应用下载推荐"]},
+        {"action": "goInto", "text": "个性化推荐"},
+        {"action": "switchOff", "targets": ["广告推荐"]},
+        {"action": "readBack", "targets": ["允许展示开屏推荐", "应用下载推荐"]}
+      ],
+      "targets": ["允许展示开屏推荐", "应用下载推荐", "广告推荐"],
+      "protectedKeywords": ["清理", "病毒查杀", "拦截", "流量管理"],
+      "requiresAdb": false,
+      "pitfalls": ["手机管家入口要避开底部导航区"]
+    },
+    {
+      "id": "lockscreen_magazine",
+      "name": "锁屏画报",
+      "description": "关锁屏画报个性化推荐",
+      "guidePath": "主题美化 → 头像 → 锁屏画报 → 设置 → 个性化推荐",
+      "steps": [
+        {"action": "launchApp", "intent": {"component": "com.meizu.flyme.theme/.MainActivity"}},
+        {"action": "tap", "text": "头像"},
+        {"action": "goInto", "text": "锁屏画报"},
+        {"action": "tap", "text": "设置"},
+        {"action": "goInto", "text": "个性化推荐"},
+        {"action": "switchOff", "targets": ["内容推荐", "广告推荐"]},
+        {"action": "readBack", "targets": ["内容推荐"]}
+      ],
+      "targets": ["内容推荐", "广告推荐"],
+      "protectedKeywords": ["锁屏画报", "节日壁纸", "自动换壁纸"],
+      "requiresAdb": false
+    },
+    {
+      "id": "marketing_notify",
+      "name": "营销通知（需人工筛选）",
+      "description": "按渠道人工筛选并回读",
+      "guidePath": "设置 → 通知管理 → 选 App → 渠道",
+      "steps": [
+        {"action": "openSettings", "intent": {"action": "android.settings.APP_NOTIFICATION_SETTINGS"}},
+        {"action": "tap", "text": "通知管理"},
+        {"action": "wait", "ms": 500, "note": "魅族通知渠道需人工筛选并回读，直播、行程及含义不明确的渠道保留。"}
+      ],
+      "targets": ["营销", "活动优惠", "福利", "精彩推荐", "资讯"],
+      "protectedKeywords": ["订单", "物流", "更新", "安全", "聊天", "快递", "天气预警", "直播", "行程"],
+      "requiresAdb": false,
+      "pitfalls": ["营销通知需人工筛选回读，不批量关；直播、行程及含义不明确的渠道保留"]
+    }
+  ],
+  "adPackages": [],
+  "pitfalls": [
+    {"title": "无可挂起的广告包", "desc": "未确认可挂起的魅族广告包，不因包名猜测而挂起；快应用也未识别到受支持组件。", "severity": "info"},
+    {"title": "营销通知人工筛选", "desc": "通知渠道需人工筛选并回读，直播、行程及含义不明确的渠道保留。", "severity": "warn"},
+    {"title": "版本适配", "desc": "仅魅族 21 Pro（Flyme 12.6.0.0A）实测，不同版本入口可能不同。", "severity": "info"}
+  ]
+}

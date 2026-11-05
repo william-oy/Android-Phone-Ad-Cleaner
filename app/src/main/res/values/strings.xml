@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">去广告助手</string>
+    <string name="app_slogan">装好就能清，不用电脑、不用数据线</string>
+
+    <!-- 无障碍服务 -->
+    <string name="accessibility_service_label">去广告助手·自动点开关</string>
+    <string name="accessibility_service_desc">读取屏幕上的文字和开关，自动帮你关掉国产手机里的系统广告、热搜、资讯推荐和营销推送。只拨系统与 App 自带的开关，可还原，不卸载不停用系统应用。挂起广告组件需你另开无线调试（增强模式）。</string>
+    <string name="accessibility_service_summary">自动点开关、读屏翻页</string>
+
+    <!-- 主界面 -->
+    <string name="btn_enable_accessibility">开启无障碍权限</string>
+    <string name="btn_start_clean">一键清理广告</string>
+    <string name="btn_restore">还原上次清理</string>
+    <string name="btn_open_guide">图文使用引导</string>
+    <string name="btn_wireless_debug">增强模式（挂起广告包）</string>
+    <string name="tv_brand_detecting">正在检测你的手机品牌…</string>
+    <string name="tv_brand_unknown">没认出品牌，可尝试通用流程</string>
+    <string name="tv_accessibility_off">无障碍服务未开启，点上面按钮开启</string>
+    <string name="tv_accessibility_on">无障碍服务已就绪</string>
+    <string name="tv_progress_title">清理进度</string>
+    <string name="tv_logs">实时日志</string>
+    <string name="tv_done">清理完成</string>
+
+    <!-- 引导 -->
+    <string name="guide_title">使用引导</string>
+    <string name="brand_guide_title">品牌图文引导</string>
+    <string name="pick_brand">选你的手机品牌</string>
+
+    <!-- 增强模式：无线调试挂起广告包 -->
+    <string name="wd_title">增强模式 · 挂起广告包</string>
+    <string name="wd_intro">打开「开发者选项 → 无线调试」，记下端口号填到下面。首次连接手机会弹「允许 USB 调试」，点允许。挂起的广告包进程被冻结、不再弹广告，可随时还原。</string>
+    <string name="wd_port_hint">无线调试端口（如 37121）</string>
+    <string name="wd_btn_connect">连接本机</string>
+    <string name="wd_btn_open_settings">打开开发者选项</string>
+    <string name="wd_status_idle">未连接。填端口后点「连接本机」。</string>
+    <string name="wd_packages_title">常见广告 / 推荐组件</string>
+    <string name="wd_log">日志</string>
+    <string name="wd_port_invalid">端口无效，请输入 1-65535 的数字</string>
+    <string name="wd_connecting">正在连接 adbd…</string>
+    <string name="wd_connected">已连接 adbd</string>
+    <string name="wd_connect_failed">连接失败：%1$s</string>
+    <string name="wd_btn_suspend">挂起</string>
+    <string name="wd_btn_unsuspend">还原</string>
+    <string name="wd_danger_no_suspend">⚠ 挂起会坏功能，不可操作</string>
+    <string name="wd_working">处理中…</string>
+    <string name="wd_suspended">已挂起</string>
+    <string name="wd_active">运行中</string>
+    <string name="wd_failed">失败</string>
+
+    <!-- 通用 -->
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="back">返回</string>
+    <string name="next">下一步</string>
+</resources>

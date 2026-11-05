@@ -1,0 +1,364 @@
+package com.adcleaner.app.cleaner
+
+import android.accessibilityservice.GestureDescription
+import android.content.ComponentName
+import android.content.Intent
+import android.graphics.Path
+import android.graphics.Rect
+import android.net.Uri
+import android.view.accessibility.AccessibilityNodeInfo
+import com.adcleaner.app.model.BrandRule
+import com.adcleaner.app.model.IntentSpec
+import com.adcleaner.app.model.Section
+import com.adcleaner.app.model.Step
+import kotlinx.coroutines.delay
+
+/**
+ * 无障碍引擎：读 UI 树、找文字/开关、点击、翻页、回读、处理确认框。
+ * 对照 rddmwmddr/android-ad-cleaner 的 tool/fast.py 能力实现，但运行在本机无障碍服务里，
+ * 不依赖 adb / uiautomator2。
+ */
+class AccessibilityEngine(private val service: AdCleanerService) {
+
+    private fun root(): AccessibilityNodeInfo? = service.rootInActiveWindow
+
+    // ---------------- 节点遍历 ----------------
+    private fun collectAll(root: AccessibilityNodeInfo?): List<AccessibilityNodeInfo> {
+        if (root == null) return emptyList()
+        val out = ArrayList<AccessibilityNodeInfo>(128)
+        val stack = ArrayDeque<AccessibilityNodeInfo>()
+        stack.addLast(root)
+        while (stack.isNotEmpty()) {
+            val n = stack.removeLast()
+            out.add(n)
+            for (i in 0 until n.childCount) {
+                val c = n.getChild(i) ?: continue
+                stack.addLast(c)
+            }
+        }
+        return out
+    }
+
+    private fun nodeText(n: AccessibilityNodeInfo): String =
+        (n.text ?: n.contentDescription)?.toString()?.trim().orEmpty()
+
+    private fun isSwitch(n: AccessibilityNodeInfo): Boolean {
+        val cls = n.className?.toString().orEmpty()
+        return n.isCheckable || cls.contains("Switch", true) ||
+            cls.contains("CheckBox", true) || cls.contains("Toggle", true)
+    }
+
+    private data class SwitchInfo(val node: AccessibilityNodeInfo, val title: String, val checked: Boolean)
+
+    /** 开关行标题：取父节点子树（两层）的所有非空文字，排除开关自身。 */
+    private fun titleOf(n: AccessibilityNodeInfo): String {
+        val parts = ArrayList<String>()
+        val parent = n.parent ?: return nodeText(n)
+        collectTexts(parent, parts, 0, 2, n)
+        var title = parts.joinToString(" ").trim()
+        if (title.isEmpty()) {
+            var p: AccessibilityNodeInfo? = parent
+            var d = 0
+            while (p != null && d < 4) {
+                val t = nodeText(p)
+                if (t.isNotEmpty()) { title = t; break }
+                p = p.parent; d++
+            }
+        }
+        return title
+    }
+
+    private fun collectTexts(
+        n: AccessibilityNodeInfo, out: ArrayList<String>,
+        depth: Int, maxDepth: Int, exclude: AccessibilityNodeInfo
+    ) {
+        if (depth > maxDepth) return
+        if (n !== exclude) {
+            val t = nodeText(n)
+            if (t.isNotEmpty()) out.add(t)
+        }
+        for (i in 0 until n.childCount) {
+            val c = n.getChild(i) ?: continue
+            collectTexts(c, out, depth + 1, maxDepth, exclude)
+        }
+    }
+
+    private fun findSwitches(): List<SwitchInfo> {
+        val r = root() ?: return emptyList()
+        return collectAll(r).filter { isSwitch(it) }.map { SwitchInfo(it, titleOf(it), it.isChecked) }
+    }
+
+    private fun findTextNodes(text: String, exact: Boolean): List<AccessibilityNodeInfo> {
+        val r = root() ?: return emptyList()
+        return collectAll(r).filter {
+            val t = nodeText(it)
+            if (exact) t == text else t.contains(text)
+        }
+    }
+
+    // ---------------- 点击 ----------------
+    private fun clickNode(node: AccessibilityNodeInfo): Boolean {
+        var n: AccessibilityNodeInfo? = node
+        var d = 0
+        while (n != null && d < 6) {
+            if (n.isClickable && n.performAction(AccessibilityNodeInfo.ACTION_CLICK)) return true
+            n = n.parent; d++
+        }
+        val r = Rect(); node.getBoundsInScreen(r)
+        return clickPoint(r.exactCenterX(), r.exactCenterY())
+    }
+
+    private fun clickPoint(x: Float, y: Float, durationMs: Long = 70): Boolean {
+        return try {
+            val path = Path(); path.moveTo(x, y)
+            val stroke = GestureDescription.StrokeDescription(path, 0, durationMs)
+            val gd = GestureDescription.Builder().addStroke(stroke).build()
+            service.dispatchGesture(gd, null, null)
+        } catch (e: Exception) { false }
+    }
+
+    // ---------------- 翻页 ----------------
+    private fun scrollForward(): Boolean {
+        val r = root() ?: return false
+        for (n in collectAll(r)) {
+            if (n.isScrollable && n.performAction(AccessibilityNodeInfo.ACTION_SCROLL_FORWARD)) return true
+        }
+        return false
+    }
+
+    private fun swipeUp(durationMs: Long = 380): Boolean {
+        val dm = service.resources.displayMetrics
+        val cx = dm.widthPixels / 2f
+        val h = dm.heightPixels
+        return try {
+            val path = Path()
+            path.moveTo(cx, h * 0.78f)
+            path.lineTo(cx, h * 0.30f)
+            val stroke = GestureDescription.StrokeDescription(path, 0, durationMs)
+            service.dispatchGesture(GestureDescription.Builder().addStroke(stroke).build(), null, null)
+        } catch (e: Exception) { false }
+    }
+
+    private suspend fun scrollDownOnce(): Boolean {
+        if (scrollForward()) { delay(300); return true }
+        swipeUp(); delay(420); return true
+    }
+
+    // ---------------- 确认框 ----------------
+    private val CONFIRM_WORDS = listOf("确定", "确认", "知道了", "仍要关闭", "确定关闭", "关闭", "好的", "仍要", "继续")
+    private val CANCEL_WORDS = listOf("取消", "以后再说", "不允许", "禁止", "暂不", "不了", "放弃", "返回")
+
+    private suspend fun confirmIfAny(): Boolean {
+        val r = root() ?: return false
+        val nodes = collectAll(r)
+        for (w in CONFIRM_WORDS) {
+            val hit = nodes.firstOrNull { nodeText(it) == w && it.isClickable }
+                ?: nodes.firstOrNull {
+                    nodeText(it).contains(w) && it.isClickable &&
+                        CANCEL_WORDS.none { c -> nodeText(it).contains(c) }
+                } ?: continue
+            if (hit.performAction(AccessibilityNodeInfo.ACTION_CLICK) || clickNode(hit)) {
+                delay(500); return true
+            }
+        }
+        return false
+    }
+
+    // ---------------- 等待 ----------------
+    private suspend fun waitStable(ms: Long = 700, tries: Int = 4): AccessibilityNodeInfo? {
+        repeat(tries) {
+            val r = root()
+            if (r != null && r.childCount > 0) return r
+            delay(ms)
+        }
+        return root()
+    }
+
+    // ---------------- 打开页面 ----------------
+    suspend fun launchIntent(spec: IntentSpec?) {
+        if (spec == null) return
+        val intent = Intent().addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or (spec.flags ?: 0))
+        spec.action?.let { intent.action = it }
+        spec.data?.let { intent.data = Uri.parse(it) }
+        spec.component?.let {
+            val p = it.split("/", limit = 2)
+            if (p.size == 2) intent.component = ComponentName(p[0], p[1])
+        }
+        try {
+            service.startActivity(intent)
+            CleanState.step("打开页面：${spec.action ?: spec.component ?: spec.data ?: "设置"}")
+        } catch (e: Exception) {
+            CleanState.warn("打开页面失败：${e.message}")
+        }
+        delay(1200)
+    }
+
+    // ---------------- 执行单步 ----------------
+    suspend fun executeStep(s: Step): Boolean {
+        when (s.action) {
+            "openSettings", "launchApp" -> launchIntent(s.intent)
+            "wait" -> delay(s.ms)
+            "back" -> {
+                service.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_BACK)
+                delay(s.ms)
+            }
+            "scrollDown" -> repeat(s.scrolls.coerceAtLeast(1)) { scrollDownOnce() }
+            "confirm" -> confirmIfAny()
+            "tap", "tapExact" -> {
+                waitStable()
+                val candidates = s.texts.ifEmpty { listOfNotNull(s.text) }
+                for (txt in candidates) {
+                    val nodes = findTextNodes(txt, s.exact)
+                    val target = nodes.firstOrNull { it.isClickable } ?: nodes.firstOrNull()
+                    if (target != null && clickNode(target)) { delay(s.ms); return true }
+                }
+                CleanState.warn("没找到入口「${candidates.joinToString("/")}」")
+                return false
+            }
+            "tapIcon" -> {
+                val r = waitStable() ?: return false
+                val dm = service.resources.displayMetrics
+                val hit = collectAll(r).firstOrNull { n ->
+                    val cls = n.className?.toString().orEmpty()
+                    val rb = Rect(); n.getBoundsInScreen(rb)
+                    (n.isClickable || cls.contains("ImageView", true)) &&
+                        rb.exactCenterX() > dm.widthPixels * 0.6f &&
+                        rb.top < dm.heightPixels * 0.25f &&
+                        nodeText(n).isEmpty()
+                }
+                if (hit != null) { clickNode(hit); delay(s.ms) }
+                else CleanState.warn("没找到右上齿轮图标")
+            }
+            "tapTab" -> {
+                val txt = s.text ?: return true
+                val r = waitStable() ?: return false
+                val hit = collectAll(r).firstOrNull { nodeText(it).contains(txt) && it.isClickable }
+                if (hit != null) { clickNode(hit); delay(s.ms) }
+                else CleanState.warn("没找到标签「$txt」")
+            }
+            "goInto" -> {
+                waitStable()
+                val candidates = s.texts.ifEmpty { listOfNotNull(s.text) }
+                for (txt in candidates) {
+                    val nodes = findTextNodes(txt, s.exact)
+                    val target = nodes.firstOrNull { it.isClickable }
+                        ?: nodes.firstOrNull { it.parent?.isClickable == true }
+                    if (target != null) {
+                        val click = target.takeIf { it.isClickable } ?: target.parent
+                        if (click != null && clickNode(click)) {
+                            delay(s.ms); waitStable(); return true
+                        }
+                    }
+                }
+                CleanState.warn("没找到入口「${candidates.joinToString("/")}」")
+                return false
+            }
+            "switchOff" -> {
+                val closed = switchOff(s.targets, s.protectedKeywords, s.scrolls)
+                CleanState.step("关掉 $closed 个开关")
+            }
+            "switchOnly" -> {
+                val closed = switchOnly(s.targets, s.scrolls)
+                CleanState.step("关掉 $closed 个目标开关")
+            }
+            "switchOn" -> {
+                val opened = switchOn(s.targets, s.scrolls)
+                CleanState.step("打开 $opened 个保护开关")
+            }
+            "readBack" -> {
+                waitStable()
+                val stillOn = findSwitches().count { it.checked && s.targets.any { t -> it.title.contains(t) } }
+                if (stillOn > 0) CleanState.warn("回读：仍有 $stillOn 个开着")
+                else CleanState.ok("回读确认：目标已关")
+            }
+            "skipIfMissing" -> {
+                val txt = s.text ?: return true
+                if (findTextNodes(txt, s.exact).isEmpty()) {
+                    CleanState.step("未找到「$txt」，跳过本段")
+                    return false
+                }
+            }
+            else -> CleanState.warn("未知动作：${s.action}")
+        }
+        return true
+    }
+
+    /** 关掉标题含 targets 的开关，protected 词保留；翻 scrolls 屏。targets 空=本页全关。 */
+    suspend fun switchOff(targets: List<String>, protected: List<String>, scrolls: Int): Int {
+        var closed = 0
+        for (page in 0..scrolls) {
+            val switches = findSwitches()
+            var acted = false
+            for (sw in switches) {
+                if (!sw.checked) continue
+                if (protected.any { sw.title.contains(it) }) continue
+                if (targets.isNotEmpty() && targets.none { sw.title.contains(it) }) continue
+                if (clickNode(sw.node)) { delay(750); acted = true; closed++; confirmIfAny() }
+            }
+            if (page < scrolls) scrollDownOnce()
+            delay(280)
+        }
+        return closed
+    }
+
+    suspend fun switchOnly(targets: List<String>, scrolls: Int): Int {
+        var closed = 0
+        for (page in 0..scrolls) {
+            for (sw in findSwitches()) {
+                if (!sw.checked) continue
+                if (targets.none { sw.title.contains(it) }) continue
+                if (clickNode(sw.node)) { delay(750); closed++; confirmIfAny() }
+            }
+            if (page < scrolls) scrollDownOnce()
+            delay(280)
+        }
+        return closed
+    }
+
+    /** 打开保护类开关（限制广告跟踪等）：当前关着且标题含 targets 的，点开。 */
+    suspend fun switchOn(targets: List<String>, scrolls: Int): Int {
+        var opened = 0
+        for (page in 0..scrolls) {
+            for (sw in findSwitches()) {
+                if (sw.checked) continue
+                if (targets.none { sw.title.contains(it) }) continue
+                if (clickNode(sw.node)) { delay(750); opened++; confirmIfAny() }
+            }
+            if (page < scrolls) scrollDownOnce()
+            delay(280)
+        }
+        return opened
+    }
+
+    // ---------------- 段 / 品牌 ----------------
+    data class SectionResult(val ok: Boolean = false, val skipped: Boolean = false)
+
+    suspend fun executeSection(sec: Section): SectionResult {
+        for (s in sec.steps) {
+            try {
+                val cont = executeStep(s)
+                if (!cont && s.action == "skipIfMissing") return SectionResult(skipped = true)
+            } catch (e: Exception) {
+                CleanState.fail("步骤出错：${e.message}")
+            }
+        }
+        return SectionResult(ok = true)
+    }
+
+    suspend fun executeBrand(rule: BrandRule, includeAdb: Boolean) {
+        val sections = rule.sections.filter { includeAdb || !it.requiresAdb }
+        val total = sections.size
+        CleanState.log("开始清理：${rule.displayName}，共 $total 段" +
+            if (!includeAdb) "（增强模式未开，挂起广告包段已跳过）" else "")
+        sections.forEachIndexed { i, sec ->
+            CleanState.section(sec.name, i + 1, total)
+            CleanState.step("路径：${sec.guidePath}")
+            sec.pitfalls.forEach { CleanState.warn("坑：$it") }
+            val res = executeSection(sec)
+            if (res.skipped) CleanState.warn("本段跳过（未找到入口）")
+            else CleanState.ok("「${sec.name}」完成")
+        }
+        CleanState.log("\n清理结束。请回桌面检查效果；个别 App 需重启后才生效。")
+        CleanState.done()
+    }
+}

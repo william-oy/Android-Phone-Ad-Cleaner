@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;font-size:16px;line-height:1.7;color:#1A1A2E;background:#F4F6FB;padding:14px}
+h1{font-size:22px;color:#1565C0;margin-bottom:6px}
+h2{font-size:18px;color:#0D47A1;margin:18px 0 8px;padding-left:10px;border-left:4px solid #00897B}
+p{margin:8px 0}
+.card{background:#fff;border-radius:14px;padding:16px;margin:10px 0;border:1px solid #E4E7EE}
+.path{background:#E3F2FD;border-radius:8px;padding:10px;margin:6px 0;font-size:15px}
+.path b{color:#1565C0}
+.warn{background:#FFF3E0;border-left:5px solid #FB8C00;border-radius:8px;padding:12px;margin:10px 0}
+.danger{background:#FFEBEE;border-left:5px solid #E53935;border-radius:8px;padding:12px;margin:10px 0}
+.ok{background:#E8F5E9;border-left:5px solid #43A047;border-radius:8px;padding:12px;margin:10px 0}
+table{width:100%;border-collapse:collapse;margin:8px 0;font-size:14px}
+th,td{border:1px solid #E4E7EE;padding:8px;text-align:left}
+th{background:#1565C0;color:#fff}
+.r{color:#E53935;font-weight:bold}.g{color:#43A047}
+code{background:#ECEFF1;padding:2px 6px;border-radius:4px}
+</style>
+</head>
+<body>
+<h1>荣耀（MagicOS）图文引导</h1>
+<p>实测 PNM-AN10（MagicOS 10）。应用市场切「基本服务」后设置入口消失。</p>
+
+<div class="card">
+<h2>1. 系统：广告与隐私</h2>
+<div class="path">设置 → 搜索「广告」→ 广告与隐私</div>
+<div class="warn">⚠️ 右上 <b>⋮ → 显示系统程序 → 再 ⋮ → 全部关闭</b>，才能关系统 App 的广告标识读取。</div>
+<p><span class="r">关</span>：智能推荐服务</p>
+</div>
+
+<div class="card">
+<h2>2. YOYO 建议</h2>
+<div class="path">设置 → 搜索「新闻资讯」</div>
+<p><span class="r">关</span>：新闻资讯</p>
+</div>
+
+<div class="card">
+<h2>3. 下拉搜索</h2>
+<div class="path">桌面中间下滑 → 按返回收键盘 → 搜索框旁「更多」→ 设置</div>
+<p><span class="r">关</span>：首页显示→热搜榜、热搜词推荐；个性化管理→全部关</p>
+<div class="warn">⚠️ 搜索框旁「更多」要先按返回收起键盘才出现。</div>
+</div>
+
+<div class="card">
+<h2>4. 负一屏</h2>
+<div class="path">桌面左滑 → 头像 → 设置</div>
+<p><span class="r">关</span>：智能推荐、个性化广告、个性化消息；资讯服务→资讯精选</p>
+<p><span class="g">保留</span>：出行、快递</p>
+</div>
+
+<div class="card">
+<h2>5. 应用市场</h2>
+<div class="path">应用市场 → 我的 → 设置</div>
+<table>
+<tr><th>位置</th><th>开关</th><th>操作</th></tr>
+<tr><td>内容推荐服务</td><td>营销服务推荐、个性化服务推荐</td><td class="r">关（两个分开点）</td></tr>
+<tr><td>消息通知管理</td><td>消息通知</td><td class="r">关</td></tr>
+<tr><td>消息通知管理</td><td>应用更新</td><td class="g">保留</td></tr>
+<tr><td>消息中心提醒</td><td>活动福利、游戏动态</td><td class="r">关</td></tr>
+<tr><td>服务模式</td><td>基本服务</td><td class="r">可选（首页推荐流消失）</td></tr>
+</table>
+<div class="warn">⚠️ 「营销服务推荐」「个性化服务推荐」要<b>分开点</b>，连点第二个会失效。切「基本服务」后设置入口消失，切回完整服务要重新同意协议（会重新打开个性化推荐）。</div>
+</div>
+
+<div class="card">
+<h2>6. 浏览器</h2>
+<div class="path">经典首页：我的→右上第三个图标；简洁首页：更多→设置</div>
+<p><span class="r">关</span>：模式选择→简洁首页；消息通知→新闻热点、兴趣推送；隐私管理→个性化推荐→个性化内容；隐私管理→互动广告管理→全部关（含摇一摇）</p>
+<div class="warn">⚠️ 搜索框里的热词没有开关。</div>
+</div>
+
+<div class="card">
+<h2>7. 主题</h2>
+<div class="path">主题 → 我的 → 设置</div>
+<p><span class="r">关</span>：通知→三项全关（内容推荐和活动信息）；个性化服务→全部关</p>
+</div>
+
+<div class="card">
+<h2>8. 视频（优酷荣耀版）</h2>
+<div class="path">视频 → 设置 → 其他设置</div>
+<p><span class="r">关</span>：个性化内容、个性化广告、OAID</p>
+</div>
+
+<div class="card">
+<h2>9. 系统管家</h2>
+<div class="path">系统管家 → 右上齿轮</div>
+<p><span class="r">关</span>：应用推荐</p>
+<p><span class="g">保留</span>：扩展业务里的清理、查杀、拦截</p>
+</div>
+
+<div class="card">
+<h2>10. 魔法画报（锁屏杂志）</h2>
+<div class="path">设置 → 搜索「杂志」→ 魔法画报</div>
+<p><span class="r">关</span>：锁屏画报轮播、锁屏进入魔法画报</p>
+</div>
+
+<div class="card">
+<h2>11. 营销通知</h2>
+<div class="path">设置 → 通知管理 → 选 App → 营销通知</div>
+<p>荣耀营销渠道名叫「营销通知」，id 形如 <code>com.hihonor.android.pushagent.LOW.&lt;数字&gt;pnc</code>。</p>
+<p><span class="r">关</span>：各 App 的「营销通知」（实测 26 个）</p>
+<p><span class="g">保留</span>：同一个 App 的服务通知</p>
+</div>
+
+<div class="card">
+<h2>12. 快应用（增强模式）</h2>
+<table>
+<tr><th>包</th><th>作用</th></tr>
+<tr><td>com.hihonor.quickengine</td><td>快应用引擎</td></tr>
+<tr><td>com.hihonor.quickgame</td><td>快游戏</td></tr>
+</table>
+<div class="ok">还原：pm unsuspend 对应包名</div>
+</div>
+
+<div class="card">
+<h2>荣耀的坑</h2>
+<div class="warn">⚠️ <b>广告标识要显示系统程序</b>：广告与隐私页右上 ⋮ → 显示系统程序 → 再 ⋮ → 全部关闭，才能关系统 App 的广告标识读取。</div>
+<div class="warn">⚠️ <b>应用市场基本服务</b>：切「基本服务」后首页推荐流消失但设置入口也没了；切回完整服务要重新同意协议，会重新打开个性化推荐。</div>
+<div class="warn">⚠️ <b>内容推荐两个分开点</b>：「营销服务推荐」「个性化服务推荐」要分开点，连点第二个会失效。</div>
+</div>
+</body>
+</html>

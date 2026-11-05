@@ -1,0 +1,202 @@
+{
+  "brand": "vivo",
+  "displayName": "vivo / iQOO（OriginOS）",
+  "manufacturerKeywords": ["vivo", "iqoo"],
+  "romIdentifiers": ["originos", "funtouch"],
+  "notes": "vivo 上 pm suspend 需 root，挂起广告包这条路不通，靠 App 内开关即可。快应用 com.vivo.hybrid 系统也拒绝挂起，改用快应用服务开关。",
+  "sections": [
+    {
+      "id": "system_ad",
+      "name": "系统：广告与隐私",
+      "description": "关闭个性化广告、个性化推荐、智能推荐服务",
+      "guidePath": "设置 → 安全 → 更多安全设置 → 广告与隐私",
+      "steps": [
+        {"action": "openSettings", "intent": {"action": "android.settings.SETTINGS"}},
+        {"action": "tap", "text": "安全"},
+        {"action": "goInto", "text": "更多安全设置", "scrolls": 3},
+        {"action": "goInto", "text": "广告与隐私"},
+        {"action": "switchOff", "targets": ["个性化广告", "个性化推荐", "智能推荐服务"]},
+        {"action": "readBack", "targets": ["个性化广告", "个性化推荐"]}
+      ],
+      "targets": ["个性化广告", "个性化推荐", "智能推荐服务"],
+      "requiresAdb": false,
+      "pitfalls": ["找不到时用设置搜索「广告与隐私」直达"]
+    },
+    {
+      "id": "minus_screen",
+      "name": "负一屏",
+      "description": "关服务推荐、资讯推荐、内容精选、热点资讯；保留小V建议",
+      "guidePath": "桌面左滑 → 右上齿轮 → 更多设置 → 个性化推荐",
+      "steps": [
+        {"action": "openSettings", "intent": {"component": "com.vivo.assistant/.setting.PASettingActivity"}},
+        {"action": "goInto", "text": "更多设置"},
+        {"action": "goInto", "text": "个性化推荐"},
+        {"action": "switchOff", "targets": ["服务推荐", "资讯推荐", "内容精选", "热点资讯"], "protectedKeywords": ["小V建议", "便捷生活", "推荐服务"]},
+        {"action": "readBack", "targets": ["服务推荐", "热点资讯"]}
+      ],
+      "targets": ["服务推荐", "资讯推荐", "内容精选", "热点资讯"],
+      "protectedKeywords": ["小V建议", "便捷生活", "推荐服务"],
+      "requiresAdb": false,
+      "pitfalls": ["便捷生活→推荐服务不要关，关了那 10 个图标（扫码、手电筒等）整块变空"]
+    },
+    {
+      "id": "global_search",
+      "name": "全局搜索",
+      "description": "关搜索框推荐词、推荐卡片、热门搜索、广告个性化",
+      "guidePath": "设置 → 系统管理与升级 → 全局搜索",
+      "steps": [
+        {"action": "openSettings", "intent": {"action": "android.settings.SETTINGS"}},
+        {"action": "tap", "texts": ["系统管理与升级", "系统管理"]},
+        {"action": "goInto", "text": "全局搜索"},
+        {"action": "goInto", "text": "首页展示内容"},
+        {"action": "switchOff", "targets": ["搜索框推荐词", "推荐卡片"], "protectedKeywords": ["历史记录", "应用建议", "搜索结果个性化"]},
+        {"action": "back"},
+        {"action": "goInto", "text": "推荐热搜榜单"},
+        {"action": "switchOff", "targets": ["热门搜索"]},
+        {"action": "back"},
+        {"action": "goInto", "text": "个性化内容"},
+        {"action": "switchOff", "targets": ["广告个性化"]},
+        {"action": "readBack", "targets": ["搜索框推荐词", "广告个性化"]}
+      ],
+      "targets": ["搜索框推荐词", "推荐卡片", "热门搜索", "广告个性化"],
+      "protectedKeywords": ["历史记录", "应用建议", "搜索结果个性化"],
+      "requiresAdb": false
+    },
+    {
+      "id": "app_store",
+      "name": "应用商店",
+      "description": "关个性化推荐、服务管理推广位、资讯活动提醒；保留应用更新",
+      "guidePath": "应用商店 → 我的 → 设置",
+      "steps": [
+        {"action": "launchApp", "intent": {"component": "com.vivo.appstore/.MainEntryActivity"}},
+        {"action": "tapTab", "text": "我的"},
+        {"action": "tap", "text": "设置"},
+        {"action": "goInto", "texts": ["关于", "个性化推荐"]},
+        {"action": "switchOff", "targets": ["个性化推荐", "个性化广告推荐", "服务推荐", "资讯推荐"]},
+        {"action": "back"},
+        {"action": "goInto", "text": "服务管理"},
+        {"action": "switchOff", "targets": ["签到有礼", "顶部轮播图", "顶部栏目", "开屏", "摇一摇", "悬浮窗", "悬浮球", "限时推广"], "protectedKeywords": ["我的服务", "空间清理"], "scrolls": 4},
+        {"action": "back"},
+        {"action": "goInto", "text": "消息提醒"},
+        {"action": "switchOff", "targets": ["资讯活动提醒"], "protectedKeywords": ["自更新提醒", "应用更新提醒", "自动更新完成提醒", "安装完成提醒", "预约安装提醒", "积分过期提醒", "意见反馈回复提醒"]},
+        {"action": "readBack", "targets": ["个性化推荐", "资讯活动提醒"]}
+      ],
+      "targets": ["个性化推荐", "签到有礼", "顶部轮播图", "开屏", "摇一摇", "悬浮窗", "限时推广", "资讯活动提醒"],
+      "protectedKeywords": ["我的服务", "空间清理", "应用更新提醒", "安装完成提醒"],
+      "requiresAdb": false,
+      "pitfalls": ["「关于→个性化推荐」子页开关名随商店版本变：有的叫「服务推荐」「资讯推荐」，有的叫「个性化推荐」「个性化广告推荐」"]
+    },
+    {
+      "id": "browser",
+      "name": "浏览器",
+      "description": "极简首页、关个性化内容、网页下载推荐、WiFi跳转资讯",
+      "guidePath": "浏览器 → 我的 → 齿轮",
+      "steps": [
+        {"action": "launchApp", "intent": {"component": "com.vivo.browser/.BrowserActivity"}},
+        {"action": "tapTab", "text": "我的"},
+        {"action": "tapIcon"},
+        {"action": "goInto", "text": "首页设置"},
+        {"action": "tap", "text": "极简首页"},
+        {"action": "switchOff", "targets": ["首页上滑展示资讯"]},
+        {"action": "back"},
+        {"action": "goInto", "text": "隐私权限设置"},
+        {"action": "switchOff", "targets": ["个性化内容", "第三方应用来源个性化推荐"]},
+        {"action": "back"},
+        {"action": "goInto", "text": "网页浏览设置"},
+        {"action": "switchOff", "targets": ["网页下载相关推荐"]},
+        {"action": "back"},
+        {"action": "goInto", "text": "更多设置"},
+        {"action": "switchOff", "targets": ["WiFi连接跳转新闻资讯", "WiFi 连接跳转新闻资讯"]},
+        {"action": "readBack", "targets": ["个性化内容"]}
+      ],
+      "targets": ["首页上滑展示资讯", "个性化内容", "第三方应用来源个性化推荐", "网页下载相关推荐", "WiFi连接跳转新闻资讯"],
+      "requiresAdb": false,
+      "pitfalls": ["浏览器页面常跳到资讯、小说、领金币弹窗，一步一看"]
+    },
+    {
+      "id": "read_lockscreen",
+      "name": "阅图锁屏",
+      "description": "关闭阅图锁屏；锁屏壁纸不变",
+      "guidePath": "设置 → 桌面、锁屏与壁纸 → 锁屏设置 → 阅图锁屏",
+      "steps": [
+        {"action": "openSettings", "intent": {"action": "android.settings.SETTINGS"}},
+        {"action": "tap", "texts": ["桌面、锁屏与壁纸", "壁纸"]},
+        {"action": "goInto", "text": "锁屏设置"},
+        {"action": "switchOff", "targets": ["阅图锁屏"]}
+      ],
+      "targets": ["阅图锁屏"],
+      "requiresAdb": false
+    },
+    {
+      "id": "i_manager",
+      "name": "i 管家",
+      "description": "关闭应用个性化推荐",
+      "guidePath": "i 管家 → 设置 → 关于 → 个性化设置",
+      "steps": [
+        {"action": "launchApp", "intent": {"component": "com.iqoo.secure/.MainActivity"}},
+        {"action": "tapIcon"},
+        {"action": "goInto", "text": "关于"},
+        {"action": "goInto", "text": "个性化设置"},
+        {"action": "switchOff", "targets": ["应用个性化推荐"]},
+        {"action": "readBack", "targets": ["应用个性化推荐"]}
+      ],
+      "targets": ["应用个性化推荐"],
+      "requiresAdb": false
+    },
+    {
+      "id": "weather",
+      "name": "天气",
+      "description": "关闭天气热点资讯；保留气象预警、异常天气、地震预警",
+      "guidePath": "天气 → 设置 → 天气服务",
+      "steps": [
+        {"action": "launchApp", "intent": {"component": "com.vivo.weather/.WeatherHome"}},
+        {"action": "tapIcon"},
+        {"action": "goInto", "text": "天气服务"},
+        {"action": "switchOff", "targets": ["天气相关热点资讯通知", "热点资讯"], "protectedKeywords": ["气象预警", "异常天气", "地震预警"]},
+        {"action": "readBack", "targets": ["热点资讯"]}
+      ],
+      "targets": ["天气相关热点资讯通知", "热点资讯"],
+      "protectedKeywords": ["气象预警", "异常天气", "地震预警"],
+      "requiresAdb": false
+    },
+    {
+      "id": "marketing_notify",
+      "name": "营销通知",
+      "description": "关 VPushChannel_0/4/6 运营/精彩/推荐；保留订单、聊天",
+      "guidePath": "设置 → 通知管理 → 选 App → 点渠道名",
+      "steps": [
+        {"action": "openSettings", "intent": {"action": "android.settings.APP_NOTIFICATION_SETTINGS"}},
+        {"action": "tap", "text": "通知管理"},
+        {"action": "scrollDown", "scrolls": 2},
+        {"action": "switchOff", "targets": ["运营", "精彩", "推荐", "活动优惠", "福利通知", "专享优惠", "权益福利", "精彩推荐", "热门资讯", "热点推荐", "推荐内容", "资讯推送"], "protectedKeywords": ["订单", "物流", "更新", "安全", "聊天", "快递", "天气预警", "找机位", "机位推荐", "赛事", "直播提醒"], "scrolls": 8},
+        {"action": "readBack", "targets": ["运营", "推荐"]}
+      ],
+      "targets": ["运营", "精彩", "推荐", "活动优惠", "福利通知", "专享优惠", "权益福利", "精彩推荐", "热门资讯", "热点推荐", "推荐内容", "资讯推送"],
+      "protectedKeywords": ["订单", "物流", "更新", "安全", "聊天", "快递", "天气预警", "找机位", "机位推荐", "赛事", "直播提醒"],
+      "requiresAdb": false,
+      "pitfalls": [
+        "vivo 渠道页由 com.vivo.systemuiplugin 处理，不要强行停止它",
+        "应用总页顶栏是 App 名时「允许通知」是应用级总开关，关了订单聊天一起关；要点进渠道行（顶栏变成渠道名）才操作",
+        "dumpsys notification 的 mImportance 在 vivo 上不跟着变，以手机页面为准"
+      ]
+    },
+    {
+      "id": "ad_suspend",
+      "name": "广告包与快应用",
+      "description": "vivo 挂起需 root，增强模式不可用；靠 App 内开关即可",
+      "guidePath": "无（vivo 不支持挂起）",
+      "steps": [
+        {"action": "wait", "ms": 100, "note": "vivo 上 pm suspend 需 root，增强模式不可用。快应用 com.vivo.hybrid 系统也拒绝挂起，改用系统快应用服务开关。"}
+      ],
+      "targets": [],
+      "requiresAdb": true,
+      "pitfalls": ["vivo 挂起 com.vivo.hybrid 抛 SecurityException: no root permission，这条路不通，用 App 内开关"]
+    }
+  ],
+  "adPackages": [],
+  "pitfalls": [
+    {"title": "挂起需 root", "desc": "vivo 上 pm suspend/pm disable/pm uninstall 都要 root，增强模式挂起不可用，靠 App 内开关即可。", "severity": "warn"},
+    {"title": "通知总开关别点", "desc": "com.vivo.systemuiplugin 应用总页的「允许通知」是应用级总开关，关了订单聊天一起关。要点进渠道行（顶栏变渠道名）才操作。", "severity": "danger"},
+    {"title": "dumpsys 不准", "desc": "vivo 把渠道开关存在自家通知服务，dumpsys notification 的 mImportance 不跟着变，以手机页面为准。", "severity": "info"}
+  ]
+}

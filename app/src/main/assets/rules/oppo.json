@@ -1,0 +1,232 @@
+{
+  "brand": "oppo",
+  "displayName": "OPPO / 一加 / realme（ColorOS）",
+  "manufacturerKeywords": ["oppo", "oneplus", "realme", "oplus"],
+  "romIdentifiers": ["coloros", "oplus", "oxygenos"],
+  "notes": "ColorOS 16 叫「隐私」，17 起叫「隐私与安全」；realme 上 ro.build.version.opporom 为空属正常。一加/realme 入口名可能不同，引擎多入口兜底。",
+  "sections": [
+    {
+      "id": "oaid_tracking",
+      "name": "系统：广告跟踪（OAID）",
+      "description": "逐 App 关闭广告跟踪；无总开关，新装 App 默认开",
+      "guidePath": "设置 → 隐私（/隐私与安全）→ 设备标识与广告 → 广告跟踪",
+      "steps": [
+        {"action": "openSettings", "intent": {"action": "android.settings.SETTINGS"}},
+        {"action": "tap", "texts": ["隐私与安全", "隐私"]},
+        {"action": "goInto", "text": "设备标识与广告", "scrolls": 3},
+        {"action": "goInto", "text": "广告跟踪"},
+        {"action": "switchOff", "targets": [], "scrolls": 8},
+        {"action": "readBack", "targets": []}
+      ],
+      "targets": [],
+      "requiresAdb": false,
+      "pitfalls": [
+        "没有总开关，每个 App 一个，数量可能上百，要翻 5 屏",
+        "ColorOS 17 入口是「隐私与安全」不是「隐私」",
+        "部分机型点搜索结果「设备标识与广告」不跳转，走面板路径"
+      ]
+    },
+    {
+      "id": "app_store",
+      "name": "软件商店",
+      "description": "关闭服务管理推广位、个性化推荐；保留下载更新、应用安全",
+      "guidePath": "软件商店 → 我的 → 右上齿轮（或 oppo.intent.action.APP_SETTINGS 直达）",
+      "steps": [
+        {"action": "launchApp", "intent": {"action": "oppo.intent.action.APP_SETTINGS"}},
+        {"action": "goInto", "text": "服务管理"},
+        {"action": "switchOff", "targets": ["首页悬浮活动图标", "首页活动弹窗", "首页顶部轮播卡片", "底部活动专区", "游戏专区", "游戏详情页活动卡片", "签到", "福利", "活动", "推广", "轮播", "弹窗"], "protectedKeywords": ["帮助与客服", "应用安全", "应用工具", "存储空间清理", "我的资产", "安全守护", "小i客服", "应用使用记录", "首页AI搜索", "自动检测风险应用", "下载更新"], "scrolls": 6},
+        {"action": "back"},
+        {"action": "goInto", "texts": ["隐私", "账号与隐私"]},
+        {"action": "goInto", "texts": ["个性化推荐", "个性化推荐设置", "隐私授权管理"]},
+        {"action": "switchOff", "targets": ["个性化推荐"]},
+        {"action": "readBack", "targets": ["个性化推荐"]}
+      ],
+      "targets": ["个性化推荐", "活动", "推广", "轮播", "弹窗", "签到", "福利"],
+      "protectedKeywords": ["帮助与客服", "应用安全", "应用工具", "存储空间清理", "下载更新", "安全守护"],
+      "requiresAdb": false,
+      "pitfalls": [
+        "「我的」页有头像和手机号，自动化不截该页",
+        "服务管理全关后「开机必备」弹窗仍会出现",
+        "一加/realme 商店没有「服务管理」子页，个性化推荐在「账号与隐私 → 隐私授权管理」"
+      ]
+    },
+    {
+      "id": "browser",
+      "name": "浏览器",
+      "description": "简洁首页、关开屏/资讯广告、个性化推荐",
+      "guidePath": "浏览器设置（直达 BrowserPreferencesPage）",
+      "steps": [
+        {"action": "openSettings", "intent": {"component": "com.heytap.browser/.settings.component.BrowserPreferencesPage"}},
+        {"action": "goInto", "text": "主页设置"},
+        {"action": "goInto", "text": "页面布局"},
+        {"action": "tap", "text": "简洁"},
+        {"action": "back"},
+        {"action": "goInto", "text": "隐私"},
+        {"action": "goInto", "text": "广告管理"},
+        {"action": "switchOff", "targets": ["开屏广告", "资讯列表广告"], "protectedKeywords": ["摇一摇广告"]},
+        {"action": "back"},
+        {"action": "goInto", "texts": ["个性化管理", "个性化"]},
+        {"action": "switchOff", "targets": ["个性化推荐", "个性化广告推荐", "个性化搜索推荐", "个性化优惠推荐"]},
+        {"action": "readBack", "targets": ["个性化推荐"]}
+      ],
+      "targets": ["开屏广告", "资讯列表广告", "个性化推荐", "个性化广告推荐"],
+      "protectedKeywords": ["摇一摇广告"],
+      "requiresAdb": false,
+      "pitfalls": [
+        "「摇一摇广告」在上级开关关掉后仍显示为开且点不动，系统置灰，不算独立关闭成功",
+        "realme 简洁模式浏览器没有底部「我的」也没有菜单，只能直达 BrowserPreferencesPage"
+      ]
+    },
+    {
+      "id": "global_search",
+      "name": "下拉搜索",
+      "description": "关搜索范围推荐项、首页卡片、搜索框提示词、个性化推荐",
+      "guidePath": "桌面下滑 → 搜索页底部「设置」（或 gs://search/setting 直达）",
+      "steps": [
+        {"action": "openSettings", "intent": {"data": "gs://search/setting"}},
+        {"action": "goInto", "text": "搜索范围"},
+        {"action": "switchOff", "targets": ["榜单", "小说", "购物", "个性化推荐", "精选资讯"], "protectedKeywords": ["APP内搜索", "搜索建议", "小程序", "AI搜索", "便捷服务", "本机应用", "系统设置"]},
+        {"action": "back"},
+        {"action": "goInto", "texts": ["首页卡片管理", "卡片管理"]},
+        {"action": "switchOff", "targets": ["未下载应用推荐", "应用建议小卡", "探索发现", "活动皮肤", "推荐卡片", "热搜榜单", "热搜应用", "精选推荐"], "protectedKeywords": ["应用建议", "本机资产推荐", "便捷服务"]},
+        {"action": "back"},
+        {"action": "goInto", "text": "功能管理"},
+        {"action": "switchOff", "targets": ["搜索框提示词"]},
+        {"action": "back"},
+        {"action": "goInto", "texts": ["账号与隐私", "隐私"]},
+        {"action": "goInto", "text": "隐私"},
+        {"action": "switchOff", "targets": ["个性化推荐"]},
+        {"action": "readBack", "targets": ["搜索框提示词", "个性化推荐"]}
+      ],
+      "targets": ["榜单", "小说", "购物", "个性化推荐", "精选资讯", "未下载应用推荐", "探索发现", "活动皮肤", "推荐卡片", "热搜榜单", "搜索框提示词"],
+      "protectedKeywords": ["APP内搜索", "搜索建议", "便捷服务", "应用建议", "本机资产推荐"],
+      "requiresAdb": false,
+      "pitfalls": [
+        "SearchSettingActivity 未导出，am start -n 会被拒，必须用 scheme gs://search/setting",
+        "com.heytap.quicksearchbox 被挂起时 scheme 会落到「应用已被暂停」页，运行前不能挂它",
+        "「APP内搜索」必须开着，关了搜不到本机应用",
+        "搜索页顶部会提示「搜索结果受限」，不要点「去开启」"
+      ]
+    },
+    {
+      "id": "theme_store",
+      "name": "主题商店",
+      "description": "关消息与广告、个性化推荐",
+      "guidePath": "主题商店 → 我的 → 设置（右上）",
+      "steps": [
+        {"action": "launchApp", "intent": {"action": "oppo.intent.action.APP_SETTINGS"}},
+        {"action": "goInto", "text": "服务管理"},
+        {"action": "goInto", "text": "消息与广告"},
+        {"action": "switchOff", "targets": ["消息通知", "开屏广告"]},
+        {"action": "back"},
+        {"action": "back"},
+        {"action": "goInto", "text": "隐私"},
+        {"action": "goInto", "texts": ["个性化推荐设置", "个性化推荐"]},
+        {"action": "switchOff", "targets": ["个性化推荐"]},
+        {"action": "confirm"},
+        {"action": "readBack", "targets": ["开屏广告", "个性化推荐"]}
+      ],
+      "targets": ["消息通知", "开屏广告", "个性化推荐"],
+      "requiresAdb": false,
+      "pitfalls": [
+        "「设置」入口随版本变：17.22.0beta2 是「设置,有1条新通知」文字行，要按包含匹配",
+        "「个性化推荐设置」点下去先弹确认框，确认后页面退回「设置」，回读前要重新进一次"
+      ]
+    },
+    {
+      "id": "breeno_suggest",
+      "name": "小布建议",
+      "description": "关闭资讯服务；保留快递、航班、日程提醒",
+      "guidePath": "设置 → OPPO AI（/NEXT AI）→ 小布建议 → 内容资讯 → 资讯服务",
+      "steps": [
+        {"action": "openSettings", "intent": {"action": "android.settings.SETTINGS"}},
+        {"action": "tap", "texts": ["OPPO AI", "NEXT AI", "AI"]},
+        {"action": "goInto", "text": "小布建议"},
+        {"action": "goInto", "text": "内容资讯"},
+        {"action": "goInto", "text": "资讯服务"},
+        {"action": "switchOff", "targets": ["资讯服务", "视界日报", "小红书资讯"], "protectedKeywords": ["快递", "航班", "日程提醒", "商圈服务", "赛事", "出行"]},
+        {"action": "readBack", "targets": ["资讯服务"]}
+      ],
+      "targets": ["资讯服务", "视界日报", "小红书资讯"],
+      "protectedKeywords": ["快递", "航班", "日程提醒", "商圈服务", "赛事", "出行"],
+      "requiresAdb": false,
+      "pitfalls": [
+        "「内容资讯」是分组标题点不动，真正入口是下面的「资讯服务」行（显示「未开启」），点进去二级页才有开关",
+        "realme 入口叫「NEXT AI」不叫「OPPO AI」"
+      ]
+    },
+    {
+      "id": "minus_screen",
+      "name": "负一屏（速览）",
+      "description": "关搜索框提示词、轮播推荐、热点资讯；保留推荐服务总开关",
+      "guidePath": "桌面左滑 → 左上头像 → 设置",
+      "steps": [
+        {"action": "skipIfMissing", "text": "速览", "note": "负一屏设置页受 OPPO_COMPONENT_SAFE 保护，无障碍/adb 都起不来，需手动"},
+        {"action": "switchOff", "targets": ["搜索框提示词", "热点资讯"], "protectedKeywords": ["推荐服务", "服务动态", "快捷服务", "出行", "生活提醒"]},
+        {"action": "goInto", "text": "推荐服务"},
+        {"action": "tap", "text": "不显示"},
+        {"action": "back"},
+        {"action": "goInto", "texts": ["隐私", "个性化"]},
+        {"action": "switchOff", "targets": ["个性化推荐"]}
+      ],
+      "targets": ["搜索框提示词", "热点资讯", "个性化推荐"],
+      "protectedKeywords": ["推荐服务", "服务动态", "快捷服务"],
+      "requiresAdb": false,
+      "pitfalls": [
+        "负一屏设置页 com.heytap.iflow.main.setting.SettingsActivity 受 oppo.permission.OPPO_COMPONENT_SAFE 保护，am start 被拒，需机主手动：桌面左滑 → 左上头像 → 设置",
+        "「推荐服务」总开关不要关，会删掉天气、步数、清理卡片",
+        "轮播「显示/不显示」是两个 RadioButton，要点「不显示」那个并回读 checked"
+      ]
+    },
+    {
+      "id": "marketing_notify",
+      "name": "营销通知",
+      "description": "按渠道关内容与营销；保留订单、物流、更新、聊天",
+      "guidePath": "设置 → 通知与状态栏 → 通知管理 → 选 App → 点渠道名",
+      "steps": [
+        {"action": "openSettings", "intent": {"action": "android.settings.APP_NOTIFICATION_SETTINGS"}},
+        {"action": "tap", "texts": ["通知管理", "通知与状态栏"]},
+        {"action": "scrollDown", "scrolls": 2},
+        {"action": "switchOff", "targets": ["内容与营销", "活动优惠", "福利通知", "专享优惠", "权益福利", "精彩推荐", "热门资讯", "热点推荐", "推荐内容", "资讯推送", "最新资讯通知", "重要营销信息"], "protectedKeywords": ["订单", "物流", "更新", "安全", "聊天", "快递", "天气预警", "找机位", "机位推荐", "赛事", "直播提醒", "红包助手", "权限建议"], "scrolls": 8},
+        {"action": "readBack", "targets": ["内容与营销", "活动优惠"]}
+      ],
+      "targets": ["内容与营销", "活动优惠", "福利通知", "专享优惠", "权益福利", "精彩推荐", "热门资讯", "热点推荐", "推荐内容", "资讯推送", "最新资讯通知", "重要营销信息"],
+      "protectedKeywords": ["订单", "物流", "更新", "安全", "聊天", "快递", "天气预警", "找机位", "机位推荐", "赛事", "直播提醒", "红包助手", "权限建议"],
+      "requiresAdb": false,
+      "pitfalls": [
+        "通知页宿主 ColorOS 14 起是 com.oplus.notificationmanager，11/12 是 com.coloros.notificationmanager",
+        "com.heytap.mcs 的「精彩推荐」「news」渠道开关是灰的，系统锁定，属预期"
+      ]
+    },
+    {
+      "id": "ad_suspend",
+      "name": "广告包与快应用（挂起）",
+      "description": "挂起 com.opos.ads、乐划锁屏、快应用组件；需增强模式",
+      "guidePath": "增强模式：开无线调试 → app 连接 → 挂起广告包",
+      "steps": [
+        {"action": "wait", "ms": 100, "note": "此段由增强模式（ADB）执行 pm suspend"}
+      ],
+      "targets": [],
+      "requiresAdb": true,
+      "pitfalls": [
+        "com.oplus.appdetail 绝不能挂，挂了所有第三方安装/卸载永久卡在「正在安装」",
+        "com.heytap.quicksearchbox（下拉搜索）、com.coloros.assistantscreen（负一屏）、应用商店不能挂",
+        "com.nearme.instant.platform（快应用平台）不能挂，挂了负一屏快递详情页打不开",
+        "乐划应先在应用内关闭锁屏功能再挂，先挂会无法进设置关功能"
+      ]
+    }
+  ],
+  "adPackages": [
+    {"pkg": "com.opos.ads", "name": "OPPO 广告服务", "effect": "系统广告服务", "restoreHint": "pm unsuspend --user 0 com.opos.ads"},
+    {"pkg": "com.heytap.pictorial", "name": "乐划锁屏", "effect": "锁屏杂志消失", "restoreHint": "pm unsuspend --user 0 com.heytap.pictorial"},
+    {"pkg": "com.oppo.instant.local.service", "name": "快应用本地服务", "effect": "广告跳转入口减少", "restoreHint": "pm unsuspend --user 0 com.oppo.instant.local.service"},
+    {"pkg": "com.nearme.instant.card", "name": "快应用卡片", "effect": "部分机型广告卡片", "restoreHint": "pm unsuspend --user 0 com.nearme.instant.card"}
+  ],
+  "pitfalls": [
+    {"title": "摇一摇广告点不动", "desc": "浏览器/商店「摇一摇广告」在上级开关关掉后仍显示开且 enabled=false，系统置灰，点不动属正常，不算独立关闭。", "severity": "warn"},
+    {"title": "com.oplus.appdetail 不能挂", "desc": "挂起它会导致所有第三方安装永久卡在「正在安装」，卸载也一样。已被别的工具挂的要用 unsuspend 还原。", "severity": "danger"},
+    {"title": "负一屏设置 adb 起不来", "desc": "负一屏设置页受 OPPO_COMPONENT_SAFE 私有权限保护，adb/am start 都被拒，只能手动：桌面左滑→左上头像→设置。", "severity": "warn"},
+    {"title": "「设置,有1条新通知」", "desc": "主题/游戏中心设置入口带通知角标，文字是「设置,有1条新通知」，精确匹配找不到，要按包含匹配。", "severity": "info"},
+    {"title": "ColorOS 版本入口名变", "desc": "16 叫「隐私」，17 叫「隐私与安全」；realme 上 opporom 字段为空属正常。", "severity": "info"}
+  ]
+}

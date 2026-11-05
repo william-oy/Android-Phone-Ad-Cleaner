@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;font-size:16px;line-height:1.7;color:#1A1A2E;background:#F4F6FB;padding:14px}
+h1{font-size:22px;color:#1565C0;margin-bottom:6px}
+h2{font-size:18px;color:#0D47A1;margin:18px 0 8px;padding-left:10px;border-left:4px solid #00897B}
+p{margin:8px 0}
+.card{background:#fff;border-radius:14px;padding:16px;margin:10px 0;border:1px solid #E4E7EE}
+.step{background:#fff;border-radius:12px;padding:14px 14px 14px 48px;margin:8px 0;border:1px solid #E4E7EE;position:relative}
+.step:before{content:attr(data-n);position:absolute;left:12px;top:14px;width:26px;height:26px;background:#1565C0;color:#fff;border-radius:50%;text-align:center;line-height:26px;font-size:14px;font-weight:bold}
+.warn{background:#FFF3E0;border-left:5px solid #FB8C00;border-radius:8px;padding:12px;margin:10px 0}
+.danger{background:#FFEBEE;border-left:5px solid #E53935;border-radius:8px;padding:12px;margin:10px 0}
+.ok{background:#E8F5E9;border-left:5px solid #43A047;border-radius:8px;padding:12px;margin:10px 0}
+code{background:#ECEFF1;padding:2px 6px;border-radius:4px;font-size:14px}
+table{width:100%;border-collapse:collapse;margin:8px 0;font-size:14px}
+th,td{border:1px solid #E4E7EE;padding:8px;text-align:left}
+th{background:#1565C0;color:#fff}
+</style>
+</head>
+<body>
+<h1>增强模式：挂起广告包</h1>
+<p>用无线调试让 app 自己获得 ADB 权限，挂起广告组件包，<strong>不用电脑</strong>。</p>
+
+<div class="card">
+<h2>为什么要增强模式</h2>
+<p>无障碍服务只能「点开关」。有些广告是系统组件包（如 <code>com.opos.ads</code>、<code>com.miui.systemAdSolution</code>），没有开关可点，只能用 <code>pm suspend</code>「挂起」它。挂起需要 ADB 权限。</p>
+<p>增强模式让 app 内置的 ADB 客户端连接<strong>本机</strong>的无线调试，拿到 ADB 权限后执行挂起。<strong>全程不用电脑、不用数据线</strong>。</p>
+<div class="warn">⚠️ 需 Android 11 及以上（支持无线调试）。挂起不等于进程立即退出，个别广告服务会被系统重新拉起（已知，见各品牌坑）。</div>
+</div>
+
+<div class="card">
+<h2>第一步：打开无线调试</h2>
+<div class="step" data-n="1">手机「设置」→「关于手机」→ 连点 7 次「版本号」开启开发者模式</div>
+<div class="step" data-n="2">返回设置 →「系统」→「开发者选项」</div>
+<div class="step" data-n="3">找到「<b>无线调试</b>」，打开开关</div>
+<div class="step" data-n="4">点「无线调试」进入详情页，看到「IP 地址和端口」那一行，<b>记下冒号后面的端口号</b>（例如 192.168.1.5:<b>37123</b>，就记 37123）</div>
+<div class="warn">⚠️ 无线调试的端口每次开关都会变，连接前以当前显示的为准。</div>
+</div>
+
+<div class="card">
+<h2>第二步：在 app 里连接</h2>
+<div class="step" data-n="1">app 主界面点「<b>增强模式（挂起广告包）</b>」</div>
+<div class="step" data-n="2">在端口输入框填上一步记的端口号</div>
+<div class="step" data-n="3">点「连接」</div>
+<div class="step" data-n="4">手机会弹「<b>允许 USB 调试吗？</b>」对话框（即使没插线也会弹），勾「始终允许」点「允许」</div>
+<div class="step" data-n="5">app 显示「已连接」，下方列出可挂起的广告包</div>
+<div class="danger">⚠️ 如果没弹对话框：确认无线调试开着、端口填对；关一次无线调试再开，端口会变，重新填。</div>
+</div>
+
+<div class="card">
+<h2>第三步：挂起广告包</h2>
+<p>连接成功后，列表里会显示你品牌的广告包。每个包右边有「挂起」按钮：</p>
+<table>
+<tr><th>包</th><th>作用</th><th>挂起后</th></tr>
+<tr><td>com.miui.systemAdSolution</td><td>小米系统广告 msa</td><td>天气日历商店等系统 App 开屏/内置广告消失</td></tr>
+<tr><td>com.opos.ads</td><td>OPPO 广告服务</td><td>系统广告服务停止</td></tr>
+<tr><td>com.heytap.pictorial</td><td>乐划锁屏</td><td>锁屏杂志消失</td></tr>
+<tr><td>com.hihonor.quickengine</td><td>荣耀快应用引擎</td><td>广告跳转的快应用入口减少</td></tr>
+</table>
+<div class="danger">⚠️ 列表里标红的包<b>绝对不能挂</b>，挂了会坏功能：
+<ul>
+<li>com.heytap.quicksearchbox（下拉搜索）</li>
+<li>com.coloros.assistantscreen（负一屏）</li>
+<li>各品牌应用商店</li>
+<li>com.oplus.appdetail（挂了所有第三方安装永久卡死）</li>
+<li>com.nearme.instant.platform（快应用平台，挂了负一屏快递详情打不开）</li>
+</ul>
+</div>
+</div>
+
+<div class="card">
+<h2>还原</h2>
+<div class="ok">✓ 在增强模式页面，对已挂起的包点「还原」（unsuspend）即可恢复。</div>
+<div class="ok">✓ 还原后广告包恢复运行，不影响系统更新。</div>
+<div class="warn">⚠️ 小米 msa 挂起后系统会重新拉起，可能需要配合断网（app 会尝试）。断网规则重启后可能失效。</div>
+</div>
+
+<div class="card">
+<h2>vivo 特别说明</h2>
+<p>vivo 上 <code>pm suspend</code> 需要 root，增强模式<b>不可用</b>。vivo 靠 App 内开关即可，不需要挂起。</p>
+</div>
+</body>
+</html>

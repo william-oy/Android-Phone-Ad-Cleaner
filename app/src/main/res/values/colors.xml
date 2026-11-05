@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 主色系：蓝 → 青绿渐变（保留，drawable 引用） -->
+    <color name="brand_blue">#1565C0</color>
+    <color name="brand_blue_dark">#0D47A1</color>
+    <color name="brand_blue_light">#42A5F5</color>
+    <color name="brand_teal">#00897B</color>
+    <color name="brand_teal_light">#26A69A</color>
+
+    <!-- 中性 -->
+    <color name="bg_page">#F4F6FB</color>
+    <color name="bg_light">#F4F6FB</color>
+    <color name="bg_card">#FFFFFF</color>
+    <color name="bg_card_dark">#1E1E2E</color>
+    <color name="text_primary">#1A1A2E</color>
+    <color name="text_secondary">#5F6470</color>
+    <color name="divider">#E4E7EE</color>
+
+    <!-- 状态 -->
+    <color name="danger_red">#E53935</color>
+    <color name="danger_bg">#1FE53935</color>
+    <color name="safe_green">#2E7D32</color>
+    <color name="safe_bg">#1F2E7D32</color>
+    <color name="warn_orange">#EF6C00</color>
+    <color name="warn_bg">#1FEF6C00</color>
+
+    <!-- ===== Material 3 角色色（Material Theme Builder 风格） ===== -->
+    <!-- Primary：深蓝 -->
+    <color name="m3_primary">#1565C0</color>
+    <color name="m3_onPrimary">#FFFFFF</color>
+    <color name="m3_primaryContainer">#D8E2FF</color>
+    <color name="m3_onPrimaryContainer">#001B3F</color>
+    <!-- Secondary：青绿 -->
+    <color name="m3_secondary">#00696E</color>
+    <color name="m3_onSecondary">#FFFFFF</color>
+    <color name="m3_secondaryContainer">#9CF1F5</color>
+    <color name="m3_onSecondaryContainer">#002022</color>
+    <!-- Tertiary：琥珀 -->
+    <color name="m3_tertiary">#7A5900</color>
+    <color name="m3_onTertiary">#FFFFFF</color>
+    <color name="m3_tertiaryContainer">#FFDEA6</color>
+    <color name="m3_onTertiaryContainer">#261900</color>
+    <!-- Error -->
+    <color name="m3_error">#BA1A1A</color>
+    <color name="m3_onError">#FFFFFF</color>
+    <color name="m3_errorContainer">#FFDAD6</color>
+    <color name="m3_onErrorContainer">#410002</color>
+    <!-- Surface -->
+    <color name="m3_surface">#F8F9FF</color>
+    <color name="m3_onSurface">#191C20</color>
+    <color name="m3_surfaceVariant">#E0E2EC</color>
+    <color name="m3_onSurfaceVariant">#44474E</color>
+    <!-- Outline -->
+    <color name="m3_outline">#74777F</color>
+    <color name="m3_outlineVariant">#C4C6D0</color>
+
+    <color name="ic_launcher_background">#1565C0</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="translucent">#00000000</color>
+</resources>

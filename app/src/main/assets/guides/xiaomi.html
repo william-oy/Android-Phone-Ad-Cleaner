@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;font-size:16px;line-height:1.7;color:#1A1A2E;background:#F4F6FB;padding:14px}
+h1{font-size:22px;color:#1565C0;margin-bottom:6px}
+h2{font-size:18px;color:#0D47A1;margin:18px 0 8px;padding-left:10px;border-left:4px solid #00897B}
+h3{font-size:16px;margin:12px 0 6px}
+p{margin:8px 0}
+.card{background:#fff;border-radius:14px;padding:16px;margin:10px 0;border:1px solid #E4E7EE}
+.path{background:#E3F2FD;border-radius:8px;padding:10px;margin:6px 0;font-size:15px}
+.path b{color:#1565C0}
+.warn{background:#FFF3E0;border-left:5px solid #FB8C00;border-radius:8px;padding:12px;margin:10px 0}
+.danger{background:#FFEBEE;border-left:5px solid #E53935;border-radius:8px;padding:12px;margin:10px 0}
+.ok{background:#E8F5E9;border-left:5px solid #43A047;border-radius:8px;padding:12px;margin:10px 0}
+table{width:100%;border-collapse:collapse;margin:8px 0;font-size:14px}
+th,td{border:1px solid #E4E7EE;padding:8px;text-align:left}
+th{background:#1565C0;color:#fff}
+.r{color:#E53935;font-weight:bold}.g{color:#43A047}.w{color:#FB8C00;font-weight:bold}
+</style>
+</head>
+<body>
+<h1>小米 / 红米（HyperOS）图文引导</h1>
+<p>HyperOS 3 与 4 入口有差异，下面写「旧版/新版」两种，按你手机看到的选。</p>
+
+<div class="card">
+<h2>1. 系统广告</h2>
+<div class="path">设置 → 隐私与安全 →（新版多一层「安全」）→ 更多安全设置 → 广告服务</div>
+<table>
+<tr><th>开关</th><th>操作</th></tr>
+<tr><td>个性化广告推荐</td><td class="r">关掉</td></tr>
+<tr><td>限制广告跟踪 / 防止广告追踪</td><td class="g">打开（是反的，打开才是保护）</td></tr>
+</table>
+<div class="warn">⚠️ 找不到「更多安全设置」时，在设置首页搜索「广告服务」直达。</div>
+<div class="warn">⚠️ HyperOS 4 有<b>两个广告总闸</b>：①广告服务页（个性化广告推荐）②「系统广告」页（设置搜索「系统广告」进，关「系统工具广告」），都要关，别只关一个。</div>
+</div>
+
+<div class="card">
+<h2>2. 应用商店</h2>
+<div class="path">应用商店 → 我的 → 右上齿轮</div>
+<table>
+<tr><th>位置</th><th>开关</th><th>操作</th></tr>
+<tr><td>隐私设置 → 个性化服务</td><td>个性化服务/个性化推荐</td><td class="r">关</td></tr>
+<tr><td>通知设置</td><td>新手帮助</td><td class="r">关</td></tr>
+<tr><td>通知设置</td><td>应用更新</td><td class="g">保留</td></tr>
+<tr><td>通知设置</td><td>推送消息</td><td class="g">保留（父开关，关了点赞评论一起关）</td></tr>
+</table>
+<div class="warn">⚠️ 商店 4.129 需点进「个性化服务」子页再关里面的开关。</div>
+<div class="warn">⚠️ 「我的」标签冷启动要几秒才渲染，点早会扑空。</div>
+</div>
+
+<div class="card">
+<h2>3. 手机管家</h2>
+<div class="path">手机管家 → 右上齿轮</div>
+<table>
+<tr><th>位置</th><th>开关</th><th>操作</th></tr>
+<tr><td>隐私设置</td><td>个性化推荐</td><td class="r">关</td></tr>
+<tr><td>垃圾清理</td><td>推荐内容</td><td class="r">关</td></tr>
+</table>
+<div class="warn">⚠️ 部分版本（13.6.5）这两项都没了，跳过。K90 Pro Max 的「隐私设置」压在整页最末尾，要滚 6 屏。</div>
+</div>
+
+<div class="card">
+<h2>4. 下载管理</h2>
+<div class="path">下载管理 → 右上「更多」→ 设置 → 信息流设置</div>
+<p><span class="r">关</span>：资源推荐、热榜推荐</p>
+</div>
+
+<div class="card">
+<h2>5. 主题</h2>
+<div class="path">主题 → 我的 → 右上齿轮</div>
+<table>
+<tr><th>开关</th><th>操作</th></tr>
+<tr><td>每次联网时通知</td><td class="r">关</td></tr>
+<tr><td>自动更新</td><td class="g">保留（别点错行）</td></tr>
+<tr><td>隐私设置 → 个性化推荐</td><td class="r">关</td></tr>
+</table>
+<div class="warn">⚠️ com.miui.themestore 拉起后跳到 com.android.thememanager，直达 ThemeResourceProxyTabActivity 最稳。msa 未挂起时开屏窗会抢焦点，建议先挂 msa。</div>
+</div>
+
+<div class="card">
+<h2>6. 浏览器</h2>
+<div class="path">浏览器 → 我的/菜单 → 齿轮 → 隐私和安全</div>
+<table>
+<tr><th>位置</th><th>开关</th><th>操作</th></tr>
+<tr><td>隐私和安全</td><td>个性化内容推荐、个性化广告推荐</td><td class="r">关</td></tr>
+<tr><td>主页设置</td><td>宫格位推送</td><td class="r">关</td></tr>
+<tr><td>搜索设置</td><td>显示猜你想搜模块</td><td class="r">关</td></tr>
+<tr><td>功能设置</td><td>小说</td><td class="r">关</td></tr>
+<tr><td>功能设置</td><td>我的网盘</td><td class="g">保留</td></tr>
+</table>
+<div class="warn">⚠️ 新版工具栏最右「设置」点进去是<b>页面布局子页</b>，不是设置！主设置要走 底部「菜单」→ 弹窗右上角齿轮。</div>
+<div class="warn">⚠️ 「隐私和安全」在主设置页<b>最底部</b>，要滚 8 屏。</div>
+<div class="warn">⚠️ 浏览器会弹小米账号登录框，点「取消」。</div>
+</div>
+
+<div class="card">
+<h2>7. 全局搜索</h2>
+<div class="path">桌面下滑 → 搜索页右上齿轮</div>
+<p><span class="r">关</span>：搜索提示词、推荐未安装应用、热搜榜单（推荐/微博/资讯/全网/影视/音乐/小说/知乎/千问全关）</p>
+<p><span class="g">保留</span>：展示常用应用、应用建议</p>
+</div>
+
+<div class="card">
+<h2>8. 负一屏</h2>
+<div class="path">桌面从左边缘向右滑 → 设置</div>
+<p><span class="r">关</span>：推荐卡片、热门活动、隐私设置→个性化推荐</p>
+<p><span class="g">保留</span>：搜索框、出行助手</p>
+</div>
+
+<div class="card">
+<h2>9. 天气、日历</h2>
+<div class="path">天气/日历 → 设置 → 用户体验计划</div>
+<p><span class="r">关</span>：天气视频卡片、内容推广、个性化推荐</p>
+<p><span class="g">保留</span>：天气预警、异常天气提醒（安全功能，绝不碰）</p>
+<div class="warn">⚠️ 日历「用户体验计划」在设置页倒数第二项，要滚到底。</div>
+</div>
+
+<div class="card">
+<h2>10. 营销通知</h2>
+<div class="path">设置 → 通知与控制中心 → 通知管理 → 选 App → 点渠道名</div>
+<p><span class="r">关</span>：应用商店「平台活动通知」、浏览器「新闻资讯」、各 App「内容与营销」「活动优惠」等</p>
+<p><span class="g">保留</span>：订单、物流、更新、安全、聊天、快递、天气预警</p>
+<div class="warn">⚠️ 小米渠道 id 形如 mipush|包名|数字，带竖线。刚重置的设备渠道还没创建，空清单不等于没广告。</div>
+</div>
+
+<div class="card">
+<h2>11. 系统广告组件 msa（增强模式）</h2>
+<p><code>com.miui.systemAdSolution</code>（海外版 com.miui.msa.global）负责天气、日历、商店等系统 App 的开屏和内置广告。用增强模式 <code>pm suspend</code> 挂起。</p>
+<div class="warn">⚠️ 只挂起拦不住：系统 App 启动时会把它拉起，所以挂起后还要断网。断网规则重启后可能失效，重启后重跑。</div>
+<div class="ok">还原：pm unsuspend com.miui.systemAdSolution</div>
+</div>
+
+<div class="card">
+<h2>小米的坑</h2>
+<div class="danger">⚠️ <b>能读屏点不动（INJECT_EVENTS）</b>：小米需在开发者选项里打开「USB 调试（安全设置）」，否则读屏正常但点击被拒。本 app 用无障碍手势不受此限，但若点不动先检查该项。打开时会弹风险提示，等倒计时点「确定」（需插 SIM 卡、登录小米账号）。</div>
+<div class="warn">⚠️ <b>两个广告总闸</b>：HyperOS 4 有「广告服务」页和「系统广告」页两个总闸，都要关。</div>
+<div class="warn">⚠️ <b>浏览器入口易错</b>：工具栏最右「设置」是页面布局子页，主设置走 底部「菜单」→ 弹窗右上齿轮。</div>
+<div class="warn">⚠️ <b>主题跳包</b>：com.miui.themestore 拉起后跳到 com.android.thememanager，直达 ThemeResourceProxyTabActivity 最稳。</div>
+</div>
+</body>
+</html>

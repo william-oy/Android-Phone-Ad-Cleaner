@@ -1,0 +1,232 @@
+{
+  "brand": "honor",
+  "displayName": "荣耀（MagicOS）",
+  "manufacturerKeywords": ["honor", "hihonor"],
+  "romIdentifiers": ["magicos"],
+  "notes": "实测机型 PNM-AN10（MagicOS 10）。应用市场切「基本服务」后设置入口消失，切回完整服务要重新同意协议。",
+  "sections": [
+    {
+      "id": "system_ad",
+      "name": "系统：广告与隐私",
+      "description": "关闭所有 App 广告标识读取、智能推荐服务",
+      "guidePath": "设置 → 搜索「广告」→ 广告与隐私",
+      "steps": [
+        {"action": "openSettings", "intent": {"action": "android.settings.SETTINGS"}},
+        {"action": "tap", "text": "搜索"},
+        {"action": "wait", "ms": 600},
+        {"action": "goInto", "text": "广告与隐私"},
+        {"action": "tap", "texts": ["⋮", "更多"]},
+        {"action": "tap", "text": "显示系统程序"},
+        {"action": "tap", "texts": ["⋮", "更多"]},
+        {"action": "tap", "text": "全部关闭"},
+        {"action": "back"},
+        {"action": "switchOff", "targets": ["智能推荐服务"]},
+        {"action": "readBack", "targets": ["智能推荐服务"]}
+      ],
+      "targets": ["智能推荐服务"],
+      "requiresAdb": false,
+      "pitfalls": ["右上 ⋮ → 显示系统程序 → 再 ⋮ → 全部关闭，才能关系统 App 的广告标识"]
+    },
+    {
+      "id": "yoyo_suggest",
+      "name": "YOYO 建议",
+      "description": "关闭新闻资讯",
+      "guidePath": "设置 → 搜索「新闻资讯」",
+      "steps": [
+        {"action": "openSettings", "intent": {"action": "android.settings.SETTINGS"}},
+        {"action": "tap", "text": "搜索"},
+        {"action": "goInto", "text": "新闻资讯"},
+        {"action": "switchOff", "targets": ["新闻资讯"]},
+        {"action": "readBack", "targets": ["新闻资讯"]}
+      ],
+      "targets": ["新闻资讯"],
+      "requiresAdb": false
+    },
+    {
+      "id": "global_search",
+      "name": "下拉搜索",
+      "description": "关热搜榜、热搜词、个性化管理",
+      "guidePath": "桌面下滑 → 返回收键盘 → 搜索框旁「更多」→ 设置",
+      "steps": [
+        {"action": "openSettings", "intent": {"component": "com.hihonor.search/.SearchSettingsActivity"}},
+        {"action": "goInto", "text": "首页显示"},
+        {"action": "switchOff", "targets": ["热搜榜", "热搜词推荐"]},
+        {"action": "back"},
+        {"action": "goInto", "text": "个性化管理"},
+        {"action": "switchOff", "targets": [], "scrolls": 3},
+        {"action": "readBack", "targets": ["热搜榜"]}
+      ],
+      "targets": ["热搜榜", "热搜词推荐"],
+      "requiresAdb": false,
+      "pitfalls": ["搜索框旁「更多」要先按返回收起键盘才出现"]
+    },
+    {
+      "id": "minus_screen",
+      "name": "负一屏",
+      "description": "关智能推荐、个性化广告、资讯精选",
+      "guidePath": "桌面左滑 → 头像 → 设置",
+      "steps": [
+        {"action": "openSettings", "intent": {"component": "com.hihonor.magichome/.settings.SettingsActivity"}},
+        {"action": "switchOff", "targets": ["智能推荐", "个性化广告", "个性化消息"], "protectedKeywords": ["出行", "快递"]},
+        {"action": "goInto", "text": "资讯服务"},
+        {"action": "switchOff", "targets": ["资讯精选"]},
+        {"action": "readBack", "targets": ["智能推荐", "资讯精选"]}
+      ],
+      "targets": ["智能推荐", "个性化广告", "个性化消息", "资讯精选"],
+      "protectedKeywords": ["出行", "快递"],
+      "requiresAdb": false
+    },
+    {
+      "id": "app_market",
+      "name": "应用市场",
+      "description": "关内容推荐、消息通知、活动福利；可切基本服务",
+      "guidePath": "应用市场 → 我的 → 设置",
+      "steps": [
+        {"action": "launchApp", "intent": {"component": "com.hihonor.appmarket/.MainActivity"}},
+        {"action": "tapTab", "text": "我的"},
+        {"action": "tap", "text": "设置"},
+        {"action": "goInto", "text": "内容推荐服务"},
+        {"action": "switchOff", "targets": ["营销服务推荐", "个性化服务推荐"]},
+        {"action": "back"},
+        {"action": "goInto", "text": "消息通知管理"},
+        {"action": "switchOff", "targets": ["消息通知"], "protectedKeywords": ["应用更新"]},
+        {"action": "back"},
+        {"action": "goInto", "text": "消息中心提醒"},
+        {"action": "switchOff", "targets": ["活动福利", "游戏动态"]},
+        {"action": "readBack", "targets": ["营销服务推荐", "消息通知"]}
+      ],
+      "targets": ["营销服务推荐", "个性化服务推荐", "消息通知", "活动福利", "游戏动态"],
+      "protectedKeywords": ["应用更新"],
+      "requiresAdb": false,
+      "pitfalls": ["「营销服务推荐」「个性化服务推荐」要分开点，连点第二个会失效；切「基本服务」后设置入口消失"]
+    },
+    {
+      "id": "browser",
+      "name": "浏览器",
+      "description": "简洁首页、关新闻热点、个性化推荐、互动广告（含摇一摇）",
+      "guidePath": "浏览器 → 我的/更多 → 设置",
+      "steps": [
+        {"action": "launchApp", "intent": {"component": "com.hihonor.browser/.BrowserActivity"}},
+        {"action": "tap", "texts": ["我的", "更多"]},
+        {"action": "goInto", "text": "设置"},
+        {"action": "goInto", "text": "模式选择"},
+        {"action": "tap", "text": "简洁首页"},
+        {"action": "back"},
+        {"action": "goInto", "text": "消息通知"},
+        {"action": "switchOff", "targets": ["新闻热点", "兴趣推送"]},
+        {"action": "back"},
+        {"action": "goInto", "text": "隐私管理"},
+        {"action": "goInto", "text": "个性化推荐"},
+        {"action": "switchOff", "targets": ["个性化内容"]},
+        {"action": "back"},
+        {"action": "goInto", "text": "互动广告管理"},
+        {"action": "switchOff", "targets": [], "scrolls": 2},
+        {"action": "readBack", "targets": ["个性化内容"]}
+      ],
+      "targets": ["新闻热点", "兴趣推送", "个性化内容"],
+      "requiresAdb": false,
+      "pitfalls": ["互动广告管理含摇一摇，全部关；搜索框热词没有开关"]
+    },
+    {
+      "id": "theme",
+      "name": "主题",
+      "description": "关通知三项、个性化服务",
+      "guidePath": "主题 → 我的 → 设置",
+      "steps": [
+        {"action": "launchApp", "intent": {"component": "com.hihonor.thememanager/.MainActivity"}},
+        {"action": "tapTab", "text": "我的"},
+        {"action": "tap", "text": "设置"},
+        {"action": "goInto", "text": "通知"},
+        {"action": "switchOff", "targets": [], "scrolls": 2},
+        {"action": "back"},
+        {"action": "goInto", "text": "个性化服务"},
+        {"action": "switchOff", "targets": [], "scrolls": 2},
+        {"action": "readBack", "targets": []}
+      ],
+      "targets": [],
+      "requiresAdb": false
+    },
+    {
+      "id": "video",
+      "name": "视频（优酷荣耀版）",
+      "description": "关个性化内容、个性化广告、OAID",
+      "guidePath": "视频 → 设置 → 其他设置",
+      "steps": [
+        {"action": "launchApp", "intent": {"component": "com.hihonor.video/.MainActivity"}},
+        {"action": "tapIcon"},
+        {"action": "goInto", "text": "其他设置"},
+        {"action": "switchOff", "targets": ["个性化内容", "个性化广告", "OAID"]},
+        {"action": "readBack", "targets": ["个性化广告"]}
+      ],
+      "targets": ["个性化内容", "个性化广告", "OAID"],
+      "requiresAdb": false
+    },
+    {
+      "id": "system_manager",
+      "name": "系统管家",
+      "description": "关闭应用推荐；保留清理、查杀、拦截",
+      "guidePath": "系统管家 → 右上齿轮",
+      "steps": [
+        {"action": "launchApp", "intent": {"component": "com.hihonor.systemmanager/.MainActivity"}},
+        {"action": "tapIcon"},
+        {"action": "switchOff", "targets": ["应用推荐"], "protectedKeywords": ["清理", "查杀", "拦截"]},
+        {"action": "readBack", "targets": ["应用推荐"]}
+      ],
+      "targets": ["应用推荐"],
+      "protectedKeywords": ["清理", "查杀", "拦截"],
+      "requiresAdb": false
+    },
+    {
+      "id": "magic_magazine",
+      "name": "魔法画报（锁屏杂志）",
+      "description": "关闭锁屏画报轮播、锁屏进入魔法画报",
+      "guidePath": "设置 → 搜索「杂志」→ 魔法画报",
+      "steps": [
+        {"action": "openSettings", "intent": {"action": "android.settings.SETTINGS"}},
+        {"action": "tap", "text": "搜索"},
+        {"action": "goInto", "texts": ["魔法画报", "杂志"]},
+        {"action": "switchOff", "targets": ["锁屏画报轮播", "锁屏进入魔法画报"]},
+        {"action": "readBack", "targets": ["锁屏画报轮播"]}
+      ],
+      "targets": ["锁屏画报轮播", "锁屏进入魔法画报"],
+      "requiresAdb": false
+    },
+    {
+      "id": "marketing_notify",
+      "name": "营销通知",
+      "description": "关各 App「营销通知」渠道；保留服务通知",
+      "guidePath": "设置 → 通知管理 → 选 App → 营销通知",
+      "steps": [
+        {"action": "openSettings", "intent": {"action": "android.settings.APP_NOTIFICATION_SETTINGS"}},
+        {"action": "tap", "text": "通知管理"},
+        {"action": "scrollDown", "scrolls": 2},
+        {"action": "switchOff", "targets": ["营销通知", "活动优惠", "福利通知", "专享优惠", "权益福利", "精彩推荐", "热门资讯", "热点推荐", "推荐内容", "资讯推送"], "protectedKeywords": ["订单", "物流", "更新", "安全", "聊天", "快递", "天气预警", "赛事", "直播提醒"], "scrolls": 8},
+        {"action": "readBack", "targets": ["营销通知"]}
+      ],
+      "targets": ["营销通知", "活动优惠", "福利通知", "专享优惠", "权益福利", "精彩推荐", "热门资讯", "热点推荐", "推荐内容", "资讯推送"],
+      "protectedKeywords": ["订单", "物流", "更新", "安全", "聊天", "快递", "天气预警", "赛事", "直播提醒"],
+      "requiresAdb": false,
+      "pitfalls": ["荣耀营销渠道 id 形如 com.hihonor.android.pushagent.LOW.<数字>pnc"]
+    },
+    {
+      "id": "quickapp_suspend",
+      "name": "快应用（挂起）",
+      "description": "挂起快应用引擎/快游戏；需增强模式",
+      "guidePath": "增强模式：开无线调试 → app 连接 → 挂起快应用",
+      "steps": [
+        {"action": "wait", "ms": 100, "note": "此段由增强模式（ADB）执行 pm suspend"}
+      ],
+      "targets": [],
+      "requiresAdb": true
+    }
+  ],
+  "adPackages": [
+    {"pkg": "com.hihonor.quickengine", "name": "快应用引擎", "effect": "广告跳转的快应用入口", "restoreHint": "pm unsuspend --user 0 com.hihonor.quickengine"},
+    {"pkg": "com.hihonor.quickgame", "name": "快游戏", "effect": "快游戏入口", "restoreHint": "pm unsuspend --user 0 com.hihonor.quickgame"}
+  ],
+  "pitfalls": [
+    {"title": "广告标识要显示系统程序", "desc": "广告与隐私页右上 ⋮ → 显示系统程序 → 再 ⋮ → 全部关闭，才能关系统 App 的广告标识读取。", "severity": "warn"},
+    {"title": "应用市场基本服务", "desc": "切「基本服务」后首页推荐流消失但设置入口也没了；切回完整服务要重新同意协议，会重新打开个性化推荐。", "severity": "warn"},
+    {"title": "内容推荐两个分开点", "desc": "应用市场「营销服务推荐」「个性化服务推荐」要分开点，连点第二个会失效。", "severity": "info"}
+  ]
+}
