@@ -17,6 +17,9 @@ class SuspendManager(context: Context) {
     /** 连接本机 adbd（端口在无线调试设置页可见）。首次会弹「允许 USB 调试」。 */
     suspend fun connect(port: Int): Result<Unit> = client.connect(port)
 
+    /** 与配对端口完成 `adb pair`，成功后 [connect] 到连接端口即可免授权直连。 */
+    suspend fun pair(port: Int, code: String): Result<Unit> = client.pair(port, code)
+
     /** 挂起指定包，返回 `pm suspend` 的输出。 */
     suspend fun suspendPackage(pkg: String): Result<String> =
         client.shellExec("pm suspend --user 0 $pkg")

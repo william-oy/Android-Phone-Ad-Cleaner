@@ -52,6 +52,15 @@ class AdbKeyManager(context: Context) {
         return (b64 + "\u0000").toByteArray(Charsets.US_ASCII)
     }
 
+    /**
+     * 配对协议用的公钥：标准 X.509 SubjectPublicKeyInfo（= `RSAPublicKey.encoded`）。
+     * 无线调试配对（Android 11+）的 `adb pair` 上送的就是这个 SPKI 结构，
+     * 与 AUTH 用的自定义 android_pubkey 结构不同。
+     */
+    fun getPublicKeySpki(): ByteArray =
+        (keyPair.public as? RSAPublicKey)?.encoded
+            ?: error("ADB 密钥未正确初始化")
+
     private fun load(): KeyPair? {
         val privB64 = prefs.getString(KEY_PRIV, null) ?: return null
         val pubB64 = prefs.getString(KEY_PUB, null) ?: return null

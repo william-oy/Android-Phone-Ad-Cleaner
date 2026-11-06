@@ -30,6 +30,13 @@
     <string name="wd_title">增强模式 · 挂起广告包</string>
     <string name="wd_intro">打开「开发者选项 → 无线调试」，记下端口号填到下面。首次连接手机会弹「允许 USB 调试」，点允许。挂起的广告包进程被冻结、不再弹广告，可随时还原。</string>
     <string name="wd_port_hint">无线调试端口（如 37121）</string>
+    <string name="wd_pair_code_hint">配对码（6 位数字，如 123456）</string>
+    <string name="wd_pair_port_hint">配对端口（5 位数字，如 45678）</string>
+    <string name="wd_btn_pair">先配对</string>
+    <string name="wd_pairing">正在配对…</string>
+    <string name="wd_paired">配对成功，去填端口连接</string>
+    <string name="wd_pair_failed">配对失败：%1$s</string>
+    <string name="wd_pair_code_invalid">配对码/端口无效，配对码 6 位数字、端口 1-65535</string>
     <string name="wd_btn_connect">连接本机</string>
     <string name="wd_btn_open_settings">打开开发者选项</string>
     <string name="wd_status_idle">未连接。填端口后点「连接本机」。</string>

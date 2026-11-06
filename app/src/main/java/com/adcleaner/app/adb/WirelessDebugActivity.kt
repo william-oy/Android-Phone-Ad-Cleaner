@@ -60,6 +60,7 @@ class WirelessDebugActivity : AppCompatActivity() {
         }
 
         b.btnConnect.setOnClickListener { onConnect() }
+        b.btnPair.setOnClickListener { onPair() }
 
         buildPackageRows()
     }
@@ -76,6 +77,31 @@ class WirelessDebugActivity : AppCompatActivity() {
         super.onDestroy()
         // 协程作用域已取消，这里只做本地 socket 清理
         manager.disconnect()
+    }
+
+    private fun onPair() {
+        val code = b.etPairCode.text.toString().trim()
+        val port = b.etPairPort.text.toString().trim().toIntOrNull()
+        if (code.length != 6 || code.any { !it.isDigit() } || port == null || port !in 1..65535) {
+            b.tvStatus.text = getString(R.string.wd_pair_code_invalid)
+            return
+        }
+        b.btnPair.isEnabled = false
+        b.tvStatus.text = getString(R.string.wd_pairing)
+        log("> pair 127.0.0.1:$port code=$code")
+
+        lifecycleScope.launch {
+            val r = manager.pair(port, code)
+            b.btnPair.isEnabled = true
+            if (r.isSuccess) {
+                b.tvStatus.text = getString(R.string.wd_paired)
+                log("< 配对成功，去填连接端口")
+            } else {
+                val reason = r.exceptionOrNull()?.message ?: "未知错误"
+                b.tvStatus.text = getString(R.string.wd_pair_failed, reason)
+                log("< 配对失败：$reason")
+            }
+        }
     }
 
     private fun onConnect() {

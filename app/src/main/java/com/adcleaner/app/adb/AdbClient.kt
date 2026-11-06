@@ -62,6 +62,11 @@ class AdbClient(private val keyManager: AdbKeyManager) {
         private const val CONNECT_TIMEOUT_MS = 5000
         private const val READ_TIMEOUT_MS = 15000
         private const val AUTH_WAIT_TIMEOUT_MS = 120000   // 等用户在弹窗点「允许」
+
+        // 配对协议（AOSP pairing_message.h）
+        private const val PAIR_MAGIC = 0x5a0b14e1
+        private const val PAIR_VERSION = 1
+        private const val PAIR_TIMEOUT_MS = 20000
     }
 
     private val mutex = Mutex()
@@ -109,6 +114,64 @@ class AdbClient(private val keyManager: AdbKeyManager) {
             cleanup()
             Result.failure(e)
         }
+    }
+
+    /**
+     * 与无线调试「配对端口」完成 `adb pair` 握手（Android 11+）。
+     *
+     * 配对使用 PairingMessage 帧：`magic + version + code + payload_len + SPKI 公钥`。
+     * 成功后 adbd 记下本机密钥，之后 [connect] 到连接端口即可直接通过（不再弹授权）。
+     * 注意：部分机型配对端口走 TLS-PSK，纯 socket 帧可能被拒，此时返回失败并带明文原因。
+     */
+    suspend fun pair(port: Int, code: String): Result<Unit> = withContext(Dispatchers.IO) {
+        try {
+            val sock = Socket()
+            sock.connect(InetSocketAddress(HOST, port), CONNECT_TIMEOUT_MS)
+            sock.soTimeout = PAIR_TIMEOUT_MS
+            sock.tcpNoDelay = true
+            val out = BufferedOutputStream(sock.getOutputStream())
+            val inp = DataInputStream(BufferedInputStream(sock.getInputStream()))
+
+            val spki = keyManager.getPublicKeySpki()
+            val codeInt = code.trim().toIntOrNull()
+                ?: throw IllegalArgumentException("配对码必须是 6 位数字")
+            val msg = ByteBuffer.allocate(16 + spki.size).order(ByteOrder.LITTLE_ENDIAN)
+            msg.putInt(PAIR_MAGIC)      // magic
+            msg.putInt(PAIR_VERSION)    // version = 1
+            msg.putInt(codeInt)         // 6 位配对码
+            msg.putInt(spki.size)       // payload 长度
+            msg.put(spki)               // SPKI 公钥
+            out.write(msg.array())
+            out.flush()
+
+            // 读应答：成功返回 magic+version(+status)，失败或关闭则报错（best-effort 解析）
+            val header = ByteArray(16)
+            val got = readFully(inp, header)
+            if (got < 8) throw IOException("配对应答不完整（仅 $got 字节）")
+            val buf = ByteBuffer.wrap(header).order(ByteOrder.LITTLE_ENDIAN)
+            val magic = buf.int
+            val version = buf.int
+            sock.close()
+            if (magic != PAIR_MAGIC || version != PAIR_VERSION) {
+                throw IOException(
+                    "配对失败（应答 magic=0x${"%08x".format(magic)}, version=$version）"
+                )
+            }
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    /** 尽量读满 [len] 字节，返回实际读取数（流被关闭/超时则提前返回）。 */
+    private fun readFully(inp: DataInputStream, buf: ByteArray): Int {
+        var off = 0
+        while (off < buf.size) {
+            val n = try { inp.read(buf, off, buf.size - off) } catch (e: Exception) { return off }
+            if (n <= 0) break
+            off += n
+        }
+        return off
     }
 
     /** 处理 AUTH 握手：收到 token 后上送公钥，等待用户授权。 */
