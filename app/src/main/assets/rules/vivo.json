@@ -9,18 +9,16 @@
       "id": "system_ad",
       "name": "系统：广告与隐私",
       "description": "关闭个性化广告、个性化推荐、智能推荐服务",
-      "guidePath": "设置 → 安全 → 更多安全设置 → 广告与隐私",
+      "guidePath": "设置 → 搜索「广告与隐私」直达",
       "steps": [
         {"action": "openSettings", "intent": {"action": "android.settings.SETTINGS"}},
-        {"action": "tap", "text": "安全"},
-        {"action": "goInto", "text": "更多安全设置", "scrolls": 3},
-        {"action": "goInto", "text": "广告与隐私"},
+        {"action": "search", "text": "广告与隐私"},
         {"action": "switchOff", "targets": ["个性化广告", "个性化推荐", "智能推荐服务"]},
         {"action": "readBack", "targets": ["个性化广告", "个性化推荐"]}
       ],
       "targets": ["个性化广告", "个性化推荐", "智能推荐服务"],
       "requiresAdb": false,
-      "pitfalls": ["找不到时用设置搜索「广告与隐私」直达"]
+      "pitfalls": ["搜索「广告与隐私」直达，各机型通用"]
     },
     {
       "id": "minus_screen",
@@ -43,11 +41,10 @@
       "id": "global_search",
       "name": "全局搜索",
       "description": "关搜索框推荐词、推荐卡片、热门搜索、广告个性化",
-      "guidePath": "设置 → 系统管理与升级 → 全局搜索",
+      "guidePath": "设置 → 搜索「全局搜索」直达",
       "steps": [
         {"action": "openSettings", "intent": {"action": "android.settings.SETTINGS"}},
-        {"action": "tap", "texts": ["系统管理与升级", "系统管理"]},
-        {"action": "goInto", "text": "全局搜索"},
+        {"action": "search", "text": "全局搜索"},
         {"action": "goInto", "text": "首页展示内容"},
         {"action": "switchOff", "targets": ["搜索框推荐词", "推荐卡片"], "protectedKeywords": ["历史记录", "应用建议", "搜索结果个性化"]},
         {"action": "back"},

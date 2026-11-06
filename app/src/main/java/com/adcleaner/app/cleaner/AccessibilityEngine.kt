@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Path
 import android.graphics.Rect
 import android.net.Uri
+import android.os.Bundle
 import android.view.accessibility.AccessibilityNodeInfo
 import com.adcleaner.app.model.BrandRule
 import com.adcleaner.app.model.IntentSpec
@@ -209,6 +210,46 @@ class AccessibilityEngine(private val service: AdCleanerService) {
         delay(1200)
     }
 
+    // ---------------- 搜索直达 ----------------
+    /** 设置搜索直达：点搜索入口 → 输入目标 → 点结果。各品牌设置页顶部都有搜索框，通用。 */
+    private suspend fun searchAndOpen(query: String, waitMs: Long = 900): Boolean {
+        waitStable()
+        // 1. 找搜索入口（搜索栏文字 / 放大镜 / 直接是输入框）
+        val r = root() ?: return false
+        val entry = collectAll(r).firstOrNull { n ->
+            val t = nodeText(n)
+            val cls = n.className?.toString().orEmpty()
+            (t.contains("搜索") || t.contains("Search")) && n.isClickable
+        } ?: collectAll(r).firstOrNull { n ->
+            n.className?.toString()?.contains("EditText", true) == true
+        }
+        if (entry == null) { CleanState.warn("没找到搜索入口"); return false }
+        clickNode(entry)
+        delay(800)
+        // 2. 找输入框并输入目标名
+        val r2 = root() ?: return false
+        val edit = collectAll(r2).firstOrNull { n ->
+            n.className?.toString()?.contains("EditText", true) == true
+        }
+        if (edit == null) { CleanState.warn("没找到搜索输入框"); return false }
+        edit.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
+        val bundle = Bundle().apply {
+            putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, query)
+        }
+        edit.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, bundle)
+        delay(1500)
+        // 3. 点搜索结果（含目标名的可点击项）
+        val results = findTextNodes(query, false)
+        val target = results.firstOrNull { it.isClickable } ?: results.firstOrNull()
+        if (target != null) {
+            clickNode(target)
+            delay(waitMs); waitStable()
+            return true
+        }
+        CleanState.warn("搜索「$query」没结果")
+        return false
+    }
+
     // ---------------- 执行单步 ----------------
     suspend fun executeStep(s: Step): Boolean {
         when (s.action) {
@@ -268,6 +309,10 @@ class AccessibilityEngine(private val service: AdCleanerService) {
                 }
                 CleanState.warn("没找到入口「${candidates.joinToString("/")}」")
                 return false
+            }
+            "search" -> {
+                val q = s.text ?: return true
+                searchAndOpen(q, s.ms)
             }
             "switchOff" -> {
                 val closed = switchOff(s.targets, s.protectedKeywords, s.scrolls)

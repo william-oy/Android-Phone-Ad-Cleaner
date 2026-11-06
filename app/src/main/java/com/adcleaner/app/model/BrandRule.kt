@@ -41,6 +41,7 @@ data class Section(
  *  tapIcon        右上区域无文字齿轮图标
  *  tapTab         底部/顶部标签
  *  goInto         点入口进子页（点完等页面稳定）
+ *  search         设置搜索直达：点搜索框 → 输入 text → 点结果（各品牌通用，替代写死路径）
  *  switchOff      关掉标题含 targets 的开关，protectedKeywords 保留
  *  switchOnly     只关 targets 指定的开关
  *  switchOn       打开保护类开关（限制广告跟踪等）
