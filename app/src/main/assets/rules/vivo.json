@@ -27,9 +27,8 @@
       "guidePath": "桌面左滑 → 右上齿轮 → 更多设置 → 个性化推荐",
       "steps": [
         {"action": "launchApp", "intent": {"component": "com.vivo.assistant/.ui.MoreSettingsActivity"}},
-        {"action": "goInto", "text": "个性化推荐"},
-        {"action": "switchOff", "targets": ["服务推荐", "资讯推荐", "内容精选", "热点资讯"], "protectedKeywords": ["小V建议", "便捷生活", "推荐服务"]},
-        {"action": "readBack", "targets": ["服务推荐", "热点资讯"]}
+        {"action": "switchOff", "targets": ["个性化推荐"]},
+        {"action": "readBack", "targets": ["个性化推荐"]}
       ],
       "targets": ["服务推荐", "资讯推荐", "内容精选", "热点资讯"],
       "protectedKeywords": ["小V建议", "便捷生活", "推荐服务"],
@@ -67,8 +66,9 @@
         {"action": "launchApp", "intent": {"component": "com.bbk.appstore/.ui.AppStore"}},
         {"action": "tapTab", "text": "我的"},
         {"action": "tap", "text": "设置"},
-        {"action": "goInto", "texts": ["关于", "个性化推荐"]},
-        {"action": "switchOff", "targets": ["个性化推荐", "个性化广告推荐", "服务推荐", "资讯推荐"]},
+        {"action": "goInto", "text": "关于"},
+        {"action": "goInto", "text": "个性化推荐"},
+        {"action": "switchOff", "targets": ["个性化推荐", "个性化广告推荐"]},
         {"action": "back"},
         {"action": "goInto", "text": "服务管理"},
         {"action": "switchOff", "targets": ["签到有礼", "顶部轮播图", "顶部栏目", "开屏", "摇一摇", "悬浮窗", "悬浮球", "限时推广"], "protectedKeywords": ["我的服务", "空间清理"], "scrolls": 4},
