@@ -1,6 +1,5 @@
 package com.adcleaner.app.cleaner
 
-import android.accessibilityservice.AccessibilityWindowInfo
 import android.accessibilityservice.GestureDescription
 import android.content.ComponentName
 import android.content.Intent
@@ -9,6 +8,7 @@ import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.view.accessibility.AccessibilityNodeInfo
+import android.view.accessibility.AccessibilityWindowInfo
 import com.adcleaner.app.model.BrandRule
 import com.adcleaner.app.model.IntentSpec
 import com.adcleaner.app.model.Section
