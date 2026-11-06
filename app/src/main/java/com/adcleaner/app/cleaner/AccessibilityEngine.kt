@@ -1,5 +1,6 @@
 package com.adcleaner.app.cleaner
 
+import android.accessibilityservice.AccessibilityWindowInfo
 import android.accessibilityservice.GestureDescription
 import android.content.ComponentName
 import android.content.Intent
@@ -22,7 +23,34 @@ import kotlinx.coroutines.delay
  */
 class AccessibilityEngine(private val service: AdCleanerService) {
 
-    private fun root(): AccessibilityNodeInfo? = service.rootInActiveWindow
+    /**
+     * 取当前前台应用的根节点。
+     * vivo/OriginOS 上 [service.rootInActiveWindow] 偶发返回宿主 App 窗口（无障碍服务所在进程），
+     * 导致读不到真正前台应用的 UI（搜索框、导航项全"没找到"）。优先从 [service.windows]
+     * 挑聚焦/激活的应用窗口（按 layer 取最上层兜底），再退回 rootInActiveWindow。
+     */
+    private fun root(): AccessibilityNodeInfo? {
+        val wins = try { service.windows } catch (e: Exception) { null }
+        if (wins != null) {
+            val target = wins.firstOrNull { it.isActive || it.isFocused }
+                ?: wins.filter { it.type == AccessibilityWindowInfo.TYPE_APPLICATION }
+                    .maxByOrNull { it.layer }
+            if (target != null) {
+                val r = try { target.root } catch (e: Exception) { null }
+                if (r != null) return r
+            }
+        }
+        return try { service.rootInActiveWindow } catch (e: Exception) { null }
+    }
+
+    /** 诊断：列出当前窗口（类型/layer/聚焦/标题），用于"没找到"时定位 root() 读错窗口。 */
+    private fun diagWindows(): String {
+        val wins = try { service.windows } catch (e: Exception) { null } ?: return "windows=null"
+        return wins.joinToString(";") { w ->
+            val title = try { w.title?.toString() } catch (e: Exception) { null }
+            "t${w.type}L${w.layer}${if (w.isActive) "A" else ""}${if (w.isFocused) "F" else ""}:${title ?: "?"}"
+        }
+    }
 
     // ---------------- 节点遍历 ----------------
     private fun collectAll(root: AccessibilityNodeInfo?): List<AccessibilityNodeInfo> {
@@ -255,7 +283,7 @@ class AccessibilityEngine(private val service: AdCleanerService) {
                 tries++
             }
         }
-        if (edit == null) { CleanState.warn("没找到搜索输入框"); return false }
+        if (edit == null) { CleanState.warn("没找到搜索输入框（窗口:${diagWindows()}）"); return false }
         edit.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
         val bundle = Bundle().apply {
             putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, query)
