@@ -258,8 +258,10 @@ class AccessibilityEngine(private val service: AdCleanerService) {
         }
         edit.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, bundle)
         delay(1500)
-        // 3. 点搜索结果（含目标名的可点击项）
-        val results = findTextNodes(query, false)
+        // 3. 点搜索结果（含目标名的可点击项）；排除搜索框本身（EditText，text 就是目标名）
+        val results = findTextNodes(query, false).filter {
+            !it.className?.toString()?.contains("EditText", true)
+        }
         val target = results.firstOrNull { it.isClickable } ?: results.firstOrNull()
         if (target != null) {
             clickNode(target)
