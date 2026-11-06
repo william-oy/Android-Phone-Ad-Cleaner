@@ -130,7 +130,7 @@
       "guidePath": "i 管家 → 设置 → 关于 → 个性化设置",
       "steps": [
         {"action": "launchApp", "intent": {"component": "com.iqoo.secure/.MainActivity"}},
-        {"action": "tapIcon"},
+        {"action": "tap", "text": "设置"},
         {"action": "goInto", "text": "关于"},
         {"action": "goInto", "text": "个性化设置"},
         {"action": "switchOff", "targets": ["应用个性化推荐"]},
