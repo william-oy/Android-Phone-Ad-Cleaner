@@ -12,6 +12,7 @@ import com.adcleaner.app.model.BrandRule
 import com.adcleaner.app.model.IntentSpec
 import com.adcleaner.app.model.Section
 import com.adcleaner.app.model.Step
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 
 /**
@@ -185,8 +186,11 @@ class AccessibilityEngine(private val service: AdCleanerService) {
         spec.action?.let { intent.action = it }
         spec.data?.let { intent.data = Uri.parse(it) }
         spec.component?.let {
-            val p = it.split("/", limit = 2)
-            if (p.size == 2) intent.component = ComponentName(p[0], p[1])
+            // 必须用 unflattenFromString：它把 "com.vivo.browser/.BrowserActivity" 的前导点归一化为
+            // "com.vivo.browser.BrowserActivity"。直接 ComponentName(pkg, ".cls") 不剥点，
+            // 会报 "Unable to find explicit activity class"——这是之前所有 App 启动失败的真凶。
+            val c = ComponentName.unflattenFromString(it)
+            if (c != null) intent.component = c
         }
         try {
             service.startActivity(intent)
@@ -222,8 +226,8 @@ class AccessibilityEngine(private val service: AdCleanerService) {
         var edit = findInputField(r)
         // 1.1 重试：设置页搜索框可能还在加载
         var tries = 0
-        while (edit == null && tries < 5) {
-            delay(500)
+        while (edit == null && tries < 8) {
+            delay(600)
             r = root() ?: break
             edit = findInputField(r)
             tries++
@@ -272,15 +276,19 @@ class AccessibilityEngine(private val service: AdCleanerService) {
         return false
     }
 
-    /** 找可输入文字的字段：EditText，或带「搜索」提示的输入框。 */
+    /** 找可输入文字的字段：EditText，或带「搜索」提示的输入框/搜索条。 */
     private fun findInputField(r: AccessibilityNodeInfo): AccessibilityNodeInfo? {
         return collectAll(r).firstOrNull { n ->
             n.className?.toString()?.contains("EditText", true) == true
         } ?: collectAll(r).firstOrNull { n ->
             val t = nodeText(n)
             val cd = n.contentDescription?.toString().orEmpty()
-            (t.contains("搜索") || t.contains("Search") || cd.contains("搜索")) &&
-                n.isEditable
+            val cls = n.className?.toString().orEmpty()
+            val hint = if (android.os.Build.VERSION.SDK_INT >= 26) {
+                n.hintText?.toString().orEmpty()
+            } else ""
+            (t.contains("搜索") || t.contains("Search") || cd.contains("搜索") || hint.contains("搜索")) &&
+                (n.isEditable || cls.contains("SearchBar", true) || cls.contains("SearchView", true))
         }
     }
 
@@ -433,6 +441,9 @@ class AccessibilityEngine(private val service: AdCleanerService) {
             try {
                 val cont = executeStep(s)
                 if (!cont && s.action == "skipIfMissing") return SectionResult(skipped = true)
+            } catch (e: CancellationException) {
+                // 服务断开/取消：绝不吞，让任务干净停下（避免把剩余步骤全标成"Job was cancelled"）
+                throw e
             } catch (e: Exception) {
                 CleanState.fail("步骤出错：${e.message}")
             }
@@ -440,12 +451,17 @@ class AccessibilityEngine(private val service: AdCleanerService) {
         return SectionResult(ok = true)
     }
 
-    suspend fun executeBrand(rule: BrandRule, includeAdb: Boolean) {
+    suspend fun executeBrand(rule: BrandRule, includeAdb: Boolean, startSection: Int = 0) {
         val sections = rule.sections.filter { includeAdb || !it.requiresAdb }
         val total = sections.size
-        CleanState.log("开始清理：${rule.displayName}，共 $total 段" +
-            if (!includeAdb) "（增强模式未开，挂起广告包段已跳过）" else "")
+        if (startSection == 0) {
+            CleanState.log("开始清理：${rule.displayName}，共 $total 段" +
+                if (!includeAdb) "（增强模式未开，挂起广告包段已跳过）" else "")
+        } else {
+            CleanState.step("检测到服务中断，从第 ${startSection + 1} 段继续…")
+        }
         sections.forEachIndexed { i, sec ->
+            if (i < startSection) return@forEachIndexed // 断点前的段已完成，跳过
             CleanState.section(sec.name, i + 1, total)
             CleanState.step("路径：${sec.guidePath}")
             sec.pitfalls.forEach { CleanState.warn("坑：$it") }

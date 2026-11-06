@@ -26,8 +26,7 @@
       "description": "关服务推荐、资讯推荐、内容精选、热点资讯；保留小V建议",
       "guidePath": "桌面左滑 → 右上齿轮 → 更多设置 → 个性化推荐",
       "steps": [
-        {"action": "openSettings", "intent": {"component": "com.vivo.assistant/.setting.PASettingActivity"}},
-        {"action": "goInto", "text": "更多设置"},
+        {"action": "launchApp", "intent": {"component": "com.vivo.assistant/.ui.MoreSettingsActivity"}},
         {"action": "goInto", "text": "个性化推荐"},
         {"action": "switchOff", "targets": ["服务推荐", "资讯推荐", "内容精选", "热点资讯"], "protectedKeywords": ["小V建议", "便捷生活", "推荐服务"]},
         {"action": "readBack", "targets": ["服务推荐", "热点资讯"]}
@@ -65,7 +64,7 @@
       "description": "关个性化推荐、服务管理推广位、资讯活动提醒；保留应用更新",
       "guidePath": "应用商店 → 我的 → 设置",
       "steps": [
-        {"action": "launchApp", "intent": {"component": "com.vivo.appstore/.MainEntryActivity"}},
+        {"action": "launchApp", "intent": {"component": "com.bbk.appstore/.ui.AppStore"}},
         {"action": "tapTab", "text": "我的"},
         {"action": "tap", "text": "设置"},
         {"action": "goInto", "texts": ["关于", "个性化推荐"]},
@@ -146,7 +145,7 @@
       "description": "关闭天气热点资讯；保留气象预警、异常天气、地震预警",
       "guidePath": "天气 → 设置 → 天气服务",
       "steps": [
-        {"action": "launchApp", "intent": {"component": "com.vivo.weather/.WeatherHome"}},
+        {"action": "launchApp", "intent": {"component": "com.vivo.weather/.WeatherMain"}},
         {"action": "tapIcon"},
         {"action": "goInto", "text": "天气服务"},
         {"action": "switchOff", "targets": ["天气相关热点资讯通知", "热点资讯"], "protectedKeywords": ["气象预警", "异常天气", "地震预警"]},
