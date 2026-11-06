@@ -357,6 +357,23 @@ class AccessibilityEngine(private val service: AdCleanerService) {
                 if (hit != null) { clickNode(hit); delay(s.ms) }
                 else CleanState.warn("没找到右上齿轮图标")
             }
+            "tapIconLast" -> {
+                // 右上角往往有多个无名图标（如应用商店「我的」页：客服 + 设置），
+                // tapIcon 点的是第一个（客服），设置通常在最右一个——按右边界取最右。
+                val r = waitStable() ?: return false
+                val dm = service.resources.displayMetrics
+                val hits = collectAll(r).filter { n ->
+                    val cls = n.className?.toString().orEmpty()
+                    val rb = Rect(); n.getBoundsInScreen(rb)
+                    (n.isClickable || cls.contains("ImageView", true)) &&
+                        rb.exactCenterX() > dm.widthPixels * 0.6f &&
+                        rb.top < dm.heightPixels * 0.25f &&
+                        nodeText(n).isEmpty()
+                }
+                val hit = hits.maxByOrNull { run { val rb = Rect(); it.getBoundsInScreen(rb); rb.right } }
+                if (hit != null) { clickNode(hit); delay(s.ms) }
+                else CleanState.warn("没找到右上角图标")
+            }
             "tapTab" -> {
                 val txt = s.text ?: return true
                 val r = waitStable() ?: return false
