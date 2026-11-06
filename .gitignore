@@ -1,26 +1,4 @@
-# 原项目克隆（仅本地研究，不进仓库）
-reference/
-
-# Gradle / Android
-.gradle/
-build/
-app/build/
-.cxx/
-local.properties
-*.iml
-.idea/
-captures/
-
-# 构建产物
-*.apk
-*.aab
-*.ap_
-*.dex
-
-# Keystore（不入库）
-*.keystore
-*.jks
-
-# OS
-.DS_Store
-Thumbs.db
+# 调试工具与临时文件（不进仓库）
+tools/
+generated/
+*.log
