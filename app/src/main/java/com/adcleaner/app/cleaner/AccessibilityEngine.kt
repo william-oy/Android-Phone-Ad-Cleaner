@@ -53,6 +53,9 @@ class AccessibilityEngine(private val service: AdCleanerService) {
 
     /** 开关行标题：取父节点子树（两层）的所有非空文字，排除开关自身。 */
     private fun titleOf(n: AccessibilityNodeInfo): String {
+        // vivo 等系统：开关标题在 contentDescription 里（text 为空），如「个性化广告.会基于...」
+        val own = n.contentDescription?.toString()?.trim().orEmpty()
+        if (own.isNotEmpty()) return own.substringBefore(".").trim()
         val parts = ArrayList<String>()
         val parent = n.parent ?: return nodeText(n)
         collectTexts(parent, parts, 0, 2, n)
