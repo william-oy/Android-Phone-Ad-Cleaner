@@ -2,3 +2,5 @@
 tools/
 generated/
 *.log
+
+reference/
