@@ -90,12 +90,12 @@
       "steps": [
         {"action": "launchApp", "intent": {"component": "com.vivo.browser/.BrowserActivity"}},
         {"action": "tapTab", "text": "我的"},
-        {"action": "tapIcon"},
+        {"action": "goInto", "text": "设置"},
         {"action": "goInto", "text": "首页设置"},
         {"action": "tap", "text": "极简首页"},
         {"action": "switchOff", "targets": ["首页上滑展示资讯"]},
         {"action": "back"},
-        {"action": "goInto", "text": "隐私权限设置"},
+        {"action": "goInto", "text": "网页安全中心"},
         {"action": "switchOff", "targets": ["个性化内容", "第三方应用来源个性化推荐"]},
         {"action": "back"},
         {"action": "goInto", "text": "网页浏览设置"},
@@ -117,6 +117,7 @@
       "steps": [
         {"action": "openSettings", "intent": {"action": "android.settings.SETTINGS"}},
         {"action": "tap", "texts": ["桌面、锁屏与壁纸", "壁纸"]},
+        {"action": "scrollDown", "scrolls": 3},
         {"action": "goInto", "text": "锁屏设置"},
         {"action": "switchOff", "targets": ["阅图锁屏"]}
       ],
@@ -146,10 +147,10 @@
       "guidePath": "天气 → 设置 → 天气服务",
       "steps": [
         {"action": "launchApp", "intent": {"component": "com.vivo.weather/.WeatherMain"}},
-        {"action": "tapIcon"},
-        {"action": "goInto", "text": "天气服务"},
-        {"action": "switchOff", "targets": ["天气相关热点资讯通知", "热点资讯"], "protectedKeywords": ["气象预警", "异常天气", "地震预警"]},
-        {"action": "readBack", "targets": ["热点资讯"]}
+        {"action": "tap", "text": "更多"},
+        {"action": "tap", "text": "设置"},
+        {"action": "switchOff", "targets": ["天气服务", "天气相关热点资讯"], "protectedKeywords": ["气象预警", "异常天气", "地震预警"]},
+        {"action": "readBack", "targets": ["天气服务", "热点资讯"]}
       ],
       "targets": ["天气相关热点资讯通知", "热点资讯"],
       "protectedKeywords": ["气象预警", "异常天气", "地震预警"],
@@ -161,18 +162,24 @@
       "description": "关 VPushChannel_0/4/6 运营/精彩/推荐；保留订单、聊天",
       "guidePath": "设置 → 通知管理 → 选 App → 点渠道名",
       "steps": [
-        {"action": "openSettings", "intent": {"action": "android.settings.APP_NOTIFICATION_SETTINGS"}},
-        {"action": "tap", "text": "通知管理"},
-        {"action": "scrollDown", "scrolls": 2},
-        {"action": "switchOff", "targets": ["运营", "精彩", "推荐", "活动优惠", "福利通知", "专享优惠", "权益福利", "精彩推荐", "热门资讯", "热点推荐", "推荐内容", "资讯推送"], "protectedKeywords": ["订单", "物流", "更新", "安全", "聊天", "快递", "天气预警", "找机位", "机位推荐", "赛事", "直播提醒"], "scrolls": 8},
-        {"action": "readBack", "targets": ["运营", "推荐"]}
+        {"action": "openSettings", "intent": {"action": "android.settings.APP_NOTIFICATION_SETTINGS", "extras": {"android.provider.extra.APP_PACKAGE": "com.bbk.appstore"}}},
+        {"action": "switchOff", "targets": ["允许通知"], "scrolls": 2},
+        {"action": "readBack", "targets": ["允许通知"]},
+        {"action": "openSettings", "intent": {"action": "android.settings.APP_NOTIFICATION_SETTINGS", "extras": {"android.provider.extra.APP_PACKAGE": "com.vivo.gamecube"}}},
+        {"action": "switchOff", "targets": ["允许通知"], "scrolls": 2},
+        {"action": "readBack", "targets": ["允许通知"]},
+        {"action": "openSettings", "intent": {"action": "android.settings.APP_NOTIFICATION_SETTINGS", "extras": {"android.provider.extra.APP_PACKAGE": "com.bbk.theme"}}},
+        {"action": "switchOff", "targets": ["允许通知"], "scrolls": 2},
+        {"action": "readBack", "targets": ["允许通知"]},
+        {"action": "openSettings", "intent": {"action": "android.settings.APP_NOTIFICATION_SETTINGS", "extras": {"android.provider.extra.APP_PACKAGE": "com.vivo.browser"}}},
+        {"action": "switchOff", "targets": ["允许通知"], "scrolls": 2},
+        {"action": "readBack", "targets": ["允许通知"]}
       ],
-      "targets": ["运营", "精彩", "推荐", "活动优惠", "福利通知", "专享优惠", "权益福利", "精彩推荐", "热门资讯", "热点推荐", "推荐内容", "资讯推送"],
-      "protectedKeywords": ["订单", "物流", "更新", "安全", "聊天", "快递", "天气预警", "找机位", "机位推荐", "赛事", "直播提醒"],
+      "targets": ["允许通知"],
       "requiresAdb": false,
       "pitfalls": [
-        "vivo 渠道页由 com.vivo.systemuiplugin 处理，不要强行停止它",
-        "应用总页顶栏是 App 名时「允许通知」是应用级总开关，关了订单聊天一起关；要点进渠道行（顶栏变成渠道名）才操作",
+        "vivo 渠道页由 com.vivo.systemuiplugin 处理，渠道行 uiautomator 抓不到；应用商店/游戏中心/主题/浏览器四家纯营销 App 直接关「允许通知」总开关（对老人安全），购物聊天类 App 绝不碰",
+        "同一渠道 Activity 会被复用，必须 back 后再启动下一个",
         "dumpsys notification 的 mImportance 在 vivo 上不跟着变，以手机页面为准"
       ]
     },
@@ -192,7 +199,7 @@
   "adPackages": [],
   "pitfalls": [
     {"title": "挂起需 root", "desc": "vivo 上 pm suspend/pm disable/pm uninstall 都要 root，增强模式挂起不可用，靠 App 内开关即可。", "severity": "warn"},
-    {"title": "通知总开关别点", "desc": "com.vivo.systemuiplugin 应用总页的「允许通知」是应用级总开关，关了订单聊天一起关。要点进渠道行（顶栏变渠道名）才操作。", "severity": "danger"},
+    {"title": "总开关区分对待", "desc": "应用商店/游戏中心/主题/浏览器是纯营销 App，「允许通知」总开关直接关；购物/聊天/快递类 App 的总开关会连订单聊天一起关，绝不碰。", "severity": "danger"},
     {"title": "dumpsys 不准", "desc": "vivo 把渠道开关存在自家通知服务，dumpsys notification 的 mImportance 不跟着变，以手机页面为准。", "severity": "info"}
   ]
 }

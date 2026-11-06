@@ -71,7 +71,8 @@ data class IntentSpec(
     val action: String? = null,              // android.settings.SETTINGS 等
     val data: String? = null,                // scheme uri，如 gs://search/setting
     val component: String? = null,           // "com.android.settings/.ad.AdServiceSettings"
-    val flags: Int? = null                   // 默认带 NEW_TASK
+    val flags: Int? = null,                  // 默认带 NEW_TASK
+    val extras: Map<String, String> = emptyMap()  // 字符串 extras，如通知渠道页的 EXTRA_APP_PACKAGE
 )
 
 /** 可挂起的广告/快应用包（增强模式，需 adb）。 */

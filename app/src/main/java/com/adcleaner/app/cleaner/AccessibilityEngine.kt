@@ -213,6 +213,7 @@ class AccessibilityEngine(private val service: AdCleanerService) {
         val intent = Intent().addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or (spec.flags ?: 0))
         spec.action?.let { intent.action = it }
         spec.data?.let { intent.data = Uri.parse(it) }
+        spec.extras.forEach { (k, v) -> intent.putExtra(k, v) }
         spec.component?.let {
             // 必须用 unflattenFromString：它把 "com.vivo.browser/.BrowserActivity" 的前导点归一化为
             // "com.vivo.browser.BrowserActivity"。直接 ComponentName(pkg, ".cls") 不剥点，

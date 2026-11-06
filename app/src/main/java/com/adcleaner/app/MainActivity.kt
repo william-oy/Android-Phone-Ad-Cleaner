@@ -68,10 +68,12 @@ class MainActivity : AppCompatActivity() {
                     "${ui.section}（${ui.progress}/${ui.total}）" else ui.section
                 b.progressBar.max = ui.total.coerceAtLeast(1)
                 b.progressBar.progress = ui.progress
+                // 日志有新内容才自动滚到底：不打断手动翻阅，又能看到最新输出
+                val prev = b.tvLogs.text.toString()
                 b.tvLogs.text = ui.log
                 b.layoutProgress.visibility =
                     if (ui.log.isNotEmpty() || ui.running) View.VISIBLE else View.GONE
-                if (ui.running) b.scrollLogs.post {
+                if (prev != ui.log) b.scrollLogs.post {
                     b.scrollLogs.fullScroll(View.FOCUS_DOWN)
                 }
             }

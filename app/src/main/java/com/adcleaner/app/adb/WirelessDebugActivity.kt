@@ -52,7 +52,6 @@ class WirelessDebugActivity : AppCompatActivity() {
         setContentView(b.root)
 
         b.toolbar.setNavigationOnClickListener { finish() }
-        b.tvLog.movementMethod = ScrollingMovementMethod()
 
         b.btnOpenSettings.setOnClickListener {
             // 直接打开「开发者选项」（无线调试在其下）
@@ -244,11 +243,7 @@ class WirelessDebugActivity : AppCompatActivity() {
 
     private fun log(msg: String) {
         b.tvLog.append(msg + "\n")
-        // 滚到底
-        val span = b.tvLog.layout
-        if (span != null) {
-            val line = span.getLineTop(span.lineCount)
-            b.tvLog.scrollTo(0, line)
-        }
+        // 新日志自动滚到底，方便直接看到最新输出（也能手动上下拉动翻看）
+        b.svLog.post { b.svLog.fullScroll(android.view.View.FOCUS_DOWN) }
     }
 }

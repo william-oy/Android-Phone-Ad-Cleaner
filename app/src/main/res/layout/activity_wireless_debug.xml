@@ -163,17 +163,24 @@
                 android:textSize="13sp"
                 android:textColor="@color/text_primary" />
 
-            <TextView
-                android:id="@+id/tvLog"
+            <!-- 日志：NestedScrollView 支持嵌套滚动，手指可上下拉动查看完整日志 -->
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/svLog"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 android:layout_marginTop="4dp"
                 android:background="@color/m3_surfaceVariant"
-                android:padding="8dp"
-                android:fontFamily="monospace"
-                android:textSize="12sp"
-                android:textColor="@color/text_primary"
-                android:scrollbars="vertical" />
+                android:fillViewport="true">
+
+                <TextView
+                    android:id="@+id/tvLog"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:fontFamily="monospace"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_primary" />
+            </androidx.core.widget.NestedScrollView>
 
         </LinearLayout>
     </ScrollView>
