@@ -34,7 +34,9 @@ class AdCleanerService : AccessibilityService() {
                 context.contentResolver,
                 android.provider.Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
             ) ?: return false
-            return s.contains(SVC)
+            // 兼容两种存储格式：完整类名（com.adcleaner.app/com.adcleaner.app.cleaner.AdCleanerService）
+            // 和缩写（com.adcleaner.app/.cleaner.AdCleanerService）
+            return s.contains("com.adcleaner.app") && s.contains("AdCleanerService")
         }
     }
 

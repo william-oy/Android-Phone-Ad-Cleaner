@@ -217,9 +217,19 @@ class AccessibilityEngine(private val service: AdCleanerService) {
         // 1. 找输入框（搜索框可能直接就是输入框，无需先点入口）
         var r = root() ?: return false
         var edit = findInputField(r)
-        // 2. 没有就直接是输入框 → 点搜索入口（搜索栏/放大镜），再找输入框
+        // 1.1 重试：设置页搜索框可能还在加载
+        var tries = 0
+        while (edit == null && tries < 5) {
+            delay(500)
+            r = root() ?: break
+            edit = findInputField(r)
+            tries++
+        }
+        // 2. 没有就直接是输入框 → 点搜索入口（优先 EditText），再找输入框
         if (edit == null) {
             val entry = collectAll(r).firstOrNull { n ->
+                n.className?.toString()?.contains("EditText", true) == true
+            } ?: collectAll(r).firstOrNull { n ->
                 val t = nodeText(n)
                 val cd = n.contentDescription?.toString().orEmpty()
                 val cls = n.className?.toString().orEmpty()
@@ -229,8 +239,14 @@ class AccessibilityEngine(private val service: AdCleanerService) {
             if (entry == null) { CleanState.warn("没找到搜索入口"); return false }
             clickNode(entry)
             delay(1200)
-            r = root() ?: return false
-            edit = findInputField(r)
+            // 2.1 重试：搜索界面可能还在加载
+            tries = 0
+            while (edit == null && tries < 5) {
+                r = root() ?: break
+                edit = findInputField(r)
+                if (edit == null) delay(500)
+                tries++
+            }
         }
         if (edit == null) { CleanState.warn("没找到搜索输入框"); return false }
         edit.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
