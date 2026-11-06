@@ -188,7 +188,23 @@ class AccessibilityEngine(private val service: AdCleanerService) {
             service.startActivity(intent)
             CleanState.step("打开页面：${spec.action ?: spec.component ?: spec.data ?: "设置"}")
         } catch (e: Exception) {
-            CleanState.warn("打开页面失败：${e.message}")
+            // 组件类名机型差异（如 vivo 商店 .MainEntryActivity 不存在）→ 兜底按包名启动默认界面
+            val pkg = spec.component?.substringBefore("/")
+            if (pkg != null) {
+                try {
+                    val fb = Intent(Intent.ACTION_MAIN).apply {
+                        addCategory(Intent.CATEGORY_LAUNCHER)
+                        setPackage(pkg)
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+                    service.startActivity(fb)
+                    CleanState.step("打开页面：$pkg（按包名兜底）")
+                } catch (e2: Exception) {
+                    CleanState.warn("打开页面失败：${e.message}")
+                }
+            } else {
+                CleanState.warn("打开页面失败：${e.message}")
+            }
         }
         delay(1200)
     }
