@@ -214,22 +214,23 @@ class AccessibilityEngine(private val service: AdCleanerService) {
     /** 设置搜索直达：点搜索入口 → 输入目标 → 点结果。各品牌设置页顶部都有搜索框，通用。 */
     private suspend fun searchAndOpen(query: String, waitMs: Long = 900): Boolean {
         waitStable()
-        // 1. 找搜索入口（搜索栏文字 / 放大镜 / 直接是输入框）
-        val r = root() ?: return false
-        val entry = collectAll(r).firstOrNull { n ->
-            val t = nodeText(n)
-            val cls = n.className?.toString().orEmpty()
-            (t.contains("搜索") || t.contains("Search")) && n.isClickable
-        } ?: collectAll(r).firstOrNull { n ->
-            n.className?.toString()?.contains("EditText", true) == true
-        }
-        if (entry == null) { CleanState.warn("没找到搜索入口"); return false }
-        clickNode(entry)
-        delay(800)
-        // 2. 找输入框并输入目标名
-        val r2 = root() ?: return false
-        val edit = collectAll(r2).firstOrNull { n ->
-            n.className?.toString()?.contains("EditText", true) == true
+        // 1. 找输入框（搜索框可能直接就是输入框，无需先点入口）
+        var r = root() ?: return false
+        var edit = findInputField(r)
+        // 2. 没有就直接是输入框 → 点搜索入口（搜索栏/放大镜），再找输入框
+        if (edit == null) {
+            val entry = collectAll(r).firstOrNull { n ->
+                val t = nodeText(n)
+                val cd = n.contentDescription?.toString().orEmpty()
+                val cls = n.className?.toString().orEmpty()
+                ((t.contains("搜索") || t.contains("Search") || cd.contains("搜索")) && n.isClickable) ||
+                    cls.contains("Search", true)
+            }
+            if (entry == null) { CleanState.warn("没找到搜索入口"); return false }
+            clickNode(entry)
+            delay(1200)
+            r = root() ?: return false
+            edit = findInputField(r)
         }
         if (edit == null) { CleanState.warn("没找到搜索输入框"); return false }
         edit.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
@@ -248,6 +249,18 @@ class AccessibilityEngine(private val service: AdCleanerService) {
         }
         CleanState.warn("搜索「$query」没结果")
         return false
+    }
+
+    /** 找可输入文字的字段：EditText，或带「搜索」提示的输入框。 */
+    private fun findInputField(r: AccessibilityNodeInfo): AccessibilityNodeInfo? {
+        return collectAll(r).firstOrNull { n ->
+            n.className?.toString()?.contains("EditText", true) == true
+        } ?: collectAll(r).firstOrNull { n ->
+            val t = nodeText(n)
+            val cd = n.contentDescription?.toString().orEmpty()
+            (t.contains("搜索") || t.contains("Search") || cd.contains("搜索")) &&
+                n.isEditable
+        }
     }
 
     // ---------------- 执行单步 ----------------
