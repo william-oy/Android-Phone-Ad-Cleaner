@@ -308,11 +308,9 @@ class AdbClient(private val keyManager: AdbKeyManager) {
         }
         val payload = ByteArray(len)
         if (len > 0) inp.readFully(payload)
-        // AOSP adbd 的 AUTH TOKEN 消息 CRC 字段固定填 0（不校验载荷），
-        // 严格 CRC 会在第一步认证就误报失败，因此 AUTH 消息跳过 CRC
-        if (command != A_AUTH && crc32(payload) != crc) {
-            throw IOException("ADB 消息 CRC32 校验失败")
-        }
+        // 实测（vivo V2453A / Android 16）：adbd 对 AUTH TOKEN、CNXN、CLSE 等
+        // 服务器消息的 CRC 字段一律填 0，不校验载荷。PC 版 adb 也不严格校验，
+        // 因此接收方向跳过 CRC（发送方向仍填正确值），只保留 magic 校验。
         return AdbMessage(command, arg0, arg1, payload)
     }
 
