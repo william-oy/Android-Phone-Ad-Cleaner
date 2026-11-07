@@ -181,19 +181,29 @@ class AdbClient(private val keyManager: AdbKeyManager) {
         }
         // 3. client -> AUTH(RSAPUBKEY=3, base64(自定义公钥结构) + '\0')
         val pubKeyPayload = keyManager.getPublicKeyAdbPayload()
-        writeMessage(A_AUTH, AUTH_RSAPUBKEY, 0, pubKeyPayload)
-
-        // 等待用户在「允许 USB 调试」弹窗操作，给足时间
         val sock = socket ?: throw IOException("socket 已关闭")
-        sock.soTimeout = AUTH_WAIT_TIMEOUT_MS
-        val resp = readMessage()
-        sock.soTimeout = READ_TIMEOUT_MS
 
-        when (resp.command) {
-            A_CNXN -> { /* 授权成功，连接建立 */ }
-            A_CLSE -> throw IOException("授权被拒绝：请在弹窗点「允许」（或该设备已禁用调试授权）")
-            A_AUTH -> throw IOException("adbd 仍要求签名认证，本实现仅支持公钥授权模式")
-            else -> throw IOException("授权后意外的应答 0x${"%08x".format(resp.command)}")
+        // adbd 在用户点「允许」前会每隔约 1 秒重发新的 token，
+        // 每收到一个都要回一次 RSAPUBKEY，直到拿到 CNXN（同意）或 CLSE（拒绝）。
+        // 总时长由系统弹窗决定，这里以 [AUTH_WAIT_TIMEOUT_MS] 为兜底上限。
+        sock.soTimeout = AUTH_WAIT_TIMEOUT_MS
+        val deadline = System.currentTimeMillis() + AUTH_WAIT_TIMEOUT_MS
+        writeMessage(A_AUTH, AUTH_RSAPUBKEY, 0, pubKeyPayload)
+        try {
+            while (true) {
+                if (System.currentTimeMillis() > deadline) {
+                    throw IOException("等待授权超时（$AUTH_WAIT_TIMEOUT_MS ms）：请在手机弹窗点「允许」")
+                }
+                val resp = readMessage()
+                when (resp.command) {
+                    A_CNXN -> return          // 授权成功，连接建立
+                    A_CLSE -> throw IOException("授权被拒绝：请在手机弹窗点「允许」（或该设备已禁用调试授权）")
+                    A_AUTH -> writeMessage(A_AUTH, AUTH_RSAPUBKEY, 0, pubKeyPayload)
+                    else -> throw IOException("授权后意外的应答 0x${"%08x".format(resp.command)}")
+                }
+            }
+        } finally {
+            sock.soTimeout = READ_TIMEOUT_MS
         }
     }
 
@@ -298,7 +308,9 @@ class AdbClient(private val keyManager: AdbKeyManager) {
         }
         val payload = ByteArray(len)
         if (len > 0) inp.readFully(payload)
-        if (crc32(payload) != crc) {
+        // AOSP adbd 的 AUTH TOKEN 消息 CRC 字段固定填 0（不校验载荷），
+        // 严格 CRC 会在第一步认证就误报失败，因此 AUTH 消息跳过 CRC
+        if (command != A_AUTH && crc32(payload) != crc) {
             throw IOException("ADB 消息 CRC32 校验失败")
         }
         return AdbMessage(command, arg0, arg1, payload)
