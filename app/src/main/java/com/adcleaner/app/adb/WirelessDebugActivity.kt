@@ -110,6 +110,8 @@ class WirelessDebugActivity : AppCompatActivity() {
 
     private fun onConnected(port: Int, auto: Boolean) {
         connectedPort = port
+        // 无论手动连还是自动重连成功，都记下端口：主界面一键清理与下次自动重连都靠它
+        AdbAutomation.saveLastPort(this, port)
         b.tvStatus.text = if (auto) getString(R.string.wd_auto_connect_ok_fmt, port)
         else getString(R.string.wd_status_connected)
         b.tvStatus.setTextColor(getColor(R.color.safe_green))
