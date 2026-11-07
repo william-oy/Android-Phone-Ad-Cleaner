@@ -32,7 +32,7 @@ import java.util.zip.CRC32
  * 注意：本实现使用 legacy shell（CNXN 不声明 shell_v2），因此 WRTE 载荷为原始输出，
  * 无需剥离 shell_v2 的流 ID 前缀字节，适合一次性命令。
  */
-class AdbClient(private val keyManager: AdbKeyManager) {
+class AdbClient(private val keyManager: AdbKeyManager, private val appContext: android.content.Context? = null) {
 
     /** ADB 消息：24 字节头解析后的结构。 */
     private class AdbMessage(
@@ -79,20 +79,55 @@ class AdbClient(private val keyManager: AdbKeyManager) {
 
     fun isConnected(): Boolean = connected
 
+    /** 等价于 connect(port)：经典（无 TLS）协议路径。 */
+    suspend fun connect(port: Int): Result<Unit> = connectImpl(port, tls = false)
+
     /**
-     * 连接 adbd 并完成认证。首次连接时 adbd 会弹「允许 USB 调试」对话框，
-     * 用户点「允许」后建立连接；已授权的密钥则直接通过。
+     * 连接无线调试（TLS）端口：服务器先发 "STLS" 横幅，客户端回同横幅后
+     * 进行 TLS 1.3 握手（客户端证书来自配对时登记的自签证书），随后
+     * 经典 ADB 协议在 TLS 内运行——配对登记过公钥时 AUTH 静默通过。
      */
-    suspend fun connect(port: Int): Result<Unit> = withContext(Dispatchers.IO) {
-        cleanup() // 关闭可能残留的旧连接
+    suspend fun connectTls(port: Int): Result<Unit> = connectImpl(port, tls = true)
+
+    private suspend fun connectImpl(port: Int, tls: Boolean): Result<Unit> = withContext(Dispatchers.IO) {
+        cleanup()
         try {
             val sock = Socket()
             sock.connect(InetSocketAddress(HOST, port), CONNECT_TIMEOUT_MS)
-            sock.soTimeout = READ_TIMEOUT_MS
             sock.tcpNoDelay = true
             socket = sock
-            input = DataInputStream(BufferedInputStream(sock.getInputStream()))
-            output = BufferedOutputStream(sock.getOutputStream())
+            if (tls) {
+                val ctx0 = appContext ?: throw IOException("缺少上下文，无法建立 TLS")
+                sock.soTimeout = 5000
+                val din = java.io.DataInputStream(sock.getInputStream())
+                val banner = ByteArray(4)
+                din.readFully(banner)
+                val bannerStr = String(banner, Charsets.US_ASCII)
+                check(bannerStr == "STLS") { "对端不是无线调试 TLS 端口（横幅=$bannerStr）" }
+                sock.getOutputStream().write("STLS".toByteArray(Charsets.US_ASCII))
+                sock.getOutputStream().flush()
+
+                val ks = AdbCertManager.buildKeyStore(ctx0)
+                val kmf = javax.net.ssl.KeyManagerFactory.getInstance(javax.net.ssl.KeyManagerFactory.getDefaultAlgorithm())
+                kmf.init(ks, CharArray(0))
+                val trustAll = arrayOf<javax.net.ssl.TrustManager>(object : javax.net.ssl.X509TrustManager {
+                    override fun checkClientTrusted(c: Array<java.security.cert.X509Certificate>, a: String?) {}
+                    override fun checkServerTrusted(c: Array<java.security.cert.X509Certificate>, a: String?) {}
+                    override fun getAcceptedIssuers(): Array<java.security.cert.X509Certificate> = arrayOf()
+                })
+                val sslCtx = javax.net.ssl.SSLContext.getInstance("TLS")
+                sslCtx.init(kmf.keyManagers, trustAll, null)
+                val ssl = sslCtx.socketFactory.createSocket(sock, HOST, port, true) as javax.net.ssl.SSLSocket
+                ssl.enabledProtocols = arrayOf("TLSv1.3", "TLSv1.2")
+                ssl.startHandshake()
+                sock.soTimeout = READ_TIMEOUT_MS
+                input = DataInputStream(BufferedInputStream(ssl.inputStream))
+                output = BufferedOutputStream(ssl.outputStream)
+            } else {
+                sock.soTimeout = READ_TIMEOUT_MS
+                input = DataInputStream(BufferedInputStream(sock.getInputStream()))
+                output = BufferedOutputStream(sock.getOutputStream())
+            }
 
             // 1. client -> CNXN(version, max_payload, "host::\0")
             //    不声明 shell_v2，使用 legacy shell，WRTE 载荷为原始输出。

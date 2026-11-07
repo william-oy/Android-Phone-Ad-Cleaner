@@ -169,10 +169,11 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             val port = AdbAutomation.resolvePort(this@MainActivity)
+            val tls = AdbAutomation.lastIsTls(this@MainActivity)
             var ok = false
             val mgr = SuspendManager(this@MainActivity)
             try {
-                ok = AdbAutomation.enableAccessibility(this@MainActivity, mgr, port).isSuccess
+                ok = AdbAutomation.enableAccessibility(this@MainActivity, mgr, port, tls).isSuccess
             } finally {
                 mgr.disconnect()
             }
@@ -231,6 +232,7 @@ class MainActivity : AppCompatActivity() {
      */
     private suspend fun suspendAdPackagesViaAdb() {
         val port = AdbAutomation.resolvePort(this)
+        val tls = AdbAutomation.lastIsTls(this)
         val brand = BrandDetector.detect().brand
         val rule = com.adcleaner.app.rules.RuleLoader.match(this, brand) ?: return
         val targets = rule.adPackages.filter { !it.neverSuspend }
@@ -238,7 +240,7 @@ class MainActivity : AppCompatActivity() {
 
         val mgr = SuspendManager(this)
         try {
-            val r = mgr.connect(port)
+            val r = if (tls) mgr.connectTls(port) else mgr.connect(port)
             if (r.isFailure) return
             CleanState.log("\n── 冻结广告组件（调试权限）──")
             var ok = 0

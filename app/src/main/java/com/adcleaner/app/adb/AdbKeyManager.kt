@@ -61,6 +61,21 @@ class AdbKeyManager(context: Context) {
         (keyPair.public as? RSAPublicKey)?.encoded
             ?: error("ADB 密钥未正确初始化")
 
+    /**
+     * android_pubkey 的 base64 行（不带 name）：写入 PeerInfo 发给设备，
+     * 设备会把它原样写进 adb_keys，之后的 AUTH 握手即自动通过。
+     */
+    fun getPublicKeyLine(): String {
+        val pub = keyPair.public as? RSAPublicKey
+            ?: error("ADB 密钥未正确初始化")
+        val blob = encodeAndroidPubkey(pub.modulus, pub.publicExponent)
+        return Base64.encodeToString(blob, Base64.NO_WRAP)
+    }
+
+    /** PKCS#8 私钥 DER（自签证书与 TLS 用）。 */
+    fun getPrivateKeyPkcs8(): ByteArray =
+        keyPair.private.encoded
+
     private fun load(): KeyPair? {
         val privB64 = prefs.getString(KEY_PRIV, null) ?: return null
         val pubB64 = prefs.getString(KEY_PUB, null) ?: return null

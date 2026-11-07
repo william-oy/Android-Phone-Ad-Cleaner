@@ -18,20 +18,26 @@ object AdbAutomation {
 
     private const val PREFS = "adcleaner_prefs"
     private const val KEY_LAST_PORT = "last_adb_port"
+    private const val KEY_LAST_TLS = "last_adb_tls"
     private const val KEY_LAST_OK = "last_adb_ok"
 
     /** 本 app 的无障碍服务组件。 */
     private val SERVICE_COMPONENT =
         ComponentName("com.adcleaner.app", "com.adcleaner.app.cleaner.AdCleanerService")
 
-    fun saveLastPort(ctx: Context, port: Int) {
+    fun saveLastPort(ctx: Context, port: Int, tls: Boolean = false) {
         ctx.applicationContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-            .edit().putInt(KEY_LAST_PORT, port).putBoolean(KEY_LAST_OK, true).apply()
+            .edit().putInt(KEY_LAST_PORT, port).putBoolean(KEY_LAST_TLS, tls)
+            .putBoolean(KEY_LAST_OK, true).apply()
     }
 
     fun lastPort(ctx: Context): Int =
         ctx.applicationContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
             .getInt(KEY_LAST_PORT, -1)
+
+    fun lastIsTls(ctx: Context): Boolean =
+        ctx.applicationContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .getBoolean(KEY_LAST_TLS, false)
 
     fun clearLastPort(ctx: Context) {
         ctx.applicationContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
@@ -42,12 +48,16 @@ object AdbAutomation {
     fun resolvePort(ctx: Context): Int = lastPort(ctx).takeIf { it > 0 } ?: 5555
 
     /**
-     * 连接解析出的端口（上次成功的端口，或 5555 默认）。
+     * 重连上次成功的端口（TLS 或经典自动区分）。
      * 失败说明端口变了 / tcpip 没开 / 无线调试没开。
      */
     suspend fun tryReconnect(ctx: Context, manager: SuspendManager): Result<Unit> {
         val port = resolvePort(ctx)
-        return manager.connect(port).onSuccess { saveLastPort(ctx, port) }
+        return if (lastIsTls(ctx)) {
+            manager.connectTls(port)
+        } else {
+            manager.connect(port).onSuccess { saveLastPort(ctx, port) }
+        }
     }
 
     /**
@@ -61,16 +71,21 @@ object AdbAutomation {
      *
      * 注意：合并而不是覆盖，避免把用户已有的其他无障碍服务（如读屏）顶掉。
      */
-    suspend fun enableAccessibility(ctx: Context, manager: SuspendManager, port: Int): Result<Unit> {
+    suspend fun enableAccessibility(
+        ctx: Context,
+        manager: SuspendManager,
+        port: Int,
+        tls: Boolean = false,
+    ): Result<Unit> {
         val flat = SERVICE_COMPONENT.flattenToString()
 
-        val connectRes = manager.connect(port)
+        val connectRes = if (tls) manager.connectTls(port) else manager.connect(port)
         if (connectRes.isFailure) {
             return Result.failure(
                 connectRes.exceptionOrNull() ?: IllegalStateException("连接失败")
             )
         }
-        saveLastPort(ctx, port)
+        saveLastPort(ctx, port, tls)
 
         val cur = manager.shell("settings get secure enabled_accessibility_services")
             .getOrNull()?.trim().orEmpty()

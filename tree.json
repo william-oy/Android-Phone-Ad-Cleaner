@@ -1,0 +1,3441 @@
+{
+  "sha": "f83360242ba6a66ae7570e126009ab530eeef120",
+  "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/f83360242ba6a66ae7570e126009ab530eeef120",
+  "tree": [
+    {
+      "path": ".clang-format",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a7614d29ff5727eedcfac1c3f8085567d0d69f12",
+      "size": 291,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/a7614d29ff5727eedcfac1c3f8085567d0d69f12"
+    },
+    {
+      "path": "Android.bp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8fe10de2e121f459b24651618f83d2cdb7c23484",
+      "size": 29272,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/8fe10de2e121f459b24651618f83d2cdb7c23484"
+    },
+    {
+      "path": "MODULE_LICENSE_APACHE2",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "size": 0,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "NOTICE",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "32a74b92d7f51432f396fc64fede0703eb9809e1",
+      "size": 10695,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/32a74b92d7f51432f396fc64fede0703eb9809e1"
+    },
+    {
+      "path": "OWNERS",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c2c4cf83834964a62137fde825beb0953ada00ff",
+      "size": 149,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/c2c4cf83834964a62137fde825beb0953ada00ff"
+    },
+    {
+      "path": "PREUPLOAD.cfg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "34d43d68c72993e20437b72169f0c668a7aef0ef",
+      "size": 170,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/34d43d68c72993e20437b72169f0c668a7aef0ef"
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0927fe36aa2e8c1ab82079eb513f4c98755f5397",
+      "size": 354,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/0927fe36aa2e8c1ab82079eb513f4c98755f5397"
+    },
+    {
+      "path": "TEST_MAPPING",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c2ca3f262866ffb8327a433d37fbb4cfb3013b5c",
+      "size": 1049,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/c2ca3f262866ffb8327a433d37fbb4cfb3013b5c"
+    },
+    {
+      "path": "adb.bash",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ad62eba390d78e033fc1853b35ca4617a889312a",
+      "size": 13786,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/ad62eba390d78e033fc1853b35ca4617a889312a"
+    },
+    {
+      "path": "adb.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a4794e95b3df2a9ff78f47d8a4798b6b5dd2491f",
+      "size": 61015,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/a4794e95b3df2a9ff78f47d8a4798b6b5dd2491f"
+    },
+    {
+      "path": "adb.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5c24ff83e1b963b6dc24b09faeb4a133d3eb0c02",
+      "size": 8266,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/5c24ff83e1b963b6dc24b09faeb4a133d3eb0c02"
+    },
+    {
+      "path": "adb_auth.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a6222d5fe2cdddde59bcca0a633bcd3445fa1d13",
+      "size": 2144,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/a6222d5fe2cdddde59bcca0a633bcd3445fa1d13"
+    },
+    {
+      "path": "adb_integration_test_adb.xml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e722956b8d8915b7e54b2d3df5cddfd56ebf6d64",
+      "size": 1396,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/e722956b8d8915b7e54b2d3df5cddfd56ebf6d64"
+    },
+    {
+      "path": "adb_integration_test_device.xml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "74781336941ef3cb3d29accc59fc16977fe40e94",
+      "size": 1410,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/74781336941ef3cb3d29accc59fc16977fe40e94"
+    },
+    {
+      "path": "adb_io.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bdb8efa5cee2f0e88483659c825268dff2dbe5e7",
+      "size": 6034,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/bdb8efa5cee2f0e88483659c825268dff2dbe5e7"
+    },
+    {
+      "path": "adb_io.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "96289461078b106bdb1141c946161d9047fc2d1f",
+      "size": 3192,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/96289461078b106bdb1141c946161d9047fc2d1f"
+    },
+    {
+      "path": "adb_io_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8dd875c0de447f7909bd073bd23668f2f405cc10",
+      "size": 4576,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/8dd875c0de447f7909bd073bd23668f2f405cc10"
+    },
+    {
+      "path": "adb_listeners.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "32aa5352442a35f30fb5b604e1ca2e004bd2d92f",
+      "size": 8509,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/32aa5352442a35f30fb5b604e1ca2e004bd2d92f"
+    },
+    {
+      "path": "adb_listeners.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ceaef11971e7f4864e0e26378eabc726b87a1f80",
+      "size": 1585,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/ceaef11971e7f4864e0e26378eabc726b87a1f80"
+    },
+    {
+      "path": "adb_listeners_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2b53c3d0c96283a6db1bc1bf9c3163198ce2a05f",
+      "size": 5588,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/2b53c3d0c96283a6db1bc1bf9c3163198ce2a05f"
+    },
+    {
+      "path": "adb_mdns.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dde08d7a069178b7b8e822266602364e70ef8198",
+      "size": 4050,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/dde08d7a069178b7b8e822266602364e70ef8198"
+    },
+    {
+      "path": "adb_mdns.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ff9ccc4a77909d2d1f946117f6a15c9cd84cd448",
+      "size": 3145,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/ff9ccc4a77909d2d1f946117f6a15c9cd84cd448"
+    },
+    {
+      "path": "adb_trace.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0220d7d7b312c02606ce5f08db504ad13076c792",
+      "size": 6046,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/0220d7d7b312c02606ce5f08db504ad13076c792"
+    },
+    {
+      "path": "adb_trace.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f2f3896d26147376667e98d62b728a1d06599716",
+      "size": 1735,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/f2f3896d26147376667e98d62b728a1d06599716"
+    },
+    {
+      "path": "adb_unique_fd.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dec73bc2e64c1cf38eb17c058d8d812e251583fb",
+      "size": 791,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/dec73bc2e64c1cf38eb17c058d8d812e251583fb"
+    },
+    {
+      "path": "adb_unique_fd.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b6c910a9484a8a370c52d5bb7645e3704bc982ae",
+      "size": 1157,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/b6c910a9484a8a370c52d5bb7645e3704bc982ae"
+    },
+    {
+      "path": "adb_utils.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f3b641bf52aa5dceb11d8e6ad4dbdd4bd666ebe4",
+      "size": 10393,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/f3b641bf52aa5dceb11d8e6ad4dbdd4bd666ebe4"
+    },
+    {
+      "path": "adb_utils.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7d8ba01c2c650e2681679d7130d111f40eb7b838",
+      "size": 3356,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/7d8ba01c2c650e2681679d7130d111f40eb7b838"
+    },
+    {
+      "path": "adb_utils_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "69503efda60130421b55ec6fcf331ef899244afc",
+      "size": 8114,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/69503efda60130421b55ec6fcf331ef899244afc"
+    },
+    {
+      "path": "adbd_flags.aconfig",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4510debd1567871107d8ce462d87ae789cee9273",
+      "size": 240,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/4510debd1567871107d8ce462d87ae789cee9273"
+    },
+    {
+      "path": "adbd_test.map",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "629d77d955738e9a07a21d50d99588c0fd3e16c8",
+      "size": 1086,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/629d77d955738e9a07a21d50d99588c0fd3e16c8"
+    },
+    {
+      "path": "adbd_test.xml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ce3593236e3ddcc7f40b9096da986c44b1201019",
+      "size": 1745,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/ce3593236e3ddcc7f40b9096da986c44b1201019"
+    },
+    {
+      "path": "aidl",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "34116c8c12ef085d7acf491621a621caa187a243",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/34116c8c12ef085d7acf491621a621caa187a243"
+    },
+    {
+      "path": "aidl/android",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "5cdc5329a2dbfda1bf02352f92e4f8bbe73ca12c",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/5cdc5329a2dbfda1bf02352f92e4f8bbe73ca12c"
+    },
+    {
+      "path": "aidl/android/adbroot",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "791d6da1df573075a77d750ef7ab5519cb05308d",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/791d6da1df573075a77d750ef7ab5519cb05308d"
+    },
+    {
+      "path": "aidl/android/adbroot/IAdbRootService.aidl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8f343ec5bb4e95c63e88b72970c467c45532f8e5",
+      "size": 808,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/8f343ec5bb4e95c63e88b72970c467c45532f8e5"
+    },
+    {
+      "path": "apacket_reader.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f777dd43e0cf274c1500fffb4c573829a89627fe",
+      "size": 4566,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/f777dd43e0cf274c1500fffb4c573829a89627fe"
+    },
+    {
+      "path": "apacket_reader.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8f8b1918d42600d5cc8385b1185d39bb13bc9ea1",
+      "size": 1816,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/8f8b1918d42600d5cc8385b1185d39bb13bc9ea1"
+    },
+    {
+      "path": "apex",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "96847933ff5f34eb00c44dc6090fea62f3a08242",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/96847933ff5f34eb00c44dc6090fea62f3a08242"
+    },
+    {
+      "path": "apex/Android.bp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7cf0e5ff809f4d96b8cb50629bae1d5abb580b51",
+      "size": 1871,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/7cf0e5ff809f4d96b8cb50629bae1d5abb580b51"
+    },
+    {
+      "path": "apex/adbd.rc",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "09ceff8ac4e13ded4b098bbc5562201b5b3d433b",
+      "size": 255,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/09ceff8ac4e13ded4b098bbc5562201b5b3d433b"
+    },
+    {
+      "path": "apex/apex_manifest.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "75f40e0f0051310c4e0657f0a6ef27ebbb65efd0",
+      "size": 131,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/75f40e0f0051310c4e0657f0a6ef27ebbb65efd0"
+    },
+    {
+      "path": "apex/com.android.adbd.avbpubkey",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "06235bd1f61cc259fef6414d31ed779ffc2e24af",
+      "size": 1032,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/06235bd1f61cc259fef6414d31ed779ffc2e24af"
+    },
+    {
+      "path": "apex/com.android.adbd.pem",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2c9a86079010601d8d52f54bbc29a0975b7b09d3",
+      "size": 3243,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/2c9a86079010601d8d52f54bbc29a0975b7b09d3"
+    },
+    {
+      "path": "apex/com.android.adbd.pk8",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cdddc3fdfb96490fda8cc5fa7a992642cb78bd4d",
+      "size": 2374,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/cdddc3fdfb96490fda8cc5fa7a992642cb78bd4d"
+    },
+    {
+      "path": "apex/com.android.adbd.x509.pem",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bb85c1d115556d53ef0cfa52439a6d054476c67b",
+      "size": 2183,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/bb85c1d115556d53ef0cfa52439a6d054476c67b"
+    },
+    {
+      "path": "apex/test_apex_manifest.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7131977062ffad094386a4b5a546fb25fdc28593",
+      "size": 58,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/7131977062ffad094386a4b5a546fb25fdc28593"
+    },
+    {
+      "path": "benchmark_device.py",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "4927998f32e40e7dbb36b1faebc486464674e86d",
+      "size": 5253,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/4927998f32e40e7dbb36b1faebc486464674e86d"
+    },
+    {
+      "path": "bugreport_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f98bb17ff250c813fc64295c13501ff1c1977d00",
+      "size": 19686,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/f98bb17ff250c813fc64295c13501ff1c1977d00"
+    },
+    {
+      "path": "client",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "cb2824d12943211227e19ae5b7888f8664e0965a",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/cb2824d12943211227e19ae5b7888f8664e0965a"
+    },
+    {
+      "path": "client/adb_client.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6b201516ecab22a64e31a89b093c083d2625345e",
+      "size": 15210,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/6b201516ecab22a64e31a89b093c083d2625345e"
+    },
+    {
+      "path": "client/adb_client.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e095506d1dd1899f7eba73bfd553d688cc97d9c1",
+      "size": 4471,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/e095506d1dd1899f7eba73bfd553d688cc97d9c1"
+    },
+    {
+      "path": "client/adb_install.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2064b312fe455a1ad72ad040d0fffb9802566ca5",
+      "size": 35975,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/2064b312fe455a1ad72ad040d0fffb9802566ca5"
+    },
+    {
+      "path": "client/adb_install.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1c29dc4b86dd0dd81da86860dc51a28d7a8ea4d9",
+      "size": 1193,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/1c29dc4b86dd0dd81da86860dc51a28d7a8ea4d9"
+    },
+    {
+      "path": "client/adb_wifi.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0f4231f5abce3ea508913dfe0bf42e0c6b2a427d",
+      "size": 8878,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/0f4231f5abce3ea508913dfe0bf42e0c6b2a427d"
+    },
+    {
+      "path": "client/adb_wifi.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b4d3e82361a1818c15f9980215aa0965895be117",
+      "size": 1718,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/b4d3e82361a1818c15f9980215aa0965895be117"
+    },
+    {
+      "path": "client/adb_wifi_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ecf6f887915776e84c06f656b7efdbb7cfe9ab8a",
+      "size": 1616,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/ecf6f887915776e84c06f656b7efdbb7cfe9ab8a"
+    },
+    {
+      "path": "client/adbmdns",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "db0ea59805173fcfdc024e1fbd9b2188b7a9a14c",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/db0ea59805173fcfdc024e1fbd9b2188b7a9a14c"
+    },
+    {
+      "path": "client/adbmdns/Android.bp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4a926e1362bbbeb0f3391a6c223245c9bed6d29a",
+      "size": 1154,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/4a926e1362bbbeb0f3391a6c223245c9bed6d29a"
+    },
+    {
+      "path": "client/adbmdns/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "63e08e6587a88c8fa3549e9a32ee3cd4fc3c59ea",
+      "size": 640,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/63e08e6587a88c8fa3549e9a32ee3cd4fc3c59ea"
+    },
+    {
+      "path": "client/adbmdns/README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cbb5cd8b383e75f7310002209dcc7d3aaf7cd90b",
+      "size": 4740,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/cbb5cd8b383e75f7310002209dcc7d3aaf7cd90b"
+    },
+    {
+      "path": "client/adbmdns/adbmdns.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dd882837fae15c95bdf706aee5c39e7f96063c50",
+      "size": 4160,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/dd882837fae15c95bdf706aee5c39e7f96063c50"
+    },
+    {
+      "path": "client/adbmdns/adbmdns.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e609fb3aaf86f7f38e6976fec5ecba00d232831c",
+      "size": 665,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/e609fb3aaf86f7f38e6976fec5ecba00d232831c"
+    },
+    {
+      "path": "client/adbmdns/adbmdns_bridge.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "009672cc026def3f42ef7b6e34ca37ea6a484275",
+      "size": 1838,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/009672cc026def3f42ef7b6e34ca37ea6a484275"
+    },
+    {
+      "path": "client/adbmdns/adbmdns_bridge.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "507b94a70aa446eb91c5b991c118c77e9ff25977",
+      "size": 11098,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/507b94a70aa446eb91c5b991c118c77e9ff25977"
+    },
+    {
+      "path": "client/adbmdns/index_min_pq.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4686c0ff58e64dc1cfb1c1db0379fba9c52bfc19",
+      "size": 12346,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/4686c0ff58e64dc1cfb1c1db0379fba9c52bfc19"
+    },
+    {
+      "path": "client/adbmdns/netwatch.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "69fe3de423bee2b08da73697482b763b1bd85b1b",
+      "size": 7002,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/69fe3de423bee2b08da73697482b763b1bd85b1b"
+    },
+    {
+      "path": "client/adbmdns/netwatch",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "c285b035b05e2b52b812fa2a5c895e152d14413b",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/c285b035b05e2b52b812fa2a5c895e152d14413b"
+    },
+    {
+      "path": "client/adbmdns/netwatch/netwatch_darwin.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e6cd3a298c35155e1463d14269ce32d7cdf477fb",
+      "size": 6830,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/e6cd3a298c35155e1463d14269ce32d7cdf477fb"
+    },
+    {
+      "path": "client/adbmdns/netwatch/netwatch_linux.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "18e1bdb0cc85466d2ccd2650395e8bd3f8e29355",
+      "size": 9070,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/18e1bdb0cc85466d2ccd2650395e8bd3f8e29355"
+    },
+    {
+      "path": "client/adbmdns/netwatch/netwatch_linux",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "4d492f8928ebbe0a5438bc27fe701947331982da",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/4d492f8928ebbe0a5438bc27fe701947331982da"
+    },
+    {
+      "path": "client/adbmdns/netwatch/netwatch_linux/util.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9dfb54dffe1dd1563af0e930493a72f0df7b98b8",
+      "size": 4676,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/9dfb54dffe1dd1563af0e930493a72f0df7b98b8"
+    },
+    {
+      "path": "client/adbmdns/netwatch/netwatch_windows.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a9ff1aeeeddec8149d36d74f65cf284ef9f63af7",
+      "size": 1770,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/a9ff1aeeeddec8149d36d74f65cf284ef9f63af7"
+    },
+    {
+      "path": "client/adbmdns/netwatch/netwatch_windows",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "723c2e1d5467fbe2f99230c7259d744b97e7de24",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/723c2e1d5467fbe2f99230c7259d744b97e7de24"
+    },
+    {
+      "path": "client/adbmdns/netwatch/netwatch_windows/wlan_tracker.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7ce867c3a80a612881510381bb58becbd1173067",
+      "size": 10855,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/7ce867c3a80a612881510381bb58becbd1173067"
+    },
+    {
+      "path": "client/adbmdns/rr.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4947db3e23aa50d1f2f1bbd94010a5397b5ecf51",
+      "size": 5747,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/4947db3e23aa50d1f2f1bbd94010a5397b5ecf51"
+    },
+    {
+      "path": "client/adbmdns/store.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4435979f6c862bb790d2e761f7315b984978606c",
+      "size": 11044,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/4435979f6c862bb790d2e761f7315b984978606c"
+    },
+    {
+      "path": "client/adbmdns/zero_config.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6cffaf79c484fae523675087de3325e44addf947",
+      "size": 63514,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/6cffaf79c484fae523675087de3325e44addf947"
+    },
+    {
+      "path": "client/adbmdns/zero_config_driver.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a7c6a2d51f9e757c930ef569a3bbda1e14d18059",
+      "size": 11561,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/a7c6a2d51f9e757c930ef569a3bbda1e14d18059"
+    },
+    {
+      "path": "client/adbmdns/zero_config_driver_channel.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7be4d8908b9fb610aa462c1f2440a27aaf66d8b3",
+      "size": 5937,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/7be4d8908b9fb610aa462c1f2440a27aaf66d8b3"
+    },
+    {
+      "path": "client/auth.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6ce3d8b66e6d85adc471a155e8e25c0d57eae9ee",
+      "size": 17343,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/6ce3d8b66e6d85adc471a155e8e25c0d57eae9ee"
+    },
+    {
+      "path": "client/bugreport.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "15b13cad9df46c492615cc292d71f864277ede99",
+      "size": 11886,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/15b13cad9df46c492615cc292d71f864277ede99"
+    },
+    {
+      "path": "client/bugreport.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "413439b749862a062558191fb51a6a8dced55120",
+      "size": 1566,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/413439b749862a062558191fb51a6a8dced55120"
+    },
+    {
+      "path": "client/commandline.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4f43fb9c86499efefde8abf825a144e5fdbb191f",
+      "size": 85712,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/4f43fb9c86499efefde8abf825a144e5fdbb191f"
+    },
+    {
+      "path": "client/commandline.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0923b2a6d8ea3b0f5ff17fc404054ac4673224de",
+      "size": 8303,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/0923b2a6d8ea3b0f5ff17fc404054ac4673224de"
+    },
+    {
+      "path": "client/commandline_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "249a2f34623dde59d11672a867c482304c79b254",
+      "size": 6139,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/249a2f34623dde59d11672a867c482304c79b254"
+    },
+    {
+      "path": "client/console.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "56286b5f09d6afd6d4dd43871ea7cc9a01587e56",
+      "size": 6423,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/56286b5f09d6afd6d4dd43871ea7cc9a01587e56"
+    },
+    {
+      "path": "client/console_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "948dc91c90dce26033854fd4eba4ea12f91606c6",
+      "size": 1393,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/948dc91c90dce26033854fd4eba4ea12f91606c6"
+    },
+    {
+      "path": "client/detach.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "88afa7f6ac142ec8b015e6e4ba0225ba1a38014b",
+      "size": 1553,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/88afa7f6ac142ec8b015e6e4ba0225ba1a38014b"
+    },
+    {
+      "path": "client/detach.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8aa5e0d41e8b20eb4e8be56d959760b8bb154f6c",
+      "size": 1574,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/8aa5e0d41e8b20eb4e8be56d959760b8bb154f6c"
+    },
+    {
+      "path": "client/discovered_services.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a5fd0d5142bb0d256ca8cb1102aad7d9fd62e3c1",
+      "size": 4770,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/a5fd0d5142bb0d256ca8cb1102aad7d9fd62e3c1"
+    },
+    {
+      "path": "client/discovered_services.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "73fefd4fa69f4cdba2a64a429a6a936b63466542",
+      "size": 4692,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/73fefd4fa69f4cdba2a64a429a6a936b63466542"
+    },
+    {
+      "path": "client/discovered_services_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bed785659f2653d66482db2a5476248668d94e9b",
+      "size": 2557,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/bed785659f2653d66482db2a5476248668d94e9b"
+    },
+    {
+      "path": "client/fastdeploy.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f3b619295ea5b4818251de593f2aa4a2d2ab5de3",
+      "size": 12586,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/f3b619295ea5b4818251de593f2aa4a2d2ab5de3"
+    },
+    {
+      "path": "client/fastdeploy.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "830aeb2ca957f03053b3c023deed16eda366f5d4",
+      "size": 1362,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/830aeb2ca957f03053b3c023deed16eda366f5d4"
+    },
+    {
+      "path": "client/file_sync_client.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "11dde9c5c614b0cbe37599b4a2ddb2926a067c81",
+      "size": 62244,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/11dde9c5c614b0cbe37599b4a2ddb2926a067c81"
+    },
+    {
+      "path": "client/file_sync_client.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "200a9ae8810b4945e447d4fe526a1e9d0c74d8f7",
+      "size": 1245,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/200a9ae8810b4945e447d4fe526a1e9d0c74d8f7"
+    },
+    {
+      "path": "client/host_services.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4eb0fe69467af32b404ed662188a0053f9bcdff1",
+      "size": 815,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/4eb0fe69467af32b404ed662188a0053f9bcdff1"
+    },
+    {
+      "path": "client/incremental.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2a48fcc9e9705891eb76f32566182746b88e757c",
+      "size": 17969,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/2a48fcc9e9705891eb76f32566182746b88e757c"
+    },
+    {
+      "path": "client/incremental.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d2f863c762fecd35511c6867eb8b99cda78add75",
+      "size": 1107,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/d2f863c762fecd35511c6867eb8b99cda78add75"
+    },
+    {
+      "path": "client/incremental_server.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1ab1b4ab3559b23e6318f5c7b8b26c39b69b0614",
+      "size": 25828,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/1ab1b4ab3559b23e6318f5c7b8b26c39b69b0614"
+    },
+    {
+      "path": "client/incremental_server.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "55b8215b8869ee85d76a8e57f7c1a29851e4c135",
+      "size": 849,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/55b8215b8869ee85d76a8e57f7c1a29851e4c135"
+    },
+    {
+      "path": "client/incremental_utils.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fae5f830378a8b5f56870b8f227bdcab9e5daad1",
+      "size": 16031,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/fae5f830378a8b5f56870b8f227bdcab9e5daad1"
+    },
+    {
+      "path": "client/incremental_utils.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "731d453e9eec1ce67ca83c65efcf8f2cdc773f9c",
+      "size": 1647,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/731d453e9eec1ce67ca83c65efcf8f2cdc773f9c"
+    },
+    {
+      "path": "client/line_printer.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9a08113fa788e900ab2a2effe88c7c310a3f686a",
+      "size": 4636,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/9a08113fa788e900ab2a2effe88c7c310a3f686a"
+    },
+    {
+      "path": "client/line_printer.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "34f5c54dac819acb3a30e5a4aa5d8487db97a549",
+      "size": 1652,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/34f5c54dac819acb3a30e5a4aa5d8487db97a549"
+    },
+    {
+      "path": "client/main.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d8186c36417e40ad877e312b4e1739496cfbecf8",
+      "size": 8904,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/d8186c36417e40ad877e312b4e1739496cfbecf8"
+    },
+    {
+      "path": "client/mdns_tracker.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "597d66cf18bf735636a8f728527fcd8764066cc4",
+      "size": 5271,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/597d66cf18bf735636a8f728527fcd8764066cc4"
+    },
+    {
+      "path": "client/mdns_tracker.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2048d7e74af5768109f11e28a1e409cbb24f14e7",
+      "size": 716,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/2048d7e74af5768109f11e28a1e409cbb24f14e7"
+    },
+    {
+      "path": "client/mdns_utils.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e578c1a3e51b1af3ebb85c774060afa287412191",
+      "size": 2895,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/e578c1a3e51b1af3ebb85c774060afa287412191"
+    },
+    {
+      "path": "client/mdns_utils.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d10613312c881b09d266f99e6abb0d5a805e55a4",
+      "size": 2082,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/d10613312c881b09d266f99e6abb0d5a805e55a4"
+    },
+    {
+      "path": "client/mdns_utils_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "22c2365cbde34fb1f2d0d0fa19faeaf40c6f4a07",
+      "size": 7988,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/22c2365cbde34fb1f2d0d0fa19faeaf40c6f4a07"
+    },
+    {
+      "path": "client/openscreen",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "54add8a63479b94988eb09fe81a3d75389284183",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/54add8a63479b94988eb09fe81a3d75389284183"
+    },
+    {
+      "path": "client/openscreen/mdns_service.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "934abea53887d5216cb60e8b40b01ea37cdec4ff",
+      "size": 6276,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/934abea53887d5216cb60e8b40b01ea37cdec4ff"
+    },
+    {
+      "path": "client/openscreen/mdns_service.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b1c9182e1854490cdee9291994b131667a4f9642",
+      "size": 667,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/b1c9182e1854490cdee9291994b131667a4f9642"
+    },
+    {
+      "path": "client/openscreen/platform",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "01abcceb2fe5762c5a63cd08d2b7872f1071a650",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/01abcceb2fe5762c5a63cd08d2b7872f1071a650"
+    },
+    {
+      "path": "client/openscreen/platform/logging.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3b9be16a1a91f386e98ee20d9b27aa1ece89a8fe",
+      "size": 1874,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/3b9be16a1a91f386e98ee20d9b27aa1ece89a8fe"
+    },
+    {
+      "path": "client/openscreen/platform/task_runner.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "55a03e01748b33eb47ac1f18e245921c6db2d30f",
+      "size": 3680,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/55a03e01748b33eb47ac1f18e245921c6db2d30f"
+    },
+    {
+      "path": "client/openscreen/platform/task_runner.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "814d2505bac639f91ecedbe3b597477cad9e7cae",
+      "size": 2462,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/814d2505bac639f91ecedbe3b597477cad9e7cae"
+    },
+    {
+      "path": "client/openscreen/platform/udp_socket.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4ea9fab7862718a71fab9725544da7e55e647f7d",
+      "size": 27965,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/4ea9fab7862718a71fab9725544da7e55e647f7d"
+    },
+    {
+      "path": "client/pairing",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "bf2ba91c182edf657d71fe033f78af7412f34b97",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/bf2ba91c182edf657d71fe033f78af7412f34b97"
+    },
+    {
+      "path": "client/pairing/pairing_client.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "937a5bd4cb05216d8a14f25ef5a8f9bfd3bff425",
+      "size": 5358,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/937a5bd4cb05216d8a14f25ef5a8f9bfd3bff425"
+    },
+    {
+      "path": "client/pairing/pairing_client.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dbd72a54961da8a24b57679939c1c17ee882fa1a",
+      "size": 2393,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/dbd72a54961da8a24b57679939c1c17ee882fa1a"
+    },
+    {
+      "path": "client/pairing/tests",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "0b167222bea4340077526df30869b6041a5fae23",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/0b167222bea4340077526df30869b6041a5fae23"
+    },
+    {
+      "path": "client/pairing/tests/pairing_connection_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c69c1c2bebd57f81b14cd99ea581726bfbbe7fed",
+      "size": 20304,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/c69c1c2bebd57f81b14cd99ea581726bfbbe7fed"
+    },
+    {
+      "path": "client/pairing/tests/pairing_server.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fc917266e5a53b17601559e63e5ac16ce827b0a1",
+      "size": 15398,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/fc917266e5a53b17601559e63e5ac16ce827b0a1"
+    },
+    {
+      "path": "client/pairing/tests/pairing_server.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6fb51ccf1687c0c6b4ef7eb5c1c012926cf5d859",
+      "size": 2596,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/6fb51ccf1687c0c6b4ef7eb5c1c012926cf5d859"
+    },
+    {
+      "path": "client/transport_client.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "58b7c7a08eaea0754683df21b787bdf71096e4ba",
+      "size": 761,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/58b7c7a08eaea0754683df21b787bdf71096e4ba"
+    },
+    {
+      "path": "client/transport_emulator.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "83fb1e41d8ffd3108a6de6c12e3dfd65006c2f50",
+      "size": 11476,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/83fb1e41d8ffd3108a6de6c12e3dfd65006c2f50"
+    },
+    {
+      "path": "client/transport_mdns.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "36c37288545249012c9937170a1a81610228777c",
+      "size": 6147,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/36c37288545249012c9937170a1a81610228777c"
+    },
+    {
+      "path": "client/transport_mdns.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7f32697b61d0960966f22df59f2044eabe0917cd",
+      "size": 1026,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/7f32697b61d0960966f22df59f2044eabe0917cd"
+    },
+    {
+      "path": "client/transport_usb.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d3b4929cd60a98470abaab3c820b94ffb903d979",
+      "size": 5350,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/d3b4929cd60a98470abaab3c820b94ffb903d979"
+    },
+    {
+      "path": "client/usb.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5c8a4b7cb2ef0a8d298a3ca4e7d5c00bee5e6a4a",
+      "size": 1573,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/5c8a4b7cb2ef0a8d298a3ca4e7d5c00bee5e6a4a"
+    },
+    {
+      "path": "client/usb_libusb.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "34dc5c488568ef7d8c1505a40417495e8c2fc5df",
+      "size": 7226,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/34dc5c488568ef7d8c1505a40417495e8c2fc5df"
+    },
+    {
+      "path": "client/usb_libusb.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "938ef79972f35431eb5ab36c61d1e3e3eeeb1c6b",
+      "size": 2946,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/938ef79972f35431eb5ab36c61d1e3e3eeeb1c6b"
+    },
+    {
+      "path": "client/usb_libusb_device.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2bb270e78f4bdfa741c1b06abf361236ab0dc807",
+      "size": 18020,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/2bb270e78f4bdfa741c1b06abf361236ab0dc807"
+    },
+    {
+      "path": "client/usb_libusb_device.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bab3af4823f84d91d39bbb656f7bb5576da4f82e",
+      "size": 3802,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/bab3af4823f84d91d39bbb656f7bb5576da4f82e"
+    },
+    {
+      "path": "client/usb_libusb_hotplug.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5efc4c00a7495895084f7777cd448ff1c1a18959",
+      "size": 10249,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/5efc4c00a7495895084f7777cd448ff1c1a18959"
+    },
+    {
+      "path": "client/usb_libusb_hotplug.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "27d3ddf65a66e55c1958973b6f09c117ea459170",
+      "size": 929,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/27d3ddf65a66e55c1958973b6f09c117ea459170"
+    },
+    {
+      "path": "client/usb_libusb_inhouse_hotplug.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dc42ebaf63305dec529fbad857e98c4d24d70bd5",
+      "size": 3302,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/dc42ebaf63305dec529fbad857e98c4d24d70bd5"
+    },
+    {
+      "path": "client/usb_libusb_inhouse_hotplug.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ee5cc877b2247c85d901f0803d9c263163a31a51",
+      "size": 862,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/ee5cc877b2247c85d901f0803d9c263163a31a51"
+    },
+    {
+      "path": "client/usb_linux.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6e2148f3506bdf78c4ba8abf34bd230d77a872c8",
+      "size": 24529,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/6e2148f3506bdf78c4ba8abf34bd230d77a872c8"
+    },
+    {
+      "path": "client/usb_linux_netlink.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5cfae270c193c834421f6d142b036600ddf0c67e",
+      "size": 1808,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/5cfae270c193c834421f6d142b036600ddf0c67e"
+    },
+    {
+      "path": "client/usb_linux_netlink.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a2f6a4d7f9a6c8c110217138c00cb352e2cb8442",
+      "size": 1734,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/a2f6a4d7f9a6c8c110217138c00cb352e2cb8442"
+    },
+    {
+      "path": "client/usb_linux_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ed3bb69b869e556e9ed9d7e73d48d260b5f0c347",
+      "size": 3311,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/ed3bb69b869e556e9ed9d7e73d48d260b5f0c347"
+    },
+    {
+      "path": "client/usb_osx.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0e5af487f8ae2013e72a68c08ec34cb4e37ff532",
+      "size": 24059,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/0e5af487f8ae2013e72a68c08ec34cb4e37ff532"
+    },
+    {
+      "path": "client/usb_windows.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b17c4806f2813979b22f2550c6a7a5afb3c42639",
+      "size": 21560,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/b17c4806f2813979b22f2550c6a7a5afb3c42639"
+    },
+    {
+      "path": "compression_utils.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a74710823ce769edc09db11acf0d3777e60e3d44",
+      "size": 17462,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/a74710823ce769edc09db11acf0d3777e60e3d44"
+    },
+    {
+      "path": "coverage",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "9c565d19ac25ed6b9f6fa31514c671bb2ad1d36c",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/9c565d19ac25ed6b9f6fa31514c671bb2ad1d36c"
+    },
+    {
+      "path": "coverage/.gitignore",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b6a2582047095a9a3ecaa5aacac17e2e052c5212",
+      "size": 23,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/b6a2582047095a9a3ecaa5aacac17e2e052c5212"
+    },
+    {
+      "path": "coverage/build.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "e7b85750d1b826907de4eafbaa14b485d13d85b7",
+      "size": 521,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/e7b85750d1b826907de4eafbaa14b485d13d85b7"
+    },
+    {
+      "path": "coverage/gen_coverage.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "df49486d146d9eb8d3236594052b7bf92d63cfbb",
+      "size": 3377,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/df49486d146d9eb8d3236594052b7bf92d63cfbb"
+    },
+    {
+      "path": "coverage/include.sh",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8fd4cd5d5f558c5ea1f9cc006fa52596e4d7094e",
+      "size": 274,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/8fd4cd5d5f558c5ea1f9cc006fa52596e4d7094e"
+    },
+    {
+      "path": "coverage/report.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "335d3a7a492b72116a4a7fc005cf9340a41d344d",
+      "size": 614,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/335d3a7a492b72116a4a7fc005cf9340a41d344d"
+    },
+    {
+      "path": "coverage/show.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "9435e19645e0a285edbe82e9cd46b25829841a56",
+      "size": 440,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/9435e19645e0a285edbe82e9cd46b25829841a56"
+    },
+    {
+      "path": "crypto",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "4ce20d30ebf2b1dcea6c821e7e732a3d643f7c6f",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/4ce20d30ebf2b1dcea6c821e7e732a3d643f7c6f"
+    },
+    {
+      "path": "crypto/Android.bp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fffda7b0cfb3ad35b10ca43d72f1414a465e8725",
+      "size": 2195,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/fffda7b0cfb3ad35b10ca43d72f1414a465e8725"
+    },
+    {
+      "path": "crypto/include",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "6e21c08120366a3d98ee3b1771773c4e3b22bd40",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/6e21c08120366a3d98ee3b1771773c4e3b22bd40"
+    },
+    {
+      "path": "crypto/include/adb",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "33564e804a7e974858083cdbfbd7265e9a52f564",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/33564e804a7e974858083cdbfbd7265e9a52f564"
+    },
+    {
+      "path": "crypto/include/adb/crypto",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "fd980c9c065a2b5d0e286f3107a7188ec56b50ff",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/fd980c9c065a2b5d0e286f3107a7188ec56b50ff"
+    },
+    {
+      "path": "crypto/include/adb/crypto/key.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d9ce69e0385e027e71527347a8cacf98d1724b5a",
+      "size": 1323,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/d9ce69e0385e027e71527347a8cacf98d1724b5a"
+    },
+    {
+      "path": "crypto/include/adb/crypto/rsa_2048_key.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2983a84c4778a8ae72523dff7722bdb5ce881f88",
+      "size": 972,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/2983a84c4778a8ae72523dff7722bdb5ce881f88"
+    },
+    {
+      "path": "crypto/include/adb/crypto/x509_generator.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a269243125fa94a25a487c0ede3da99a93101cc1",
+      "size": 944,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/a269243125fa94a25a487c0ede3da99a93101cc1"
+    },
+    {
+      "path": "crypto/key.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4d870069c0d9e902103262f8f6b9be58ae8cee01",
+      "size": 1391,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/4d870069c0d9e902103262f8f6b9be58ae8cee01"
+    },
+    {
+      "path": "crypto/rsa_2048_key.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6d9ee30546b3e2895322026281df53495962c9ce",
+      "size": 2312,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/6d9ee30546b3e2895322026281df53495962c9ce"
+    },
+    {
+      "path": "crypto/tests",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "c9e527c1e7cf65da47b88d98282307d9b042f9a3",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/c9e527c1e7cf65da47b88d98282307d9b042f9a3"
+    },
+    {
+      "path": "crypto/tests/Android.bp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "74f3e203bca3d3d570076e0cd6e8e5ef6e16d419",
+      "size": 1262,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/74f3e203bca3d3d570076e0cd6e8e5ef6e16d419"
+    },
+    {
+      "path": "crypto/tests/key_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1feb6e8fbb95b0822e4612bcfe958b3e00a474dc",
+      "size": 2508,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/1feb6e8fbb95b0822e4612bcfe958b3e00a474dc"
+    },
+    {
+      "path": "crypto/tests/rsa_2048_key_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1d8880e15c7e7ec40d3712b3bda07b90b6f72d50",
+      "size": 2616,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/1d8880e15c7e7ec40d3712b3bda07b90b6f72d50"
+    },
+    {
+      "path": "crypto/tests/x509_generator_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "281776bd4adddc67f55f14eada46e64d2fa2871d",
+      "size": 1498,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/281776bd4adddc67f55f14eada46e64d2fa2871d"
+    },
+    {
+      "path": "crypto/x509_generator.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a64e49afe65928eb3fbd22a303192fb4ac862b26",
+      "size": 3877,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/a64e49afe65928eb3fbd22a303192fb4ac862b26"
+    },
+    {
+      "path": "daemon",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "1618ab5d6b01bd1591024c320e9dce5fe4b89705",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/1618ab5d6b01bd1591024c320e9dce5fe4b89705"
+    },
+    {
+      "path": "daemon/abb.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "57a3e319eb08356c9a9fb450354232a2af9f936d",
+      "size": 3563,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/57a3e319eb08356c9a9fb450354232a2af9f936d"
+    },
+    {
+      "path": "daemon/abb_service.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9725f5cee5a659431dd8ca34fdfaae64d71d53f7",
+      "size": 2590,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/9725f5cee5a659431dd8ca34fdfaae64d71d53f7"
+    },
+    {
+      "path": "daemon/adb_wifi.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8e9838b5a7a412a956ab140f4a6292dd6b4ae7e0",
+      "size": 7758,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/8e9838b5a7a412a956ab140f4a6292dd6b4ae7e0"
+    },
+    {
+      "path": "daemon/adbd_wifi.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4be0ed57b17008066cf03b24a6a1131282e84846",
+      "size": 857,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/4be0ed57b17008066cf03b24a6a1131282e84846"
+    },
+    {
+      "path": "daemon/auth.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8e6b27d884813f3e6e11c3b0e92c2243d47c6a81",
+      "size": 16733,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/8e6b27d884813f3e6e11c3b0e92c2243d47c6a81"
+    },
+    {
+      "path": "daemon/file_sync_service.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8dc1407b9c7bb8866e7aeb489219675f65aad45a",
+      "size": 27681,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/8dc1407b9c7bb8866e7aeb489219675f65aad45a"
+    },
+    {
+      "path": "daemon/file_sync_service.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f300e7b3a644c6670e4c31b5738af3122ede2408",
+      "size": 701,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/f300e7b3a644c6670e4c31b5738af3122ede2408"
+    },
+    {
+      "path": "daemon/framebuffer_service.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "117cc0d36a49feb7093cc382a7cf7589507ddc87",
+      "size": 5501,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/117cc0d36a49feb7093cc382a7cf7589507ddc87"
+    },
+    {
+      "path": "daemon/framebuffer_service.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bab44be364a6b7718a1a4ac542b8132d2aadcedd",
+      "size": 735,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/bab44be364a6b7718a1a4ac542b8132d2aadcedd"
+    },
+    {
+      "path": "daemon/jdwp_service.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9070c39d11351f47f62c0d22bb7b871c1de5df55",
+      "size": 19375,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/9070c39d11351f47f62c0d22bb7b871c1de5df55"
+    },
+    {
+      "path": "daemon/jdwp_service.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a7af06d4725a68d6c0056e3ee5d2fdf786a1eeab",
+      "size": 996,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/a7af06d4725a68d6c0056e3ee5d2fdf786a1eeab"
+    },
+    {
+      "path": "daemon/logging.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f4b8022744dab9dd80fbb128a798f4187114e910",
+      "size": 2943,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/f4b8022744dab9dd80fbb128a798f4187114e910"
+    },
+    {
+      "path": "daemon/logging.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3e28bef318ebda8b8a29312c71a96aac29953d95",
+      "size": 906,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/3e28bef318ebda8b8a29312c71a96aac29953d95"
+    },
+    {
+      "path": "daemon/main.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "87e56ddedbd766957652a90aa84337be7b28cbee",
+      "size": 13222,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/87e56ddedbd766957652a90aa84337be7b28cbee"
+    },
+    {
+      "path": "daemon/mdns.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "de0ba2f3b0540cf2dba41b9f465e796da82966af",
+      "size": 11908,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/de0ba2f3b0540cf2dba41b9f465e796da82966af"
+    },
+    {
+      "path": "daemon/mdns.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f90b808d4b1700fc1fde360cb68624bd1d83dafb",
+      "size": 1234,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/f90b808d4b1700fc1fde360cb68624bd1d83dafb"
+    },
+    {
+      "path": "daemon/property_monitor.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "826dc83898c862013cca05d0682681ef0baa8a01",
+      "size": 3105,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/826dc83898c862013cca05d0682681ef0baa8a01"
+    },
+    {
+      "path": "daemon/property_monitor.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ff3cc07940d5c17c374b1ebdea9fa51859e660f1",
+      "size": 2210,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/ff3cc07940d5c17c374b1ebdea9fa51859e660f1"
+    },
+    {
+      "path": "daemon/property_monitor_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "13cbc292cc94ed5ec24d66f28d290aedbc892c97",
+      "size": 6578,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/13cbc292cc94ed5ec24d66f28d290aedbc892c97"
+    },
+    {
+      "path": "daemon/restart_service.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d6d4b2446c55dac666293a5bb752cc7b01782564",
+      "size": 3299,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/d6d4b2446c55dac666293a5bb752cc7b01782564"
+    },
+    {
+      "path": "daemon/restart_service.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "19840bd588ccba75c7aae3400abf82247bbd1567",
+      "size": 869,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/19840bd588ccba75c7aae3400abf82247bbd1567"
+    },
+    {
+      "path": "daemon/restart_service_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d2ae67cf38f6e6e3a9235ffc15176a08df1aafd5",
+      "size": 2876,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/d2ae67cf38f6e6e3a9235ffc15176a08df1aafd5"
+    },
+    {
+      "path": "daemon/services.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fb9a662e4195ea3d807837de572deab12f67c7a4",
+      "size": 13272,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/fb9a662e4195ea3d807837de572deab12f67c7a4"
+    },
+    {
+      "path": "daemon/shell_service.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cb254c2ec64e61eb161a8c63b4a90a3ce9e34e13",
+      "size": 35572,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/cb254c2ec64e61eb161a8c63b4a90a3ce9e34e13"
+    },
+    {
+      "path": "daemon/shell_service.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "030228c7f7ee43f85e998793df28256c2bba6c69",
+      "size": 2008,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/030228c7f7ee43f85e998793df28256c2bba6c69"
+    },
+    {
+      "path": "daemon/shell_service_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f61aaebd452cd37acc0d2224b5f69b6a2586aa1c",
+      "size": 9764,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/f61aaebd452cd37acc0d2224b5f69b6a2586aa1c"
+    },
+    {
+      "path": "daemon/tradeinmode.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9e76bac50f49af8dc0e279786ddc80655993da13",
+      "size": 2885,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/9e76bac50f49af8dc0e279786ddc80655993da13"
+    },
+    {
+      "path": "daemon/tradeinmode.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2982728fbe21cb9f010f0f1b58be9fe611120fc7",
+      "size": 1378,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/2982728fbe21cb9f010f0f1b58be9fe611120fc7"
+    },
+    {
+      "path": "daemon/tradeinmode_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8e0f75dafb9c021f921146029bae10ed2beb843b",
+      "size": 1277,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/8e0f75dafb9c021f921146029bae10ed2beb843b"
+    },
+    {
+      "path": "daemon/transport_daemon.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d7b2777bf7f5ffc3c6c888811bfb1433314349fa",
+      "size": 784,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/d7b2777bf7f5ffc3c6c888811bfb1433314349fa"
+    },
+    {
+      "path": "daemon/transport_socket_server.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "950bb9dc6b75b2c46ad018af592785379ca722bc",
+      "size": 5668,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/950bb9dc6b75b2c46ad018af592785379ca722bc"
+    },
+    {
+      "path": "daemon/usb.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dedf9ac3e05722ea0ce71395c2d6c1bbeb2566e0",
+      "size": 28210,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/dedf9ac3e05722ea0ce71395c2d6c1bbeb2566e0"
+    },
+    {
+      "path": "daemon/usb_ffs.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e538ca8855e97d49d96b0d8179b559ccb677e45a",
+      "size": 10871,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/e538ca8855e97d49d96b0d8179b559ccb677e45a"
+    },
+    {
+      "path": "daemon/usb_ffs.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a19d7ccce62473c29026235bb48542cfa15e55a1",
+      "size": 821,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/a19d7ccce62473c29026235bb48542cfa15e55a1"
+    },
+    {
+      "path": "daemon/watchdog.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6e1429759b7675bf889895b5c8bfc5eba04fc9ef",
+      "size": 4092,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/6e1429759b7675bf889895b5c8bfc5eba04fc9ef"
+    },
+    {
+      "path": "daemon/watchdog.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "777b0d3b820fd4ef2fd30535f360073651026dba",
+      "size": 1591,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/777b0d3b820fd4ef2fd30535f360073651026dba"
+    },
+    {
+      "path": "docs",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "b80cd83d7134ea2e85895cc62597860429e099be",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/b80cd83d7134ea2e85895cc62597860429e099be"
+    },
+    {
+      "path": "docs/dev",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "f7a5cf0b5cf4aa89c9e2b06ef582c12c37b5ee64",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/f7a5cf0b5cf4aa89c9e2b06ef582c12c37b5ee64"
+    },
+    {
+      "path": "docs/dev/README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7bb786d0fb5cd5c3c9e32d675f1a307a609f93d8",
+      "size": 568,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/7bb786d0fb5cd5c3c9e32d675f1a307a609f93d8"
+    },
+    {
+      "path": "docs/dev/adb_tradeinmode.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7604b6ec9d341adf2df80973aac6239f6aa27778",
+      "size": 3091,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/7604b6ec9d341adf2df80973aac6239f6aa27778"
+    },
+    {
+      "path": "docs/dev/adb_wifi.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "647b19e7b715c742bc172931a3ea5da29facaf7e",
+      "size": 8624,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/647b19e7b715c742bc172931a3ea5da29facaf7e"
+    },
+    {
+      "path": "docs/dev/adb_wifi_assets",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "d7e7e64a5636f28a1e02d1b767ed0134624d7b26",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/d7e7e64a5636f28a1e02d1b767ed0134624d7b26"
+    },
+    {
+      "path": "docs/dev/adb_wifi_assets/pairing_dialog.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "301be7909d66c46a3a2910002956edc2e4a26832",
+      "size": 77855,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/301be7909d66c46a3a2910002956edc2e4a26832"
+    },
+    {
+      "path": "docs/dev/adb_wifi_assets/qrcode.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e8f7a5f516aab700449d94af7b4d6a4922cfee07",
+      "size": 8579,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/e8f7a5f516aab700449d94af7b4d6a4922cfee07"
+    },
+    {
+      "path": "docs/dev/adbd_framework.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "333971047a22dfce4caf10e695c906ac3f1e6b33",
+      "size": 2766,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/333971047a22dfce4caf10e695c906ac3f1e6b33"
+    },
+    {
+      "path": "docs/dev/asocket.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d6efb64b7d939d987eac300c91ba6951eb82b44f",
+      "size": 15562,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/d6efb64b7d939d987eac300c91ba6951eb82b44f"
+    },
+    {
+      "path": "docs/dev/debugging.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "73a351d64b96b26875ea08633699c655ade19779",
+      "size": 1950,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/73a351d64b96b26875ea08633699c655ade19779"
+    },
+    {
+      "path": "docs/dev/delayed_ack.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c714ff641a2dda56adb7cf187365e7f8b8191999",
+      "size": 4880,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/c714ff641a2dda56adb7cf187365e7f8b8191999"
+    },
+    {
+      "path": "docs/dev/how_adbd_starts.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6d77c95c56bad7213fe972e11f359e1ec58be30d",
+      "size": 6972,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/6d77c95c56bad7213fe972e11f359e1ec58be30d"
+    },
+    {
+      "path": "docs/dev/incremental-install.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2f320aa6870c7638bff926c5e2dd0df39a0f1fd2",
+      "size": 7624,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/2f320aa6870c7638bff926c5e2dd0df39a0f1fd2"
+    },
+    {
+      "path": "docs/dev/internals.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "68d3831d5b501c4e000b8c0ec9ea556a67afbd60",
+      "size": 8455,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/68d3831d5b501c4e000b8c0ec9ea556a67afbd60"
+    },
+    {
+      "path": "docs/dev/keystore.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c3ac6dd83b72e98f4ac1f7622710e6ec60042001",
+      "size": 4672,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/c3ac6dd83b72e98f4ac1f7622710e6ec60042001"
+    },
+    {
+      "path": "docs/dev/mdns.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "06b422d882cad2bd95d04418faaca505bf1796c3",
+      "size": 1903,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/06b422d882cad2bd95d04418faaca505bf1796c3"
+    },
+    {
+      "path": "docs/dev/overview.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e0ff83371e42e5742bd589bc69e70489344ddd04",
+      "size": 5354,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/e0ff83371e42e5742bd589bc69e70489344ddd04"
+    },
+    {
+      "path": "docs/dev/protocol.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "24414f9531da00f0498159b0808dce8a071bd1a6",
+      "size": 12253,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/24414f9531da00f0498159b0808dce8a071bd1a6"
+    },
+    {
+      "path": "docs/dev/root.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cbb199810decd3a0329233f018c8639a296ca063",
+      "size": 1456,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/cbb199810decd3a0329233f018c8639a296ca063"
+    },
+    {
+      "path": "docs/dev/services.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "384410b5c4bcee569622793499c9f20f9cafe8d3",
+      "size": 12266,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/384410b5c4bcee569622793499c9f20f9cafe8d3"
+    },
+    {
+      "path": "docs/dev/socket-activation.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fbea073fbf76d2fbde0de295784da8d94f055da9",
+      "size": 1457,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/fbea073fbf76d2fbde0de295784da8d94f055da9"
+    },
+    {
+      "path": "docs/dev/sync.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6bd7508e83b6a471c52e0eb456bcde9b44fb8b82",
+      "size": 3610,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/6bd7508e83b6a471c52e0eb456bcde9b44fb8b82"
+    },
+    {
+      "path": "docs/dev/zero_length_packet.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0d7df3a3c3038e6ddd0fa0b67760a245ea62e92a",
+      "size": 12461,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/0d7df3a3c3038e6ddd0fa0b67760a245ea62e92a"
+    },
+    {
+      "path": "docs/user",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "c16ac49b58fa6c147b838bf216e0f4d5aa1e0e9a",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/c16ac49b58fa6c147b838bf216e0f4d5aa1e0e9a"
+    },
+    {
+      "path": "docs/user/adb.1.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "732c87dc3bde81244ee146bbca6cb0ec6ecc0409",
+      "size": 13770,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/732c87dc3bde81244ee146bbca6cb0ec6ecc0409"
+    },
+    {
+      "path": "docs/user/archives.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "12143102ca99af97cced27863044c11cf6c773ce",
+      "size": 12885,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/12143102ca99af97cced27863044c11cf6c773ce"
+    },
+    {
+      "path": "docs/user/trace.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fa6a4e43157d8ff87adc44924a4ecc602d5d42cd",
+      "size": 2463,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/fa6a4e43157d8ff87adc44924a4ecc602d5d42cd"
+    },
+    {
+      "path": "fastdeploy",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "bc50f6788857540ede2688742a7a573d0def5a27",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/bc50f6788857540ede2688742a7a573d0def5a27"
+    },
+    {
+      "path": "fastdeploy/Android.bp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "86e1fdf230f5603397263a50327bc0c665fa53b7",
+      "size": 2666,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/86e1fdf230f5603397263a50327bc0c665fa53b7"
+    },
+    {
+      "path": "fastdeploy/AndroidManifest.xml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "89dc7451bde41ce53a19937628e6024a8b15abae",
+      "size": 1154,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/89dc7451bde41ce53a19937628e6024a8b15abae"
+    },
+    {
+      "path": "fastdeploy/FastDeployHostDrivenTests.xml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7208230eb9c5c96bdae1e96259aa1051a676322c",
+      "size": 973,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/7208230eb9c5c96bdae1e96259aa1051a676322c"
+    },
+    {
+      "path": "fastdeploy/FastDeployTests.xml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5eb3999e0586d0b58c536c0c3bb5d55055e4748a",
+      "size": 1630,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/5eb3999e0586d0b58c536c0c3bb5d55055e4748a"
+    },
+    {
+      "path": "fastdeploy/OWNERS",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d1458348a2145d420c1c3e797f6c10695b060b96",
+      "size": 18,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/d1458348a2145d420c1c3e797f6c10695b060b96"
+    },
+    {
+      "path": "fastdeploy/deployagent",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "ddfb45e30d7bf045cea6bc4fcde368847fd0c4d1",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/ddfb45e30d7bf045cea6bc4fcde368847fd0c4d1"
+    },
+    {
+      "path": "fastdeploy/deployagent/deployagent.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "91576ca18c36164c49eba08c9194a91cadaa2ac1",
+      "size": 140,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/91576ca18c36164c49eba08c9194a91cadaa2ac1"
+    },
+    {
+      "path": "fastdeploy/deployagent/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "041b8ec471484c53635a578648f35f6a6c61a48b",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/041b8ec471484c53635a578648f35f6a6c61a48b"
+    },
+    {
+      "path": "fastdeploy/deployagent/src/com",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "0f84a91f39710ef394eb8ae020e02928feb5b7ac",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/0f84a91f39710ef394eb8ae020e02928feb5b7ac"
+    },
+    {
+      "path": "fastdeploy/deployagent/src/com/android",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "8385d17d5e5bcdc948a30e71f9e439a444cec6bc",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/8385d17d5e5bcdc948a30e71f9e439a444cec6bc"
+    },
+    {
+      "path": "fastdeploy/deployagent/src/com/android/fastdeploy",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "090420be5ad27e017a826b64beeb5581b4cf2d47",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/090420be5ad27e017a826b64beeb5581b4cf2d47"
+    },
+    {
+      "path": "fastdeploy/deployagent/src/com/android/fastdeploy/ApkArchive.java",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "31e05023ca1125e64782902ac3944e18e59ac005",
+      "size": 6803,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/31e05023ca1125e64782902ac3944e18e59ac005"
+    },
+    {
+      "path": "fastdeploy/deployagent/src/com/android/fastdeploy/DeployAgent.java",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8f72419f98c4ded33eeebf394478c22e3248cdb8",
+      "size": 13224,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/8f72419f98c4ded33eeebf394478c22e3248cdb8"
+    },
+    {
+      "path": "fastdeploy/deployagent/src/com/android/fastdeploy/PatchFormatException.java",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f0655f325cf59e65323c0e2bd9230ac692f77b0e",
+      "size": 1172,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/f0655f325cf59e65323c0e2bd9230ac692f77b0e"
+    },
+    {
+      "path": "fastdeploy/deployagent/src/com/android/fastdeploy/PatchUtils.java",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "54be26f651e41d307da964b5f6f1abfed344bbe7",
+      "size": 2560,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/54be26f651e41d307da964b5f6f1abfed344bbe7"
+    },
+    {
+      "path": "fastdeploy/deployagent/test",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "487958cfa5f7ce86399546a7d2efd208982fb87e",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/487958cfa5f7ce86399546a7d2efd208982fb87e"
+    },
+    {
+      "path": "fastdeploy/deployagent/test/com",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "076f3fa482ea515c8e13923e6fdb256b64eea1c0",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/076f3fa482ea515c8e13923e6fdb256b64eea1c0"
+    },
+    {
+      "path": "fastdeploy/deployagent/test/com/android",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "94f10a88bafd6f27b4b06317f14f70257124e687",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/94f10a88bafd6f27b4b06317f14f70257124e687"
+    },
+    {
+      "path": "fastdeploy/deployagent/test/com/android/fastdeploy",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "72c08212cc76b2b9f2a627af5c64a5a1acbbd662",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/72c08212cc76b2b9f2a627af5c64a5a1acbbd662"
+    },
+    {
+      "path": "fastdeploy/deployagent/test/com/android/fastdeploy/ApkArchiveTest.java",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7c2468f5242e8853ae5aae212c53405ee35027ad",
+      "size": 2477,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/7c2468f5242e8853ae5aae212c53405ee35027ad"
+    },
+    {
+      "path": "fastdeploy/deployagent/test/com/android/fastdeploy/FastDeployTest.java",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4aa2f79bb8d8bef1fb336d8966b41c4cd45138cb",
+      "size": 3439,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/4aa2f79bb8d8bef1fb336d8966b41c4cd45138cb"
+    },
+    {
+      "path": "fastdeploy/deploypatchgenerator",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "44e54d58a500c1c3a47f4d97e143a603557b56e7",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/44e54d58a500c1c3a47f4d97e143a603557b56e7"
+    },
+    {
+      "path": "fastdeploy/deploypatchgenerator/apk_archive.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e1a69c0373d8ae65d8cf3d823c986f171401627b",
+      "size": 15415,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/e1a69c0373d8ae65d8cf3d823c986f171401627b"
+    },
+    {
+      "path": "fastdeploy/deploypatchgenerator/apk_archive.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7127800a93d920447d0945c9e85f08bf71607c0f",
+      "size": 2632,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/7127800a93d920447d0945c9e85f08bf71607c0f"
+    },
+    {
+      "path": "fastdeploy/deploypatchgenerator/apk_archive_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "554cb570eee81935246be718cac4f1587d75381f",
+      "size": 2353,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/554cb570eee81935246be718cac4f1587d75381f"
+    },
+    {
+      "path": "fastdeploy/deploypatchgenerator/deploy_patch_generator.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d522860bafd7371b7607352b274e0fb5c3dfa5e3",
+      "size": 9954,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/d522860bafd7371b7607352b274e0fb5c3dfa5e3"
+    },
+    {
+      "path": "fastdeploy/deploypatchgenerator/deploy_patch_generator.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "77ada97f14fd66004bb3ac769c7bef7e487df831",
+      "size": 4225,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/77ada97f14fd66004bb3ac769c7bef7e487df831"
+    },
+    {
+      "path": "fastdeploy/deploypatchgenerator/deploy_patch_generator_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e4c96eaffa17361cc38894e834a4c779c749ac12",
+      "size": 3063,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/e4c96eaffa17361cc38894e834a4c779c749ac12"
+    },
+    {
+      "path": "fastdeploy/deploypatchgenerator/patch_utils.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0cc3e3e10281e073b362cce1767186f321349c7c",
+      "size": 3542,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/0cc3e3e10281e073b362cce1767186f321349c7c"
+    },
+    {
+      "path": "fastdeploy/deploypatchgenerator/patch_utils.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8dc9b9cb2a617bca0fa184835e1c753ccb0c8ff3",
+      "size": 2147,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/8dc9b9cb2a617bca0fa184835e1c753ccb0c8ff3"
+    },
+    {
+      "path": "fastdeploy/deploypatchgenerator/patch_utils_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f5af71994812f40830fecc4e3803aa6fbceea39a",
+      "size": 4431,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/f5af71994812f40830fecc4e3803aa6fbceea39a"
+    },
+    {
+      "path": "fastdeploy/proto",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "fcc8838b8fc2da1feb05df7cd27dcbf6250a5228",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/fcc8838b8fc2da1feb05df7cd27dcbf6250a5228"
+    },
+    {
+      "path": "fastdeploy/proto/ApkEntry.proto",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ed5056e68e85a244d1fc938c6b2b99c721d7c657",
+      "size": 479,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/ed5056e68e85a244d1fc938c6b2b99c721d7c657"
+    },
+    {
+      "path": "fastdeploy/testdata",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "877882edd6fe6111ab6ef98201e84e7e726479c2",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/877882edd6fe6111ab6ef98201e84e7e726479c2"
+    },
+    {
+      "path": "fastdeploy/testdata/helloworld5.apk",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4a1539ecdc4ef0408a14ea2aa40d4aef3ba4f50f",
+      "size": 1998764,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/4a1539ecdc4ef0408a14ea2aa40d4aef3ba4f50f"
+    },
+    {
+      "path": "fastdeploy/testdata/helloworld7.apk",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "82c46df80e6840564ffc8e69588289a388271465",
+      "size": 1998764,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/82c46df80e6840564ffc8e69588289a388271465"
+    },
+    {
+      "path": "fastdeploy/testdata/rotating_cube-metadata-release.data",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "52352ff71287154a77a861bcc7ee7238fcd863c3",
+      "size": 176,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/52352ff71287154a77a861bcc7ee7238fcd863c3"
+    },
+    {
+      "path": "fastdeploy/testdata/rotating_cube-release.apk",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d47e0ea07f695398c937efab4a86b6857cddc657",
+      "size": 1340423,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/d47e0ea07f695398c937efab4a86b6857cddc657"
+    },
+    {
+      "path": "fastdeploy/testdata/sample.apk",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c31620572b89dde0c761d9c14c06431fa9b94d52",
+      "size": 2093557,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/c31620572b89dde0c761d9c14c06431fa9b94d52"
+    },
+    {
+      "path": "fastdeploy/testdata/sample.cd",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5e5b4d4c83f6e6781bca696503a0762caa860e85",
+      "size": 49390,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/5e5b4d4c83f6e6781bca696503a0762caa860e85"
+    },
+    {
+      "path": "fdevent",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "a32df571adc32045b9406a9bbabe09d6018ac815",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/a32df571adc32045b9406a9bbabe09d6018ac815"
+    },
+    {
+      "path": "fdevent/fdevent.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6ae120b89cdce98610298a2dc283ed114bcfbb39",
+      "size": 7517,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/6ae120b89cdce98610298a2dc283ed114bcfbb39"
+    },
+    {
+      "path": "fdevent/fdevent.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "61d569884473d90e4a168657a7991013703c47cc",
+      "size": 5682,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/61d569884473d90e4a168657a7991013703c47cc"
+    },
+    {
+      "path": "fdevent/fdevent_epoll.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "54471a5c62255cd27708e7f459c00438d2d6f3b1",
+      "size": 6783,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/54471a5c62255cd27708e7f459c00438d2d6f3b1"
+    },
+    {
+      "path": "fdevent/fdevent_epoll.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6214d2e2724276391c59f557bcb1b5052f817755",
+      "size": 1418,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/6214d2e2724276391c59f557bcb1b5052f817755"
+    },
+    {
+      "path": "fdevent/fdevent_poll.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9b66518b6cd91902f1cb00dec17e55d03b2157e9",
+      "size": 6423,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/9b66518b6cd91902f1cb00dec17e55d03b2157e9"
+    },
+    {
+      "path": "fdevent/fdevent_poll.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8803e3ec91cb1755b26aad414ecb3fa0dd83e90d",
+      "size": 1760,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/8803e3ec91cb1755b26aad414ecb3fa0dd83e90d"
+    },
+    {
+      "path": "fdevent/fdevent_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2c530e18efe5d7f510c8ef0ceb1a9a595347e35f",
+      "size": 12665,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/2c530e18efe5d7f510c8ef0ceb1a9a595347e35f"
+    },
+    {
+      "path": "fdevent/fdevent_test.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2e7df2c1d8ad2f4a6a739fc8905c291e527c4944",
+      "size": 2058,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/2e7df2c1d8ad2f4a6a739fc8905c291e527c4944"
+    },
+    {
+      "path": "file_sync_protocol.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d9f7f845e05aa7a58336469c3b185e85448188de",
+      "size": 3814,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/d9f7f845e05aa7a58336469c3b185e85448188de"
+    },
+    {
+      "path": "libs",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "08bcd1da318f75db0b87981e907443c6d0dd4977",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/08bcd1da318f75db0b87981e907443c6d0dd4977"
+    },
+    {
+      "path": "libs/.clang-format",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a4e23f8603713eef1450d195cb5ad40ce20f2d55",
+      "size": 239,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/a4e23f8603713eef1450d195cb5ad40ce20f2d55"
+    },
+    {
+      "path": "libs/adbconnection",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "ce11a6a74374584ce50c546b8759036d43d9888a",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/ce11a6a74374584ce50c546b8759036d43d9888a"
+    },
+    {
+      "path": "libs/adbconnection/.clang-format",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a4e23f8603713eef1450d195cb5ad40ce20f2d55",
+      "size": 239,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/a4e23f8603713eef1450d195cb5ad40ce20f2d55"
+    },
+    {
+      "path": "libs/adbconnection/Android.bp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3ae868c9be949e7c794949e1018c0f24da62f233",
+      "size": 2735,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/3ae868c9be949e7c794949e1018c0f24da62f233"
+    },
+    {
+      "path": "libs/adbconnection/adbconnection_client.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1d06a976e174575634cbf9753d0647e8a22a5891",
+      "size": 8974,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/1d06a976e174575634cbf9753d0647e8a22a5891"
+    },
+    {
+      "path": "libs/adbconnection/adbconnection_server.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2413ee608e2fcdb9c52459b945efe7649e984128",
+      "size": 4824,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/2413ee608e2fcdb9c52459b945efe7649e984128"
+    },
+    {
+      "path": "libs/adbconnection/common.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "66aca456ad3e9d19451a110ca76b77f2d3bf4152",
+      "size": 2662,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/66aca456ad3e9d19451a110ca76b77f2d3bf4152"
+    },
+    {
+      "path": "libs/adbconnection/include",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "e2af93ebbf3c7b289e445ae2d89a2d2f90628e3a",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/e2af93ebbf3c7b289e445ae2d89a2d2f90628e3a"
+    },
+    {
+      "path": "libs/adbconnection/include/adbconnection",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "6f8349af2de6759fc54920cbf23668273ce6aca7",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/6f8349af2de6759fc54920cbf23668273ce6aca7"
+    },
+    {
+      "path": "libs/adbconnection/include/adbconnection/client.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e11af0d19323b6299f6ecf522c4b2861fb7b7289",
+      "size": 4083,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/e11af0d19323b6299f6ecf522c4b2861fb7b7289"
+    },
+    {
+      "path": "libs/adbconnection/include/adbconnection/common.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "46eba031b95958c081357f0a28afebc5406e5750",
+      "size": 1265,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/46eba031b95958c081357f0a28afebc5406e5750"
+    },
+    {
+      "path": "libs/adbconnection/include/adbconnection/server.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "65102c318828bf91534b76ce21772efc31f2d19c",
+      "size": 968,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/65102c318828bf91534b76ce21772efc31f2d19c"
+    },
+    {
+      "path": "libs/adbconnection/libadbconnection_client.map.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0f43b0778be903e7ce6a486bb2ea07a46ceef79a",
+      "size": 1264,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/0f43b0778be903e7ce6a486bb2ea07a46ceef79a"
+    },
+    {
+      "path": "libs/adbconnection/tests.cc",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f44550aaa3aa95b9c112f8ed78783a5078eae4f1",
+      "size": 4111,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/f44550aaa3aa95b9c112f8ed78783a5078eae4f1"
+    },
+    {
+      "path": "libs/libadbd_fs",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "11cc293de4c1ddd72af5234644e12e73b67661b6",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/11cc293de4c1ddd72af5234644e12e73b67661b6"
+    },
+    {
+      "path": "libs/libadbd_fs/Android.bp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9d74d5dec71ccd5487b2c10bb5fa7968340c0ade",
+      "size": 1025,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/9d74d5dec71ccd5487b2c10bb5fa7968340c0ade"
+    },
+    {
+      "path": "libs/libadbd_fs/adbd_fs.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e2425ef39d2efcb2befa820af201a3907440d551",
+      "size": 1163,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/e2425ef39d2efcb2befa820af201a3907440d551"
+    },
+    {
+      "path": "libs/libadbd_fs/include",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "00411c556e6324e4ac4ca793c1b02c35bb3b77c2",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/00411c556e6324e4ac4ca793c1b02c35bb3b77c2"
+    },
+    {
+      "path": "libs/libadbd_fs/include/adbd_fs.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1c0895c696b7af35a5c2fb37bb0541c09fee2afc",
+      "size": 901,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/1c0895c696b7af35a5c2fb37bb0541c09fee2afc"
+    },
+    {
+      "path": "libs/libadbd_fs/libadbd_fs.map.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bace3637d206ef69446db9e7da9f73fe62639190",
+      "size": 74,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/bace3637d206ef69446db9e7da9f73fe62639190"
+    },
+    {
+      "path": "mdns_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1f662c1cada28cae475f7b12fd57ebc41af316fe",
+      "size": 3646,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/1f662c1cada28cae475f7b12fd57ebc41af316fe"
+    },
+    {
+      "path": "pairing_auth",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "57f68318f546624e457e0fd8df546b37fb8abe76",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/57f68318f546624e457e0fd8df546b37fb8abe76"
+    },
+    {
+      "path": "pairing_auth/Android.bp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1d6dd986f5d4719920cae6ef37b2fe96bd9f8df5",
+      "size": 2353,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/1d6dd986f5d4719920cae6ef37b2fe96bd9f8df5"
+    },
+    {
+      "path": "pairing_auth/aes_128_gcm.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2d5f86fa8117586a1b024319eefe3df546e30fe4",
+      "size": 3411,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/2d5f86fa8117586a1b024319eefe3df546e30fe4"
+    },
+    {
+      "path": "pairing_auth/include",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "ccca2b2934dba5741319ba42fb9032c4d9a58d27",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/ccca2b2934dba5741319ba42fb9032c4d9a58d27"
+    },
+    {
+      "path": "pairing_auth/include/adb",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "d47f225d066afa8f4c9585a806a030615113a5f9",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/d47f225d066afa8f4c9585a806a030615113a5f9"
+    },
+    {
+      "path": "pairing_auth/include/adb/pairing",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "370e4a00ed921bec9a79518dfbf024fd84da45c8",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/370e4a00ed921bec9a79518dfbf024fd84da45c8"
+    },
+    {
+      "path": "pairing_auth/include/adb/pairing/aes_128_gcm.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6be58569048b77cbe995ccaae24bf84d90453c7d",
+      "size": 2515,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/6be58569048b77cbe995ccaae24bf84d90453c7d"
+    },
+    {
+      "path": "pairing_auth/include/adb/pairing/pairing_auth.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ee0412fbf3f2e9f3a6589aee1ef8dda917c2779b",
+      "size": 7732,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/ee0412fbf3f2e9f3a6589aee1ef8dda917c2779b"
+    },
+    {
+      "path": "pairing_auth/libadb_pairing_auth.map.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fdc15570b5b39998fd5536d74c93433f494265bb",
+      "size": 563,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/fdc15570b5b39998fd5536d74c93433f494265bb"
+    },
+    {
+      "path": "pairing_auth/pairing_auth.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0cf43a3bdf1118ab8d3ce2d2e0920a9a55b17027",
+      "size": 9603,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/0cf43a3bdf1118ab8d3ce2d2e0920a9a55b17027"
+    },
+    {
+      "path": "pairing_auth/tests",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "20cd4bc1b3a6f3b5d65980fa28d5f643c258f57e",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/20cd4bc1b3a6f3b5d65980fa28d5f643c258f57e"
+    },
+    {
+      "path": "pairing_auth/tests/Android.bp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "49ec8014daab572eb659dc205575573b9bb4b1e7",
+      "size": 1154,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/49ec8014daab572eb659dc205575573b9bb4b1e7"
+    },
+    {
+      "path": "pairing_auth/tests/aes_128_gcm_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "55689d67adbcc542b33b4d787d3d003f4bb56128",
+      "size": 2095,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/55689d67adbcc542b33b4d787d3d003f4bb56128"
+    },
+    {
+      "path": "pairing_auth/tests/pairing_auth_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "52b4953182e370ad5e20b233b01c13ff441a628d",
+      "size": 13901,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/52b4953182e370ad5e20b233b01c13ff441a628d"
+    },
+    {
+      "path": "pairing_connection",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "e97a8c10b7ee9786ab9ef6fbefd3ba1f427c080f",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/e97a8c10b7ee9786ab9ef6fbefd3ba1f427c080f"
+    },
+    {
+      "path": "pairing_connection/Android.bp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bc9c6b29c7bd8f2b1c84e899ca93ecc99bb4644d",
+      "size": 4914,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/bc9c6b29c7bd8f2b1c84e899ca93ecc99bb4644d"
+    },
+    {
+      "path": "pairing_connection/include",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "32280d3131a4f8644837649126196c9cfda1808a",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/32280d3131a4f8644837649126196c9cfda1808a"
+    },
+    {
+      "path": "pairing_connection/include/adb",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "d56085e6057da29cab5053f58a8af023efe44e7c",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/d56085e6057da29cab5053f58a8af023efe44e7c"
+    },
+    {
+      "path": "pairing_connection/include/adb/pairing",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "c62dc3d45ec06235b1f79484585ad4b6b479e27e",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/c62dc3d45ec06235b1f79484585ad4b6b479e27e"
+    },
+    {
+      "path": "pairing_connection/include/adb/pairing/pairing_connection.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "987641716aed4f86b4e209c4a533af36dfe93a25",
+      "size": 6056,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/987641716aed4f86b4e209c4a533af36dfe93a25"
+    },
+    {
+      "path": "pairing_connection/include/adb/pairing/pairing_server.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2a8ab17d9d4d0a1dd18be2ce3ae24850e1681869",
+      "size": 5821,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/2a8ab17d9d4d0a1dd18be2ce3ae24850e1681869"
+    },
+    {
+      "path": "pairing_connection/internal",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "df9d9b4c100458918903b723eca376f621e229d4",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/df9d9b4c100458918903b723eca376f621e229d4"
+    },
+    {
+      "path": "pairing_connection/internal/constants.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9a04f174e81c6e41e7ded1d135803a0185a5051a",
+      "size": 1218,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/9a04f174e81c6e41e7ded1d135803a0185a5051a"
+    },
+    {
+      "path": "pairing_connection/libadb_pairing_connection.map.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "abd5f16d42d509b1000620a98416fee114c05fec",
+      "size": 274,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/abd5f16d42d509b1000620a98416fee114c05fec"
+    },
+    {
+      "path": "pairing_connection/libadb_pairing_server.map.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "77aec15239406416479f3e2bbbccb7f60c5da3da",
+      "size": 453,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/77aec15239406416479f3e2bbbccb7f60c5da3da"
+    },
+    {
+      "path": "pairing_connection/pairing_connection.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ffe49a91e34c263c69a34bc002e4a4e4c17c8e11",
+      "size": 17891,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/ffe49a91e34c263c69a34bc002e4a4e4c17c8e11"
+    },
+    {
+      "path": "pairing_connection/pairing_server.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a18ac74b9159d9f6c5a74d2f9f51ed2f4b50adb3",
+      "size": 18176,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/a18ac74b9159d9f6c5a74d2f9f51ed2f4b50adb3"
+    },
+    {
+      "path": "pairing_connection/tests",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "278d6f1ab420f05d8cd19b06590abfb13649fbcd",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/278d6f1ab420f05d8cd19b06590abfb13649fbcd"
+    },
+    {
+      "path": "pairing_connection/tests/Android.bp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "24171dacd9e3f18da438cf02dba28c3b01b54c93",
+      "size": 1517,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/24171dacd9e3f18da438cf02dba28c3b01b54c93"
+    },
+    {
+      "path": "pairing_connection/tests/pairing_client.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1f3ef5a349eccf2d2f7aa2919c0a14dba7012292",
+      "size": 6605,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/1f3ef5a349eccf2d2f7aa2919c0a14dba7012292"
+    },
+    {
+      "path": "pairing_connection/tests/pairing_client.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "be0db5ce4c10450af09f7cc8edb11ba9e4d786ea",
+      "size": 2428,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/be0db5ce4c10450af09f7cc8edb11ba9e4d786ea"
+    },
+    {
+      "path": "pairing_connection/tests/pairing_connection_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "acb4aca6a73d464a1256fa2b632f24d2ec002685",
+      "size": 24782,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/acb4aca6a73d464a1256fa2b632f24d2ec002685"
+    },
+    {
+      "path": "proto",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "c16542390b5269b8206882ca49da191b024670d5",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/c16542390b5269b8206882ca49da191b024670d5"
+    },
+    {
+      "path": "proto/Android.bp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1c14a36dc978b028b390cf840d3ad95d443f7900",
+      "size": 4238,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/1c14a36dc978b028b390cf840d3ad95d443f7900"
+    },
+    {
+      "path": "proto/adb_host.proto",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3a9b3949b394c2d900e697042f69f1fdaaa4637c",
+      "size": 3671,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/3a9b3949b394c2d900e697042f69f1fdaaa4637c"
+    },
+    {
+      "path": "proto/adb_known_hosts.proto",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "85d1489ff3aa6cc0fed2a22d8922150a02f6597d",
+      "size": 943,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/85d1489ff3aa6cc0fed2a22d8922150a02f6597d"
+    },
+    {
+      "path": "proto/app_processes.proto",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5c1d6651e16dd828cc28684083ef1b24a747ac3d",
+      "size": 1165,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/5c1d6651e16dd828cc28684083ef1b24a747ac3d"
+    },
+    {
+      "path": "proto/jarjar-rules.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4e40637063528d678d9879c56f02bb9f345fa8a4",
+      "size": 62,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/4e40637063528d678d9879c56f02bb9f345fa8a4"
+    },
+    {
+      "path": "proto/key_type.proto",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ed451c51142a9311bb9301af8350aef7994fa1fe",
+      "size": 798,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/ed451c51142a9311bb9301af8350aef7994fa1fe"
+    },
+    {
+      "path": "proto/pairing.proto",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b0be20e530bddf5dc3a1f0ea5f305373a7d947e1",
+      "size": 910,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/b0be20e530bddf5dc3a1f0ea5f305373a7d947e1"
+    },
+    {
+      "path": "root",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "2fb801eeef3f81c2646cf6b89c8f5150cf5824ac",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/2fb801eeef3f81c2646cf6b89c8f5150cf5824ac"
+    },
+    {
+      "path": "root/adb_root.rc",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8c65c0b5c7bf6862d428051ee4694fc75b165304",
+      "size": 142,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/8c65c0b5c7bf6862d428051ee4694fc75b165304"
+    },
+    {
+      "path": "root/adbroot_service.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bbf94438d34292baa5ab643793af43046283709f",
+      "size": 4676,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/bbf94438d34292baa5ab643793af43046283709f"
+    },
+    {
+      "path": "root/adbroot_service.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "80608f66763b9d86f5552b9fa24a41eda1f67f31",
+      "size": 1351,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/80608f66763b9d86f5552b9fa24a41eda1f67f31"
+    },
+    {
+      "path": "root/main.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "84cac2febe31ca13ba0e252abbfda62bb6b13052",
+      "size": 999,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/84cac2febe31ca13ba0e252abbfda62bb6b13052"
+    },
+    {
+      "path": "run-device-tests.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "5155a4af062078050b30b369913775a321f52ba3",
+      "size": 191,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/5155a4af062078050b30b369913775a321f52ba3"
+    },
+    {
+      "path": "rustfmt.toml",
+      "mode": "120000",
+      "type": "blob",
+      "sha": "475ba8fde76f71f9974bbc4626091747e35ec757",
+      "size": 41,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/475ba8fde76f71f9974bbc4626091747e35ec757"
+    },
+    {
+      "path": "security_log_tags.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1d02744948e78363023644f7ece8fb44e8eddb83",
+      "size": 1056,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/1d02744948e78363023644f7ece8fb44e8eddb83"
+    },
+    {
+      "path": "services.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "de9f6287575e506860c178cabca09ec48a00b8fe",
+      "size": 11187,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/de9f6287575e506860c178cabca09ec48a00b8fe"
+    },
+    {
+      "path": "services.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "800ab7a851957f4c1c335f1be9980b8d86594e53",
+      "size": 1219,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/800ab7a851957f4c1c335f1be9980b8d86594e53"
+    },
+    {
+      "path": "shell_protocol.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4aab8131c1b7c9a9542f45eb1d1c2680eca2ed28",
+      "size": 3922,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/4aab8131c1b7c9a9542f45eb1d1c2680eca2ed28"
+    },
+    {
+      "path": "shell_service_protocol.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "95afaffe71a1341b7663233afc0ffef85699d7b3",
+      "size": 1703,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/95afaffe71a1341b7663233afc0ffef85699d7b3"
+    },
+    {
+      "path": "shell_service_protocol_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a10b5c055e0ca56af819665c221542454204aa8e",
+      "size": 6061,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/a10b5c055e0ca56af819665c221542454204aa8e"
+    },
+    {
+      "path": "socket.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5e3dd0dbc125fd130afb4a14a6e5f2310a8ca815",
+      "size": 6843,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/5e3dd0dbc125fd130afb4a14a6e5f2310a8ca815"
+    },
+    {
+      "path": "socket_spec.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "391bfdb8644b5245848eb09b0382fc79e538c1ea",
+      "size": 17333,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/391bfdb8644b5245848eb09b0382fc79e538c1ea"
+    },
+    {
+      "path": "socket_spec.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dbbf17bf7a40c98001e4c96fe05a3e658444321b",
+      "size": 1735,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/dbbf17bf7a40c98001e4c96fe05a3e658444321b"
+    },
+    {
+      "path": "socket_spec_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1774f99badcfb2c3a2f1328d6d0d1e83e3c2d833",
+      "size": 17471,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/1774f99badcfb2c3a2f1328d6d0d1e83e3c2d833"
+    },
+    {
+      "path": "socket_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f1b64b7a68df0d6a617651311c58601b01aa42e8",
+      "size": 13430,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/f1b64b7a68df0d6a617651311c58601b01aa42e8"
+    },
+    {
+      "path": "sockets.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "edb42dd848ee2bf6ab1ef9352df65efb7a3a15c6",
+      "size": 31278,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/edb42dd848ee2bf6ab1ef9352df65efb7a3a15c6"
+    },
+    {
+      "path": "sockets.dia",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c626f20f0aa3ba846658cd95bb60d1792128afc5",
+      "size": 2333,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/c626f20f0aa3ba846658cd95bb60d1792128afc5"
+    },
+    {
+      "path": "sysdeps.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "79fc1e1949e4b7aea267dd5fd2132a93d3d59531",
+      "size": 25479,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/79fc1e1949e4b7aea267dd5fd2132a93d3d59531"
+    },
+    {
+      "path": "sysdeps",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "4350f1e28205601288a8e69caef290da9e582d0e",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/4350f1e28205601288a8e69caef290da9e582d0e"
+    },
+    {
+      "path": "sysdeps/chrono.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5c5af7cd6e6cfed8139652b75b08c9f3e3aed254",
+      "size": 692,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/5c5af7cd6e6cfed8139652b75b08c9f3e3aed254"
+    },
+    {
+      "path": "sysdeps/env.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "82d553a5fa4579dc08b8201ae11f14bc801d4523",
+      "size": 3004,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/82d553a5fa4579dc08b8201ae11f14bc801d4523"
+    },
+    {
+      "path": "sysdeps/env.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b39b675cbcc3b77e4cd659326c96629e300ff3a0",
+      "size": 1132,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/b39b675cbcc3b77e4cd659326c96629e300ff3a0"
+    },
+    {
+      "path": "sysdeps/errno.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e6af68b4859fe38e1098cd6ace0b85adcd06b0bf",
+      "size": 3067,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/e6af68b4859fe38e1098cd6ace0b85adcd06b0bf"
+    },
+    {
+      "path": "sysdeps/errno.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "72816b127f89ec25dafae30ec252e140e5f68f0a",
+      "size": 986,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/72816b127f89ec25dafae30ec252e140e5f68f0a"
+    },
+    {
+      "path": "sysdeps/network.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fadd15598b41c003427fd601547e408abd1df1a6",
+      "size": 810,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/fadd15598b41c003427fd601547e408abd1df1a6"
+    },
+    {
+      "path": "sysdeps/posix",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "ce30d43b1aac5c788e065eaad5a8221417f23414",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/ce30d43b1aac5c788e065eaad5a8221417f23414"
+    },
+    {
+      "path": "sysdeps/posix/network.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a4d9013d315adfa18ea92dbb67d5972e8721bc18",
+      "size": 4796,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/a4d9013d315adfa18ea92dbb67d5972e8721bc18"
+    },
+    {
+      "path": "sysdeps/stat.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ed2cf25fb04f404f94ca01ed91bef709a0864594",
+      "size": 2080,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/ed2cf25fb04f404f94ca01ed91bef709a0864594"
+    },
+    {
+      "path": "sysdeps/stat_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "67155d992464eefc0f8c4d1221e554897cc8d161",
+      "size": 1908,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/67155d992464eefc0f8c4d1221e554897cc8d161"
+    },
+    {
+      "path": "sysdeps/uio.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f3ace6429dc720998805a37afab68901159a1b9b",
+      "size": 1206,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/f3ace6429dc720998805a37afab68901159a1b9b"
+    },
+    {
+      "path": "sysdeps/win32",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "05970c2f67e36ddc6255ddbc4ae4980d05e01a0f",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/05970c2f67e36ddc6255ddbc4ae4980d05e01a0f"
+    },
+    {
+      "path": "sysdeps/win32/errno.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a3b9d9b9732437a15771aec041a379f9af97d7d2",
+      "size": 4158,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/a3b9d9b9732437a15771aec041a379f9af97d7d2"
+    },
+    {
+      "path": "sysdeps/win32/errno_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "09ec52c861fe62806796b131df82381fa3a40c4f",
+      "size": 1945,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/09ec52c861fe62806796b131df82381fa3a40c4f"
+    },
+    {
+      "path": "sysdeps/win32/stat.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "844c1ce9ae7893e36560fa9c26b5ba36d7dd7c22",
+      "size": 1911,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/844c1ce9ae7893e36560fa9c26b5ba36d7dd7c22"
+    },
+    {
+      "path": "sysdeps_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "692480033b58b9ca24867ee5b6789d40433618f1",
+      "size": 7165,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/692480033b58b9ca24867ee5b6789d40433618f1"
+    },
+    {
+      "path": "sysdeps_unix.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "db7c368bd16affa5934aecbfe8f94e0c563595fe",
+      "size": 4364,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/db7c368bd16affa5934aecbfe8f94e0c563595fe"
+    },
+    {
+      "path": "sysdeps_win32.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a2f7dab50f06b1aaa1920bae4b196b2f1c102ea0",
+      "size": 116101,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/a2f7dab50f06b1aaa1920bae4b196b2f1c102ea0"
+    },
+    {
+      "path": "sysdeps_win32_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "183cd5b59d6213b1c40040d86c71054cfdb24e61",
+      "size": 7220,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/183cd5b59d6213b1c40040d86c71054cfdb24e61"
+    },
+    {
+      "path": "test_adb.py",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "a32d8757d978f45c9e0b5468c2faedbf274f07bb",
+      "size": 34251,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/a32d8757d978f45c9e0b5468c2faedbf274f07bb"
+    },
+    {
+      "path": "test_device.py",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "c416395461bae993b826a6e9d6e7fc48f67a2a09",
+      "size": 86748,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/c416395461bae993b826a6e9d6e7fc48f67a2a09"
+    },
+    {
+      "path": "test_device_apks",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "d86ffd2d3ddd3d35afa8c0a44ca35fd2d1659dbd",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/d86ffd2d3ddd3d35afa8c0a44ca35fd2d1659dbd"
+    },
+    {
+      "path": "test_device_apks/Android.bp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "90a296da3727d1f21cea49390fcf48072ad07ffc",
+      "size": 1084,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/90a296da3727d1f21cea49390fcf48072ad07ffc"
+    },
+    {
+      "path": "test_device_apks/test_app1",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "9efcefbeb4987c2bdf194620f02208af09db24c6",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/9efcefbeb4987c2bdf194620f02208af09db24c6"
+    },
+    {
+      "path": "test_device_apks/test_app1/AndroidManifest.xml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9ed7b6d613d9bea9554cb2ebbf8a0cceb4de3470",
+      "size": 1027,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/9ed7b6d613d9bea9554cb2ebbf8a0cceb4de3470"
+    },
+    {
+      "path": "test_device_apks/test_app1/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "d9398f5a5706c6b5c217b26c757a7937917cea1d",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/d9398f5a5706c6b5c217b26c757a7937917cea1d"
+    },
+    {
+      "path": "test_device_apks/test_app1/src/adb",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "edd005dd7b83e60c5ee25fa2d56b047aa166e495",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/edd005dd7b83e60c5ee25fa2d56b047aa166e495"
+    },
+    {
+      "path": "test_device_apks/test_app1/src/adb/test",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "956a7389c591f8801331c94ab93423d31f252283",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/956a7389c591f8801331c94ab93423d31f252283"
+    },
+    {
+      "path": "test_device_apks/test_app1/src/adb/test/app1",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "9df312d0ac42d1affd3fb84412c3ae797ef81321",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/9df312d0ac42d1affd3fb84412c3ae797ef81321"
+    },
+    {
+      "path": "test_device_apks/test_app1/src/adb/test/app1/MainActivity.java",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8b2b535c8696876e86fe7df3c02da626dd679d89",
+      "size": 1021,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/8b2b535c8696876e86fe7df3c02da626dd679d89"
+    },
+    {
+      "path": "test_device_apks/test_app1/src/adb/test/app1/OwnProcessActivity.java",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7741b2370917d41ac068dd792f9b80f2f90efcd3",
+      "size": 1033,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/7741b2370917d41ac068dd792f9b80f2f90efcd3"
+    },
+    {
+      "path": "test_device_apks/test_app2",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "4a831ab0c0ae6a0a7e03af298ccb469256045b12",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/4a831ab0c0ae6a0a7e03af298ccb469256045b12"
+    },
+    {
+      "path": "test_device_apks/test_app2/AndroidManifest.xml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3b47cb9daae8f9634baab4feba2a385f1e6a7667",
+      "size": 714,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/3b47cb9daae8f9634baab4feba2a385f1e6a7667"
+    },
+    {
+      "path": "test_device_apks/test_app2/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "b1197072faed6b29cbf2fdde65097c3d6ea930f1",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/b1197072faed6b29cbf2fdde65097c3d6ea930f1"
+    },
+    {
+      "path": "test_device_apks/test_app2/src/adb",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "307883f7059c19245b22f5190bd544b2a8dec303",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/307883f7059c19245b22f5190bd544b2a8dec303"
+    },
+    {
+      "path": "test_device_apks/test_app2/src/adb/test",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "107a966c8820e031e80d15ca094b445d57ddb5d8",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/107a966c8820e031e80d15ca094b445d57ddb5d8"
+    },
+    {
+      "path": "test_device_apks/test_app2/src/adb/test/app2",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "d89da51fcf98fa3da0142ff8f73b17ed7f221e1e",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/d89da51fcf98fa3da0142ff8f73b17ed7f221e1e"
+    },
+    {
+      "path": "test_device_apks/test_app2/src/adb/test/app2/MainActivity.java",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ff48fdcc623286e3212e679e0d712a61d030b0e6",
+      "size": 1021,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/ff48fdcc623286e3212e679e0d712a61d030b0e6"
+    },
+    {
+      "path": "test_utils",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "41d30775728588026ad84b00c1922f1e49332f22",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/41d30775728588026ad84b00c1922f1e49332f22"
+    },
+    {
+      "path": "test_utils/test_utils.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9e7224473048c295bc0dc670b18d0f6ef7182ec8",
+      "size": 3817,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/9e7224473048c295bc0dc670b18d0f6ef7182ec8"
+    },
+    {
+      "path": "test_utils/test_utils.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6edcbcef382bd2de6c70e4812060279854b13d93",
+      "size": 1604,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/6edcbcef382bd2de6c70e4812060279854b13d93"
+    },
+    {
+      "path": "tls",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "9c957d666f642c09c68dcf89e027ccde1158bb4d",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/9c957d666f642c09c68dcf89e027ccde1158bb4d"
+    },
+    {
+      "path": "tls/Android.bp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0c8bec6209687ce652c50b961dba95dfd7304916",
+      "size": 2068,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/0c8bec6209687ce652c50b961dba95dfd7304916"
+    },
+    {
+      "path": "tls/adb_ca_list.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "36afe4209fe9067763b44a27149504a24ffff725",
+      "size": 5059,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/36afe4209fe9067763b44a27149504a24ffff725"
+    },
+    {
+      "path": "tls/include",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "6a05b038b4bc0e22edf6c7514a2e7851e74d245f",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/6a05b038b4bc0e22edf6c7514a2e7851e74d245f"
+    },
+    {
+      "path": "tls/include/adb",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "b1ccd661e455ceed343dc207a16665838a43f5f9",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/b1ccd661e455ceed343dc207a16665838a43f5f9"
+    },
+    {
+      "path": "tls/include/adb/tls",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "7aa25232d944534e48c1e8c2f632e6766e6c8e44",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/7aa25232d944534e48c1e8c2f632e6766e6c8e44"
+    },
+    {
+      "path": "tls/include/adb/tls/adb_ca_list.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a1ab9a77937fb64b178437bc88b7a97760b347fe",
+      "size": 1796,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/a1ab9a77937fb64b178437bc88b7a97760b347fe"
+    },
+    {
+      "path": "tls/include/adb/tls/tls_connection.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a112756c93aac90e32a4fd39811af74138fc8bdb",
+      "size": 4978,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/a112756c93aac90e32a4fd39811af74138fc8bdb"
+    },
+    {
+      "path": "tls/tests",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "d6b97a0dd80276f70b2240e8f1ae5e5353290625",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/d6b97a0dd80276f70b2240e8f1ae5e5353290625"
+    },
+    {
+      "path": "tls/tests/Android.bp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5e0f2ae04b62a0a2299a9565c02eb7fe80c37acc",
+      "size": 1269,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/5e0f2ae04b62a0a2299a9565c02eb7fe80c37acc"
+    },
+    {
+      "path": "tls/tests/adb_ca_list_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c727e5f1a11715ad36fdc7970cfc86871912bea6",
+      "size": 4694,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/c727e5f1a11715ad36fdc7970cfc86871912bea6"
+    },
+    {
+      "path": "tls/tests/tls_connection_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "27bc1c9289a6aa18601f3c317a28b9bfce187373",
+      "size": 27884,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/27bc1c9289a6aa18601f3c317a28b9bfce187373"
+    },
+    {
+      "path": "tls/tls_connection.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0ea3605fc622b6fd525b6bbfc4685731bf3dba45",
+      "size": 15568,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/0ea3605fc622b6fd525b6bbfc4685731bf3dba45"
+    },
+    {
+      "path": "tools",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "486d1a8d13a590c17dd8c0c2dc64b65bac1335c9",
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/trees/486d1a8d13a590c17dd8c0c2dc64b65bac1335c9"
+    },
+    {
+      "path": "tools/Android.bp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a6c3d9b05dd3952803d466804beb6e354f71c93b",
+      "size": 1544,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/a6c3d9b05dd3952803d466804beb6e354f71c93b"
+    },
+    {
+      "path": "tools/adb_usbreset.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6f141bd9229b269b99fe7345a4c9af1c3069a788",
+      "size": 6384,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/6f141bd9229b269b99fe7345a4c9af1c3069a788"
+    },
+    {
+      "path": "tools/check_ms_os_desc.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c0e8baeaae186d15190cf05727a4728a634c72b2",
+      "size": 9617,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/c0e8baeaae186d15190cf05727a4728a634c72b2"
+    },
+    {
+      "path": "trace.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "49e50264f778885a0a231cab61d1a47dab7c135a",
+      "size": 651,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/49e50264f778885a0a231cab61d1a47dab7c135a"
+    },
+    {
+      "path": "transfer_id.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c42471d6e41b6f1011c8ccd13e1a7fb341aca9a3",
+      "size": 2193,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/c42471d6e41b6f1011c8ccd13e1a7fb341aca9a3"
+    },
+    {
+      "path": "transport.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "66273fc09c5ccb50e55e276f8a76b893cb9372f2",
+      "size": 57764,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/66273fc09c5ccb50e55e276f8a76b893cb9372f2"
+    },
+    {
+      "path": "transport.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "365f3c4987bfe91413832678e4d8753dcd0cda23",
+      "size": 18639,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/365f3c4987bfe91413832678e4d8753dcd0cda23"
+    },
+    {
+      "path": "transport_benchmark.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "022808f290b3c3e87a6ede759737100393bd8060",
+      "size": 6924,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/022808f290b3c3e87a6ede759737100393bd8060"
+    },
+    {
+      "path": "transport_fd.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d26adc5339a15fbbb2e6b4f040eb8b8fec899608",
+      "size": 8053,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/d26adc5339a15fbbb2e6b4f040eb8b8fec899608"
+    },
+    {
+      "path": "transport_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9be3ad3452c4ab56775177451fe35511e4b796ed",
+      "size": 6729,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/9be3ad3452c4ab56775177451fe35511e4b796ed"
+    },
+    {
+      "path": "types.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9cdf32b9320d9796cd0655ddb28e4bf74eb56f1a",
+      "size": 6673,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/9cdf32b9320d9796cd0655ddb28e4bf74eb56f1a"
+    },
+    {
+      "path": "types.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ce88118ed151da8c2d4f2f41a0c04b16eb1459a5",
+      "size": 10912,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/ce88118ed151da8c2d4f2f41a0c04b16eb1459a5"
+    },
+    {
+      "path": "types_test.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "707b50053ab3ade9e0ad32f059dde5dffcf24063",
+      "size": 15471,
+      "url": "https://api.github.com/repos/LineageOS/android_packages_modules_adb/git/blobs/707b50053ab3ade9e0ad32f059dde5dffcf24063"
+    }
+  ],
+  "truncated": false
+}

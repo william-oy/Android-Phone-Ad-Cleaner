@@ -12,10 +12,13 @@ import android.content.Context
 class SuspendManager(context: Context) {
 
     private val keyManager = AdbKeyManager(context)
-    private val client = AdbClient(keyManager)
+    private val client = AdbClient(keyManager, context.applicationContext)
 
-    /** 连接本机 adbd（端口在无线调试设置页可见）。首次会弹「允许 USB 调试」。 */
+    /** 连接本机 adbd（经典 tcpip 协议，如 5555）。首次会弹「允许 USB 调试」。 */
     suspend fun connect(port: Int): Result<Unit> = client.connect(port)
+
+    /** 连接无线调试（TLS）端口（配对过的设备静默通过）。 */
+    suspend fun connectTls(port: Int): Result<Unit> = client.connectTls(port)
 
     /** 与配对端口完成 `adb pair`，成功后 [connect] 到连接端口即可免授权直连。 */
     suspend fun pair(port: Int, code: String): Result<Unit> = client.pair(port, code)

@@ -59,6 +59,7 @@ class WirelessDebugActivity : AppCompatActivity() {
         b.btnOpenSettings.setOnClickListener {
             startActivity(Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS))
         }
+        b.btnAutoPair.setOnClickListener { onAutoPair() }
         b.btnConnect.setOnClickListener { onConnect() }
         b.btnPair.setOnClickListener { onPair() }
         b.btnSuspendAll.setOnClickListener { suspendAll() }
@@ -89,13 +90,14 @@ class WirelessDebugActivity : AppCompatActivity() {
 
     // ---------- 连接 ----------
 
-    /** 打开页面自动连上次端口（或 5555 默认）：连上直接进入操作区，老人零输入。 */
+    /** 打开页面自动重连上次成功的端口（TLS/经典自动区分）：连上直接进入操作区，老人零输入。 */
     private fun tryAutoReconnect() {
         val port = AdbAutomation.resolvePort(this)
+        val tls = AdbAutomation.lastIsTls(this)
         b.tvStatus.text = getString(R.string.wd_auto_reconnecting)
         lifecycleScope.launch {
-            val r = manager.connect(port)
-            if (r.isSuccess) onConnected(port, auto = true) else resetToIdle()
+            val r = if (tls) manager.connectTls(port) else manager.connect(port)
+            if (r.isSuccess) onConnected(port, tls = tls) else resetToIdle()
         }
     }
 
@@ -107,12 +109,12 @@ class WirelessDebugActivity : AppCompatActivity() {
         b.containerActions.visibility = View.GONE
     }
 
-    private fun onConnected(port: Int, auto: Boolean) {
+    private fun onConnected(port: Int, tls: Boolean) {
         connectedPort = port
-        // 无论手动连还是自动重连成功，都记下端口：主界面一键清理与下次自动重连都靠它
-        AdbAutomation.saveLastPort(this, port)
-        b.tvStatus.text = if (auto) getString(R.string.wd_auto_connect_ok_fmt, port)
-        else getString(R.string.wd_status_connected)
+        // 无论手动连还是自动重连成功，都记下端口与模式：主界面一键清理与下次自动重连都靠它
+        AdbAutomation.saveLastPort(this, port, tls)
+        b.tvStatus.text = if (tls) getString(R.string.wd_tls_connected_fmt, port)
+        else getString(R.string.wd_auto_connect_ok_fmt, port)
         b.tvStatus.setTextColor(getColor(R.color.safe_green))
         b.tvStatus.setBackgroundResource(R.drawable.bg_status_safe)
         b.containerConnect.visibility = View.GONE
@@ -131,15 +133,78 @@ class WirelessDebugActivity : AppCompatActivity() {
         log("> connect 127.0.0.1:$port")
 
         lifecycleScope.launch {
-            val r = manager.connect(port)
+            // 先试经典协议（adb tcpip），失败再试无线调试 TLS（配对过即可直连）
+            var r = manager.connect(port)
+            var tlsUsed = false
+            if (r.isFailure) {
+                log("< 经典协议失败，尝试无线调试 TLS…")
+                r = manager.connectTls(port)
+                tlsUsed = r.isSuccess
+            }
             b.btnConnect.isEnabled = true
             if (r.isSuccess) {
-                onConnected(port, auto = false)
-                log("< 已连接 adbd")
+                onConnected(port, tls = tlsUsed)
+                log("< 已连接 adbd${if (tlsUsed) "（TLS）" else ""}")
             } else {
                 val reason = r.exceptionOrNull()?.message ?: "未知错误"
                 setStatus(getString(R.string.wd_connect_failed, reason))
                 log("< 连接失败：$reason")
+            }
+        }
+    }
+
+    /**
+     * 一键自动配对（零输入）：
+     * 1. 无障碍读取屏幕上的 6 位配对码和配对端口（要求配对码对话框在屏幕上）
+     * 2. 走 SPAKE2 + TLS 配对协议（设备登记我们的公钥）
+     * 3. NSD 发现连接端口，TLS 直连
+     */
+    private fun onAutoPair() {
+        lifecycleScope.launch {
+            setStatus(getString(R.string.wd_auto_pair_reading))
+            val info = com.adcleaner.app.cleaner.AdCleanerService.instance?.readPairingCodeAndPort()
+            if (info == null) {
+                setStatus(getString(R.string.wd_auto_pair_need_dialog))
+                log("< 没读到配对码：请先打开「使用配对码配对设备」对话框")
+                return@launch
+            }
+            val (code, addr) = info
+            val host = addr.substringBefore(":")
+            val pairPort = addr.substringAfter(":").toIntOrNull() ?: 0
+            if (pairPort <= 0) {
+                setStatus(getString(R.string.wd_auto_pair_need_dialog))
+                return@launch
+            }
+            setStatus(getString(R.string.wd_auto_pairing_fmt, code))
+            log("> 自动配对 $host:$pairPort code=$code")
+
+            val guid = try {
+                AdbPairing.pair(this@WirelessDebugActivity, host, pairPort, code)
+            } catch (e: Exception) {
+                setStatus(getString(R.string.wd_connect_failed, e.message ?: "未知错误"))
+                log("< 配对失败：${e.message}")
+                return@launch
+            }
+            log("< 配对成功（设备 $guid），正在发现连接端口…")
+            setStatus(getString(R.string.wd_auto_pair_ok))
+
+            val ep = AdbWireless.discover(this@WirelessDebugActivity, AdbWireless.SERVICE_CONNECT)
+            val tlsPort = ep?.port
+            if (tlsPort == null) {
+                setStatus(getString(R.string.wd_nsd_no_connect))
+                log("< 没发现连接端口：请确认「无线调试」保持打开")
+                return@launch
+            }
+            setStatus(getString(R.string.wd_auto_pair_connecting_fmt, tlsPort))
+            log("> TLS connect 127.0.0.1:$tlsPort")
+            val r = manager.connectTls(tlsPort)
+            if (r.isSuccess) {
+                onConnected(tlsPort, tls = true)
+                log("< 已连接无线调试（TLS）")
+            } else {
+                val reason = r.exceptionOrNull()?.message ?: "未知错误"
+                setStatus(getString(R.string.wd_connect_failed, reason))
+                log("< TLS 连接失败：$reason")
             }
         }
     }
@@ -156,13 +221,17 @@ class WirelessDebugActivity : AppCompatActivity() {
         log("> pair 127.0.0.1:$port code=$code")
 
         lifecycleScope.launch {
-            val r = manager.pair(port, code)
+            val guid = try {
+                AdbPairing.pair(this@WirelessDebugActivity, "127.0.0.1", port, code)
+            } catch (e: Exception) {
+                null
+            }
             b.btnPair.isEnabled = true
-            if (r.isSuccess) {
+            if (guid != null) {
                 setStatus(getString(R.string.wd_paired))
-                log("< 配对成功，去填连接端口")
+                log("< 配对成功（设备 $guid），去点「自动配对并连接」即可连上")
             } else {
-                val reason = r.exceptionOrNull()?.message ?: "未知错误"
+                val reason = "配对握手失败"
                 setStatus(getString(R.string.wd_pair_failed, reason))
                 log("< 配对失败：$reason")
             }

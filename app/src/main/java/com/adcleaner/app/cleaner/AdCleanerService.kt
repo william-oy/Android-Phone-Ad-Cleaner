@@ -81,6 +81,40 @@ class AdCleanerService : AccessibilityService() {
 
     override fun onInterrupt() {}
 
+    /**
+     * 从当前屏幕读取无线调试「配对码对话框」的内容：
+     * 返回 (6位配对码, ip:配对端口)。对话框不在屏幕上时返回 null。
+     * 老人因此不用手抄任何数字——点一下自动配对即可。
+     */
+    fun readPairingCodeAndPort(): Pair<String, String>? {
+        val roots = mutableListOf<android.view.accessibility.AccessibilityNodeInfo>()
+        rootInActiveWindow?.let { roots.add(it) }
+        try {
+            for (w in windows) {
+                w.root?.let { roots.add(it) }
+            }
+        } catch (_: Exception) {}
+        var code: String? = null
+        var addr: String? = null
+        val codeRegex = Regex("^\\d{6}$")
+        val addrRegex = Regex("^(\\d{1,3}(\\.\\d{1,3}){3}):(\\d+)$")
+        val seen = HashSet<android.view.accessibility.AccessibilityNodeInfo>()
+        fun walk(node: android.view.accessibility.AccessibilityNodeInfo?) {
+            if (node == null || !seen.add(node)) return
+            val t = node.text?.toString()?.trim().orEmpty()
+            val cd = node.contentDescription?.toString()?.trim().orEmpty()
+            for (s in listOf(t, cd)) {
+                if (code == null && codeRegex.matches(s)) code = s
+                if (addr == null && addrRegex.matches(s)) addr = s
+            }
+            for (i in 0 until node.childCount) walk(node.getChild(i))
+        }
+        roots.forEach { walk(it) }
+        val c = code ?: return null
+        val a = addr ?: return null
+        return c to a
+    }
+
     override fun onUnbind(intent: Intent?): Boolean {
         // 记录断点：清理仍在跑（没完成、没取消）才需要续跑
         val ui = CleanState.ui.value
