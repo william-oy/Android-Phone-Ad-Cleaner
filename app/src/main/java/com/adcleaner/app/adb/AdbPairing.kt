@@ -72,8 +72,7 @@ object AdbPairing {
         }
 
         // TLS-Exporter：BoringSSL 的 label 含 '\0'，无 context
-        val exported = protocol.context.exportKeyingMaterial("adb-label\u0000", null, 64)
-            ?: ByteArray(0)
+        val exported = tlsClient.exportKey("adb-label\u0000", 64) ?: ByteArray(0)
         val fullPswd = pairingCode.toByteArray(Charsets.US_ASCII) + exported
 
         // ---- PairingPacket 交换 ----
@@ -116,6 +115,10 @@ object AdbPairing {
         /** 公开访问器：在子类内部读 protected 的 context 没问题。 */
         fun cryptoParameters(): org.bouncycastle.tls.crypto.TlsCryptoParameters =
             org.bouncycastle.tls.crypto.TlsCryptoParameters(context)
+
+        /** RFC 5705/8446 exporter（label 含 NUL、无 context，与 BoringSSL 一致）。 */
+        fun exportKey(label: String, length: Int): ByteArray? =
+            context.exportKeyingMaterial(label, null, length)
 
         override fun getAuthentication(): TlsAuthentication = object : TlsAuthentication {
             override fun notifyServerCertificate(serverCertificate: TlsServerCertificate?) {
