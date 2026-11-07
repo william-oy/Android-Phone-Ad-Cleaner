@@ -38,6 +38,15 @@ android {
 
     packaging {
         resources.excludes += setOf("META-INF/AL2.0", "META-INF/LGPL2.1")
+        // BouncyCastle 多 jar 的 OSGI/Maven 元数据重复
+        resources.excludes += setOf(
+            "META-INF/versions/9/OSGI-INF/MANIFEST.MF",
+            "META-INF/OSGI-INF/MANIFEST.MF",
+            "META-INF/INDEX.LIST",
+            "META-INF/DEPENDENCIES",
+            "META-INF/NOTICE.md",
+            "META-INF/LICENSE.md",
+        )
     }
 }
 
