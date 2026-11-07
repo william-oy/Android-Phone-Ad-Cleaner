@@ -8,6 +8,7 @@ import org.bouncycastle.tls.TlsClientProtocol
 import org.bouncycastle.tls.TlsServerCertificate
 import org.bouncycastle.tls.TlsCredentials
 import org.bouncycastle.tls.crypto.impl.bc.BcDefaultTlsCredentialedSigner
+import org.bouncycastle.tls.crypto.impl.bc.BcTlsCertificate
 import org.bouncycastle.tls.crypto.impl.bc.BcTlsCrypto
 import org.bouncycastle.crypto.params.RSAPrivateCrtKeyParameters
 import java.io.InputStream
@@ -62,23 +63,7 @@ object AdbPairing {
         socket.soTimeout = 15000
 
         val protocol = TlsClientProtocol(socket.getInputStream(), socket.getOutputStream())
-        val tlsClient = object : DefaultTlsClient(BcTlsCrypto(SecureRandom())) {
-            override fun getAuthentication(): TlsAuthentication = object : TlsAuthentication {
-                override fun notifyServerCertificate(serverCertificate: TlsServerCertificate?) {
-                    // 配对阶段不校验服务端证书（对齐 AOSP：verify callback 全放行）
-                    Log.d(TAG, "server cert accepted: ${serverCertificate != null}")
-                }
-
-                override fun getClientCredentials(request: org.bouncycastle.tls.CertificateRequest): TlsCredentials {
-                    val cryptoParams = org.bouncycastle.tls.TlsCryptoParameters(context)
-                    val sigAlg = org.bouncycastle.tls.SignatureAndHashAlgorithm(
-                        org.bouncycastle.tls.HashAlgorithm.sha256,
-                        org.bouncycastle.tls.SignatureAlgorithm.rsa_pss_rsae_sha256
-                    )
-                    return makeClientSigner(priv, cert, cryptoParams, sigAlg)
-                }
-            }
-        }
+        val tlsClient = PairingTlsClient(priv, cert)
         try {
             protocol.connect(tlsClient)
         } catch (e: Exception) {
@@ -122,10 +107,33 @@ object AdbPairing {
         guid
     }
 
+    /** 配对专用 TLS 客户端：TLS1.3、客户端证书、服务端证书全放行。 */
+    private class PairingTlsClient(
+        private val clientPriv: PrivateKey,
+        private val clientCert: java.security.cert.X509Certificate,
+    ) : DefaultTlsClient(BcTlsCrypto(SecureRandom())) {
+
+        override fun getAuthentication(): TlsAuthentication = object : TlsAuthentication {
+            override fun notifyServerCertificate(serverCertificate: TlsServerCertificate?) {
+                // 配对阶段不校验服务端证书（对齐 AOSP：verify callback 全放行）
+                Log.d(TAG, "server cert accepted: ${serverCertificate != null}")
+            }
+
+            override fun getClientCredentials(request: org.bouncycastle.tls.CertificateRequest): TlsCredentials {
+                val cryptoParams = org.bouncycastle.tls.crypto.TlsCryptoParameters(context)
+                val sigAlg = org.bouncycastle.tls.SignatureAndHashAlgorithm(
+                    org.bouncycastle.tls.HashAlgorithm.sha256,
+                    org.bouncycastle.tls.SignatureAlgorithm.rsa_pss_rsae_sha256
+                )
+                return makeClientSigner(clientPriv, clientCert, cryptoParams, sigAlg)
+            }
+        }
+    }
+
     private fun makeClientSigner(
         priv: PrivateKey,
         cert: java.security.cert.X509Certificate,
-        cryptoParams: org.bouncycastle.tls.TlsCryptoParameters,
+        cryptoParams: org.bouncycastle.tls.crypto.TlsCryptoParameters,
         sigAlg: org.bouncycastle.tls.SignatureAndHashAlgorithm,
     ): TlsCredentials {
         val kf = KeyFactory.getInstance("RSA")
@@ -134,12 +142,13 @@ object AdbPairing {
             crt.modulus, crt.publicExponent, crt.privateExponent,
             crt.primeP, crt.primeQ, crt.primeExponentP, crt.primeExponentQ, crt.crtCoefficient
         )
-        val holder = org.bouncycastle.cert.X509CertificateHolder(cert.encoded)
+        val crypto = BcTlsCrypto(SecureRandom())
+        val tlsCert = BcTlsCertificate(crypto, cert.encoded)
         return BcDefaultTlsCredentialedSigner(
             cryptoParams,
-            BcTlsCrypto(SecureRandom()),
+            crypto,
             params,
-            Certificate(arrayOf(holder)),
+            Certificate(arrayOf(tlsCert)),
             sigAlg
         )
     }
