@@ -33,12 +33,18 @@ class BrandGuideActivity : AppCompatActivity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         b.spinnerBrand.adapter = adapter
 
+        // 自动选中检测到的品牌：老人不用自己认手机品牌
+        val detected = com.adcleaner.app.cleaner.BrandDetector.detect().brand
+        val detectedIndex = brands.indexOfFirst { it.second == detected }
+        if (detectedIndex > 0) b.spinnerBrand.setSelection(detectedIndex)
+
         b.spinnerBrand.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?, view: View?, position: Int, id: Long
             ) {
                 val key = brands[position].second
                 b.webGuide.settings.javaScriptEnabled = false
+                b.webGuide.settings.textZoom = 130   // 引导页文字放大，老人看得清
                 b.webGuide.loadUrl("file:///android_asset/guides/$key.html")
             }
 

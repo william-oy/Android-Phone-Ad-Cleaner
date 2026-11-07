@@ -21,13 +21,62 @@
     <string name="tv_logs">实时日志</string>
     <string name="tv_done">清理完成</string>
 
+    <!-- 主界面适老化 -->
+    <string name="app_slogan_elder">自动帮您关闭手机里的广告</string>
+    <string name="step_1">① 开权限</string>
+    <string name="step_2">② 点清理</string>
+    <string name="step_3">③ 等完成</string>
+    <string name="btn_enable_accessibility_elder">帮我打开无障碍权限</string>
+    <string name="btn_wireless_debug_elder">增强模式</string>
+    <string name="tv_accessibility_off_elder">权限还没打开，点下面的按钮，我帮您打开</string>
+    <string name="tv_accessibility_on_elder">权限已打开，可以点上面的大按钮清理了</string>
+    <string name="tv_brand_plan_fmt">已为您准备「%1$s」专用清理方案，点大按钮即可开始</string>
+    <string name="tv_brand_plan_unknown">未识别手机品牌，请点「图文使用引导」对照操作</string>
+    <string name="btn_start_clean_running">停止清理</string>
+    <string name="btn_show_logs">▸ 查看详细过程</string>
+    <string name="btn_hide_logs">▾ 收起详细过程</string>
+    <string name="tv_more_options">更多选项（一般用不到）</string>
+    <string name="btn_voice_on">语音提醒：开</string>
+    <string name="btn_voice_off">语音提醒：关</string>
+    <string name="tv_done_title">✓ 清理完成！</string>
+    <string name="tv_done_detail_fmt">这次帮您关闭了 %1$d 个广告开关。\n个别广告要重启手机才消失，属正常现象。</string>
+    <string name="tv_done_detail_zero">本次没有发现可关闭的广告开关（可能上次已清理过）。</string>
+    <string name="tts_started">开始清理了，请您不要操作手机，等几分钟就好</string>
+    <string name="tts_done_fmt">清理完成，这次帮您关闭了%d个广告开关</string>
+    <string name="tts_done_zero">清理完成，这次没有发现新的广告开关</string>
+    <string name="tts_aborted">清理已停止</string>
+    <string name="toast_accessibility_auto_on">已用调试权限自动打开无障碍，请继续</string>
+    <string name="toast_accessibility_auto_fail">自动打开没成功，请按下面的说明手动操作</string>
+    <string name="dlg_manual_title">手动打开无障碍（一次就好）</string>
+    <string name="dlg_manual_msg">1. 点「去设置」按钮\n2. 在列表里找到「去广告助手·自动点开关」\n3. 点一下右侧开关，弹窗选「允许」\n4. 完成后按返回键回到本软件</string>
+    <string name="dlg_go_settings">去设置</string>
+    <string name="confirm_stop_clean">正在清理中，确定要停下来吗？</string>
+
     <!-- 引导 -->
     <string name="guide_title">使用引导</string>
     <string name="brand_guide_title">品牌图文引导</string>
     <string name="pick_brand">选你的手机品牌</string>
+    <string name="pick_brand_auto">已自动选中你的手机品牌，也可手动换</string>
 
     <!-- 增强模式：无线调试挂起广告包 -->
     <string name="wd_title">增强模式 · 挂起广告包</string>
+    <string name="wd_title_elder">深度清理 · 冻结广告组件</string>
+    <string name="wd_intro_elder">这一页能把广告组件整体冻结，让广告彻底弹不出来。如果您之前连接过，打开本页会自动连接，不用填任何数字。</string>
+    <string name="wd_status_idle_elder">还没连接，在下面填上端口号，点「连接本机」</string>
+    <string name="wd_status_connected">已连接！点下面的大按钮就行</string>
+    <string name="wd_auto_reconnecting">正在尝试自动连接上次用过的端口…</string>
+    <string name="wd_auto_connect_ok_fmt">已自动连接（端口 %1$d），直接点下面的大按钮</string>
+    <string name="wd_toggle_pair">首次使用？点这里展开配对步骤</string>
+    <string name="wd_toggle_pkg_list">查看每个广告组件（高级）</string>
+    <string name="wd_toggle_log">查看连接日志</string>
+    <string name="wd_btn_enable_acc">帮我把无障碍权限也打开</string>
+    <string name="wd_btn_suspend_all">一键冻结全部广告组件</string>
+    <string name="wd_btn_unsuspend_all">全部还原（恢复广告组件）</string>
+    <string name="wd_suspend_all_progress_fmt">正在冻结 %1$s…（%2$d/%3$d）</string>
+    <string name="wd_suspend_all_done_fmt">完成：冻结 %1$d 个，失败 %2$d 个</string>
+    <string name="wd_unsuspend_all_done_fmt">还原完成：成功 %1$d 个，失败 %2$d 个</string>
+    <string name="wd_acc_enabled">无障碍权限已自动打开</string>
+
     <string name="wd_intro">打开「开发者选项 → 无线调试」，点「使用配对码配对设备」记下 6 位配对码和配对端口填到上面，点「先配对」；再记下无线调试端口填到下面点「连接本机」。挂起的广告包进程被冻结、不再弹广告，可随时还原。</string>
     <string name="wd_port_hint">无线调试端口（如 37121）</string>
     <string name="wd_pair_code_hint">配对码（6 位数字，如 123456）</string>

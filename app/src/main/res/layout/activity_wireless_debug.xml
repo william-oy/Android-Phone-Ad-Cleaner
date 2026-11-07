@@ -11,7 +11,7 @@
         style="@style/Widget.AdCleaner.Toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:title="@string/wd_title"
+        app:title="@string/wd_title_elder"
         app:navigationIcon="@drawable/ic_back" />
 
     <ScrollView
@@ -25,150 +25,212 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- 顶部说明：开启无线调试的步骤 -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="18dp"
-                    android:background="@drawable/gradient_hero">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/wd_intro"
-                        android:textColor="#E6FFFFFF"
-                        android:textSize="13sp"
-                        android:lineSpacingExtra="2dp" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- 配对区：配对码(6位) + 配对端口(5位) → 先 adb pair -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="@string/wd_pair_code_hint">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etPairCode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:imeOptions="actionDone"
-                    android:maxLength="6" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="@string/wd_pair_port_hint">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etPairPort"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:imeOptions="actionDone"
-                    android:maxLength="5" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnPair"
-                style="@style/Widget.AdCleaner.Button.Primary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/wd_btn_pair" />
-
-            <!-- 端口输入 + 连接 -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="@string/wd_port_hint">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etPort"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:imeOptions="actionDone"
-                    android:maxLength="5" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnConnect"
-                style="@style/Widget.AdCleaner.Button.Primary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/wd_btn_connect" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnOpenSettings"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="@string/wd_btn_open_settings"
-                style="@style/Widget.Material3.Button.OutlinedButton" />
-
-            <!-- 连接状态 -->
+            <!-- 状态大卡：老人第一眼就知道连没连上 -->
             <TextView
                 android:id="@+id/tvStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="@string/wd_status_idle"
-                android:textColor="@color/text_secondary"
-                android:textSize="14sp"
-                android:padding="12dp"
-                android:background="@color/m3_surfaceVariant" />
-
-            <!-- 广告包列表（行在代码里动态加入） -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/wd_packages_title"
+                android:padding="18dp"
+                android:gravity="center"
+                android:text="@string/wd_status_idle_elder"
+                android:textColor="@color/warn_orange"
+                android:textSize="18sp"
                 android:textStyle="bold"
-                android:textSize="15sp"
-                android:textColor="@color/text_primary" />
+                android:background="@drawable/bg_status_danger"
+                android:lineSpacingExtra="4dp" />
 
+            <!-- 顶部一句话说明 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="@string/wd_intro_elder"
+                android:textColor="@color/text_secondary"
+                android:textSize="15sp"
+                android:lineSpacingExtra="4dp" />
+
+            <!-- ===== 操作区：连接成功后显示 ===== -->
             <LinearLayout
-                android:id="@+id/containerPackages"
+                android:id="@+id/containerActions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="6dp"
-                android:visibility="gone" />
+                android:visibility="gone">
 
-            <!-- 日志 -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnEnableAccessibility"
+                    style="@style/Widget.AdCleaner.Button.Secondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginTop="16dp"
+                    android:textSize="17sp"
+                    android:text="@string/wd_btn_enable_acc"
+                    app:icon="@drawable/ic_accessibility"
+                    app:iconSize="22dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSuspendAll"
+                    style="@style/Widget.AdCleaner.Button.Primary"
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp"
+                    android:layout_marginTop="12dp"
+                    android:textSize="20sp"
+                    android:text="@string/wd_btn_suspend_all"
+                    app:iconGravity="textStart" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnUnsuspendAll"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="10dp"
+                    android:textSize="17sp"
+                    android:text="@string/wd_btn_unsuspend_all" />
+
+                <TextView
+                    android:id="@+id/btnTogglePkgList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/wd_toggle_pkg_list"
+                    android:textColor="@color/m3_secondary"
+                    android:textSize="15sp" />
+
+                <!-- 广告包列表（行在代码里动态加入），默认收起 -->
+                <LinearLayout
+                    android:id="@+id/containerPackages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="6dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <!-- ===== 连接区：未连接时显示 ===== -->
+            <LinearLayout
+                android:id="@+id/containerConnect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:hint="@string/wd_port_hint">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPort"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:inputType="number"
+                        android:imeOptions="actionDone"
+                        android:maxLength="5" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnConnect"
+                    style="@style/Widget.AdCleaner.Button.Primary"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginTop="10dp"
+                    android:textSize="18sp"
+                    android:text="@string/wd_btn_connect" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnOpenSettings"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="6dp"
+                    android:textSize="15sp"
+                    android:text="@string/wd_btn_open_settings" />
+
+                <!-- 配对区：首次才需要，默认收起 -->
+                <TextView
+                    android:id="@+id/btnTogglePair"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/wd_toggle_pair"
+                    android:textColor="@color/m3_secondary"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:id="@+id/containerPair"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/wd_pair_code_hint">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etPairCode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:inputType="number"
+                            android:imeOptions="actionDone"
+                            android:maxLength="6" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:hint="@string/wd_pair_port_hint">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etPairPort"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:inputType="number"
+                            android:imeOptions="actionDone"
+                            android:maxLength="5" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnPair"
+                        style="@style/Widget.AdCleaner.Button.Primary"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="10dp"
+                        android:textSize="16sp"
+                        android:text="@string/wd_btn_pair" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 日志：默认收起，排查问题才展开 -->
             <TextView
+                android:id="@+id/btnToggleLog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/wd_log"
-                android:textStyle="bold"
-                android:textSize="13sp"
-                android:textColor="@color/text_primary" />
+                android:layout_marginTop="14dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="@string/wd_toggle_log"
+                android:textColor="@color/m3_secondary"
+                android:textSize="15sp" />
 
-            <!-- 日志：NestedScrollView 支持嵌套滚动，手指可上下拉动查看完整日志 -->
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/svLog"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 android:layout_marginTop="4dp"
+                android:visibility="gone"
                 android:background="@color/m3_surfaceVariant"
                 android:fillViewport="true">
 
@@ -177,8 +239,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
-                    android:fontFamily="monospace"
-                    android:textSize="12sp"
+                    android:textSize="13sp"
                     android:textColor="@color/text_primary" />
             </androidx.core.widget.NestedScrollView>
 

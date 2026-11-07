@@ -405,10 +405,12 @@ class AccessibilityEngine(private val service: AdCleanerService) {
             "switchOff" -> {
                 val closed = switchOff(s.targets, s.protectedKeywords, s.scrolls)
                 CleanState.step("关掉 $closed 个开关")
+                CleanState.addClosed(closed)
             }
             "switchOnly" -> {
                 val closed = switchOnly(s.targets, s.scrolls)
                 CleanState.step("关掉 $closed 个目标开关")
+                CleanState.addClosed(closed)
             }
             "switchOn" -> {
                 val opened = switchOn(s.targets, s.scrolls)

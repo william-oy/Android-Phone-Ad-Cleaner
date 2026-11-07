@@ -14,11 +14,21 @@
         app:title="@string/brand_guide_title"
         app:navigationIcon="@drawable/ic_back" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="12dp"
+        android:text="@string/pick_brand_auto"
+        android:textColor="@color/text_secondary"
+        android:textSize="15sp" />
+
     <Spinner
         android:id="@+id/spinnerBrand"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="12dp" />
+        android:layout_height="52dp"
+        android:padding="10dp" />
 
     <WebView
         android:id="@+id/webGuide"

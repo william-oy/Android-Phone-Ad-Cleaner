@@ -10,14 +10,14 @@ object CleanOrchestrator {
         val svc = AdCleanerService.instance
         if (svc == null) {
             CleanState.reset()
-            CleanState.fail("无障碍服务没开。请先点「开启无障碍权限」。")
+            CleanState.fail("权限还没开好。请回主界面点「帮我打开无障碍权限」。")
             return false
         }
         val info = BrandDetector.detect()
         val rule = com.adcleaner.app.rules.RuleLoader.match(ctx, info.brand)
         if (rule == null) {
             CleanState.reset()
-            CleanState.fail("暂未识别到「${info.display}」的专用规则（brand=${info.brand}）。\n可点「图文使用引导」照清单手动关，或选通用流程。")
+            CleanState.fail("这台手机（${info.display}）暂时没有专用清理方案。\n请点「图文使用引导」，照着清单手动关一下。")
             CleanState.aborted()
             return false
         }

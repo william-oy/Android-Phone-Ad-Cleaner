@@ -15,7 +15,7 @@
         android:paddingTop="20dp"
         android:paddingBottom="32dp">
 
-        <!-- Hero -->
+        <!-- Hero（适老化：加大标题字号） -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,8 +25,8 @@
             android:gravity="center_vertical">
 
             <ImageView
-                android:layout_width="54dp"
-                android:layout_height="54dp"
+                android:layout_width="58dp"
+                android:layout_height="58dp"
                 android:src="@drawable/ic_launcher_foreground"
                 android:background="@drawable/bg_logo_chip"
                 android:padding="7dp"
@@ -44,21 +44,21 @@
                     android:layout_height="wrap_content"
                     android:text="@string/app_name"
                     android:textColor="@color/white"
-                    android:textSize="25sp"
+                    android:textSize="27sp"
                     android:textStyle="bold"
                     android:letterSpacing="0.02" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/app_slogan"
+                    android:text="@string/app_slogan_elder"
                     android:textColor="#E6FFFFFF"
-                    android:textSize="12sp"
+                    android:textSize="15sp"
                     android:layout_marginTop="4dp" />
             </LinearLayout>
         </LinearLayout>
 
-        <!-- 品牌检测卡 -->
+        <!-- 品牌检测卡（口语化，告诉老人方案已自动匹配） -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardBrand"
             android:layout_width="match_parent"
@@ -72,108 +72,144 @@
                 android:padding="18dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="你的手机"
-                    android:textColor="@color/m3_secondary"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:letterSpacing="0.08" />
-
-                <TextView
                     android:id="@+id/tvBrand"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
                     android:text="@string/tv_brand_detecting"
                     android:textColor="@color/m3_primary"
-                    android:textSize="18sp"
+                    android:textSize="19sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvRomInfo"
+                    android:id="@+id/tvBrandPlan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="6dp"
+                    android:text=""
                     android:textColor="@color/text_secondary"
-                    android:textSize="12sp" />
+                    android:textSize="15sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- 无障碍状态条 -->
+        <!-- 三步进度条：让老人知道现在到哪一步了 -->
+        <LinearLayout
+            android:id="@+id/stepsRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/step1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:background="@drawable/bg_step_active"
+                android:text="@string/step_1"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:text="→"
+                android:textColor="@color/text_secondary"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/step2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:background="@drawable/bg_step_inactive"
+                android:text="@string/step_2"
+                android:textColor="@color/m3_onSurfaceVariant"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:text="→"
+                android:textColor="@color/text_secondary"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/step3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:background="@drawable/bg_step_inactive"
+                android:text="@string/step_3"
+                android:textColor="@color/m3_onSurfaceVariant"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <!-- 无障碍状态条（大字、大图） -->
         <TextView
             android:id="@+id/tvAccessibility"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:padding="14dp"
+            android:layout_marginTop="16dp"
+            android:padding="16dp"
             android:background="@drawable/bg_status_danger"
             android:drawableStart="@drawable/ic_accessibility"
-            android:drawablePadding="10dp"
+            android:drawablePadding="12dp"
             android:drawableTint="@color/danger_red"
             android:gravity="center_vertical"
-            android:text="@string/tv_accessibility_off"
+            android:text="@string/tv_accessibility_off_elder"
             android:textColor="@color/danger_red"
-            android:textSize="13sp" />
+            android:textSize="16sp"
+            android:lineSpacingExtra="4dp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnEnableAccessibility"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/btn_enable_accessibility"
-            app:icon="@drawable/ic_accessibility"
-            app:cornerRadius="14dp" />
-
-        <!-- 主操作 -->
+        <!-- 主操作：超大按钮（老人一眼看到、不易点错） -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnStartClean"
             style="@style/Widget.AdCleaner.Button.Primary"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="80dp"
             android:layout_marginTop="18dp"
+            android:textSize="24sp"
             android:text="@string/btn_start_clean"
-            app:icon="@drawable/ic_clean" />
+            app:icon="@drawable/ic_clean"
+            app:iconSize="28dp"
+            app:iconGravity="textStart"
+            app:iconPadding="12dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnRestore"
-                style="@style/Widget.AdCleaner.Button.Secondary"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginEnd="6dp"
-                android:text="@string/btn_restore"
-                app:icon="@drawable/ic_restore" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnWirelessDebug"
-                style="@style/Widget.AdCleaner.Button.Secondary"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="6dp"
-                android:text="@string/btn_wireless_debug"
-                app:icon="@drawable/ic_wireless" />
-        </LinearLayout>
-
+        <!-- 帮我打开无障碍：优先走 ADB 自动开，失败再跳系统设置 -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnGuide"
-            style="@style/Widget.Material3.Button.TextButton"
+            android:id="@+id/btnEnableAccessibility"
+            style="@style/Widget.AdCleaner.Button.Secondary"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="@string/btn_open_guide"
-            app:icon="@drawable/ic_guide"
-            app:iconGravity="textStart" />
+            android:layout_height="62dp"
+            android:layout_marginTop="12dp"
+            android:textSize="18sp"
+            android:text="@string/btn_enable_accessibility_elder"
+            app:icon="@drawable/ic_accessibility"
+            app:iconSize="22dp"
+            app:cornerRadius="14dp" />
 
-        <!-- 进度区 -->
+        <!-- 进度区（运行时显示）：大字当前任务 + 粗进度条 -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/layoutProgress"
             android:layout_width="match_parent"
@@ -185,52 +221,54 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="18dp">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tvProgress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:textColor="@color/m3_primary"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/tv_progress_title"
-                        android:textStyle="bold"
-                        android:textSize="15sp"
-                        android:textColor="@color/text_primary" />
-
-                    <TextView
-                        android:id="@+id/tvProgress"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="end"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="13sp" />
-                </LinearLayout>
-
-                <ProgressBar
+                <com.google.android.material.progressindicator.LinearProgressIndicator
                     android:id="@+id/progressBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    style="?android:attr/progressBarStyleHorizontal" />
+                    android:layout_marginTop="12dp"
+                    app:trackThickness="16dp"
+                    app:trackCornerRadius="8dp"
+                    app:autoHide="false"
+                    app:trackColor="@color/m3_surfaceVariant"
+                    app:indicatorColor="@color/m3_primary" />
 
                 <TextView
+                    android:id="@+id/tvCurrentAction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:textColor="@color/text_primary"
+                    android:textSize="17sp"
+                    android:maxLines="2"
+                    android:ellipsize="end" />
+
+                <!-- 详细日志默认收起：老人不需要看，点一下才展开 -->
+                <TextView
+                    android:id="@+id/btnToggleLogs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:text="@string/tv_logs"
-                    android:textStyle="bold"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_secondary" />
+                    android:layout_marginTop="10dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/btn_show_logs"
+                    android:textColor="@color/m3_secondary"
+                    android:textSize="14sp" />
 
                 <ScrollView
                     android:id="@+id/scrollLogs"
                     android:layout_width="match_parent"
-                    android:layout_height="260dp"
-                    android:layout_marginTop="4dp"
+                    android:layout_height="240dp"
+                    android:visibility="gone"
                     android:background="@color/m3_surfaceVariant"
                     android:padding="10dp">
 
@@ -238,13 +276,124 @@
                         android:id="@+id/tvLogs"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="monospace"
-                        android:textSize="11sp"
-                        android:lineSpacingExtra="2dp"
+                        android:textSize="13sp"
+                        android:lineSpacingExtra="3dp"
                         android:textColor="@color/text_primary" />
                 </ScrollView>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
+
+        <!-- 完成卡（大绿字 + 喇叭图标） -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardDone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tvDoneTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_clean"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/safe_green"
+                    android:text="@string/tv_done_title"
+                    android:textColor="@color/safe_green"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvDoneDetail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:textColor="@color/text_primary"
+                    android:textSize="17sp"
+                    android:lineSpacingExtra="4dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 更多选项：收纳高级功能，不干扰老人主流程 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:text="@string/tv_more_options"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGuide"
+                style="@style/Widget.AdCleaner.Button.Secondary"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
+                android:textSize="15sp"
+                android:text="@string/btn_open_guide"
+                app:icon="@drawable/ic_guide"
+                app:iconSize="20dp"
+                app:iconGravity="textStart" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnWirelessDebug"
+                style="@style/Widget.AdCleaner.Button.Secondary"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginStart="6dp"
+                android:textSize="15sp"
+                android:text="@string/btn_wireless_debug_elder"
+                app:icon="@drawable/ic_wireless"
+                app:iconSize="20dp"
+                app:iconGravity="textStart" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRestore"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
+                android:textSize="15sp"
+                android:text="@string/btn_restore"
+                app:icon="@drawable/ic_restore"
+                app:iconSize="20dp"
+                app:iconGravity="textStart" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVoice"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginStart="6dp"
+                android:textSize="15sp"
+                android:text="@string/btn_voice_on" />
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>
