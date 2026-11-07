@@ -1,0 +1,145 @@
+{
+  "total_count": 1,
+  "jobs": [
+    {
+      "id": 128515162984,
+      "run_id": 42409769337,
+      "workflow_name": "Build APK",
+      "head_branch": "master",
+      "run_url": "https://api.github.com/repos/william-oy/Android-Phone-Ad-Cleaner/actions/runs/42409769337",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVkdXEs8AAAAd7BnDaA",
+      "head_sha": "0b52980c3c199a8e2c10f10ea77c4ebf4255dc62",
+      "url": "https://api.github.com/repos/william-oy/Android-Phone-Ad-Cleaner/actions/jobs/128515162984",
+      "html_url": "https://github.com/william-oy/Android-Phone-Ad-Cleaner/actions/runs/42409769337/job/128515162984",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-11-07T20:10:35Z",
+      "started_at": "2026-11-07T20:10:37Z",
+      "completed_at": "2026-11-07T20:12:25Z",
+      "name": "build",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-07T20:10:37Z",
+          "completed_at": "2026-11-07T20:10:39Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-07T20:10:39Z",
+          "completed_at": "2026-11-07T20:10:40Z"
+        },
+        {
+          "name": "Run actions/setup-java@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-07T20:10:40Z",
+          "completed_at": "2026-11-07T20:10:40Z"
+        },
+        {
+          "name": "Setup Gradle",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-07T20:10:40Z",
+          "completed_at": "2026-11-07T20:10:44Z"
+        },
+        {
+          "name": "Setup Android SDK",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-07T20:10:44Z",
+          "completed_at": "2026-11-07T20:10:48Z"
+        },
+        {
+          "name": "Build debug APK",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 6,
+          "started_at": "2026-11-07T20:10:48Z",
+          "completed_at": "2026-11-07T20:12:19Z"
+        },
+        {
+          "name": "Build release APK (debug-signed)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 7,
+          "started_at": "2026-11-07T20:12:19Z",
+          "completed_at": "2026-11-07T20:12:19Z"
+        },
+        {
+          "name": "Rename APK",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 8,
+          "started_at": "2026-11-07T20:12:19Z",
+          "completed_at": "2026-11-07T20:12:19Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-11-07T20:12:19Z",
+          "completed_at": "2026-11-07T20:12:19Z"
+        },
+        {
+          "name": "Release on tag",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-11-07T20:12:19Z",
+          "completed_at": "2026-11-07T20:12:19Z"
+        },
+        {
+          "name": "Post Setup Gradle",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-07T20:12:19Z",
+          "completed_at": "2026-11-07T20:12:23Z"
+        },
+        {
+          "name": "Post Run actions/setup-java@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-07T20:12:23Z",
+          "completed_at": "2026-11-07T20:12:23Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-11-07T20:12:23Z",
+          "completed_at": "2026-11-07T20:12:24Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-11-07T20:12:24Z",
+          "completed_at": "2026-11-07T20:12:24Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/william-oy/Android-Phone-Ad-Cleaner/check-runs/128515162984",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000000023,
+      "runner_name": "GitHub Actions 1000000023",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}
