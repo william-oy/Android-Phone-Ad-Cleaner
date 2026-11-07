@@ -113,6 +113,10 @@ object AdbPairing {
         private val clientCert: java.security.cert.X509Certificate,
     ) : DefaultTlsClient(BcTlsCrypto(SecureRandom())) {
 
+        /** 公开访问器：在子类内部读 protected 的 context 没问题。 */
+        fun cryptoParameters(): org.bouncycastle.tls.crypto.TlsCryptoParameters =
+            org.bouncycastle.tls.crypto.TlsCryptoParameters(context)
+
         override fun getAuthentication(): TlsAuthentication = object : TlsAuthentication {
             override fun notifyServerCertificate(serverCertificate: TlsServerCertificate?) {
                 // 配对阶段不校验服务端证书（对齐 AOSP：verify callback 全放行）
@@ -120,12 +124,11 @@ object AdbPairing {
             }
 
             override fun getClientCredentials(request: org.bouncycastle.tls.CertificateRequest): TlsCredentials {
-                val cryptoParams = org.bouncycastle.tls.crypto.TlsCryptoParameters(context)
                 val sigAlg = org.bouncycastle.tls.SignatureAndHashAlgorithm(
                     org.bouncycastle.tls.HashAlgorithm.sha256,
                     org.bouncycastle.tls.SignatureAlgorithm.rsa_pss_rsae_sha256
                 )
-                return makeClientSigner(clientPriv, clientCert, cryptoParams, sigAlg)
+                return makeClientSigner(clientPriv, clientCert, cryptoParameters(), sigAlg)
             }
         }
     }
