@@ -126,12 +126,7 @@ object Spake2 {
 
     private val IDENTITY = BigIntegerArrayPoint(BigInteger.ZERO, BigInteger.ONE, BigInteger.ONE, BigInteger.ZERO)
 
-    private data class BigIntegerArrayPoint(val x: BigInteger, val y: BigInteger, val z: BigInteger, val t: BigInteger) {
-        operator fun component1() = x
-        operator fun component2() = y
-        operator fun component3() = z
-        operator fun component4() = t
-    }
+    private data class BigIntegerArrayPoint(val x: BigInteger, val y: BigInteger, val z: BigInteger, val t: BigInteger)
 
     private fun leToBigInt(b32: ByteArray): BigInteger =
         BigInteger(1, b32.reversedArray())

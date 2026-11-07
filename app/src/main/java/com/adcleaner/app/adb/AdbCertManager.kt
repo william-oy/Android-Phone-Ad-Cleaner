@@ -66,7 +66,7 @@ object AdbCertManager {
             pub
         )
         val signer = JcaContentSignerBuilder("SHA256withRSA").build(priv)
-        val cert = JcaX509CertificateConverter().getCertificate(builder.build())
+        val cert = JcaX509CertificateConverter().getCertificate(builder.build(signer))
         return pemEncode(cert)
     }
 

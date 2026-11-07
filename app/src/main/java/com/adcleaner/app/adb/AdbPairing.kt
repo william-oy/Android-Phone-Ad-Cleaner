@@ -61,7 +61,7 @@ object AdbPairing {
         socket.connect(java.net.InetSocketAddress(host, port), 8000)
         socket.soTimeout = 15000
 
-        val protocol = TlsClientProtocol(socket.getInputStream(), socket.getOutputStream(), SecureRandom())
+        val protocol = TlsClientProtocol(socket.getInputStream(), socket.getOutputStream())
         val tlsClient = object : DefaultTlsClient(BcTlsCrypto(SecureRandom())) {
             override fun getAuthentication(): TlsAuthentication = object : TlsAuthentication {
                 override fun notifyServerCertificate(serverCertificate: TlsServerCertificate?) {
@@ -69,7 +69,14 @@ object AdbPairing {
                     Log.d(TAG, "server cert accepted: ${serverCertificate != null}")
                 }
 
-                override fun getCredentials(): TlsCredentials = makeClientSigner(priv, cert)
+                override fun getClientCredentials(request: org.bouncycastle.tls.CertificateRequest): TlsCredentials {
+                    val cryptoParams = org.bouncycastle.tls.TlsCryptoParameters(context)
+                    val sigAlg = org.bouncycastle.tls.SignatureAndHashAlgorithm(
+                        org.bouncycastle.tls.HashAlgorithm.sha256,
+                        org.bouncycastle.tls.SignatureAlgorithm.rsa_pss_rsae_sha256
+                    )
+                    return makeClientSigner(priv, cert, cryptoParams, sigAlg)
+                }
             }
         }
         try {
@@ -81,6 +88,7 @@ object AdbPairing {
 
         // TLS-Exporter：BoringSSL 的 label 含 '\0'，无 context
         val exported = protocol.context.exportKeyingMaterial("adb-label\u0000", null, 64)
+            ?: ByteArray(0)
         val fullPswd = pairingCode.toByteArray(Charsets.US_ASCII) + exported
 
         // ---- PairingPacket 交换 ----
@@ -114,7 +122,12 @@ object AdbPairing {
         guid
     }
 
-    private fun makeClientSigner(priv: PrivateKey, cert: java.security.cert.X509Certificate): TlsCredentials {
+    private fun makeClientSigner(
+        priv: PrivateKey,
+        cert: java.security.cert.X509Certificate,
+        cryptoParams: org.bouncycastle.tls.TlsCryptoParameters,
+        sigAlg: org.bouncycastle.tls.SignatureAndHashAlgorithm,
+    ): TlsCredentials {
         val kf = KeyFactory.getInstance("RSA")
         val crt = kf.getKeySpec(priv, java.security.spec.RSAPrivateCrtKeySpec::class.java)
         val params = RSAPrivateCrtKeyParameters(
@@ -123,9 +136,11 @@ object AdbPairing {
         )
         val holder = org.bouncycastle.cert.X509CertificateHolder(cert.encoded)
         return BcDefaultTlsCredentialedSigner(
+            cryptoParams,
             BcTlsCrypto(SecureRandom()),
+            params,
             Certificate(arrayOf(holder)),
-            params
+            sigAlg
         )
     }
 
