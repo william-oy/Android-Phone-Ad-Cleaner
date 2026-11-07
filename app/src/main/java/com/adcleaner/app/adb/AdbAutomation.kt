@@ -38,13 +38,15 @@ object AdbAutomation {
             .edit().putBoolean(KEY_LAST_OK, false).apply()
     }
 
+    /** 上次连接成功的端口；没有则回退到经典 `adb tcpip` 模式的固定端口 5555。 */
+    fun resolvePort(ctx: Context): Int = lastPort(ctx).takeIf { it > 0 } ?: 5555
+
     /**
-     * 连接上次成功的端口（快速失败，约 3 秒超时由底层控制）。
-     * 返回 Result；失败说明端口变了或无线调试没开。
+     * 连接解析出的端口（上次成功的端口，或 5555 默认）。
+     * 失败说明端口变了 / tcpip 没开 / 无线调试没开。
      */
     suspend fun tryReconnect(ctx: Context, manager: SuspendManager): Result<Unit> {
-        val port = lastPort(ctx)
-        if (port <= 0) return Result.failure(IllegalStateException("没有上次端口"))
+        val port = resolvePort(ctx)
         return manager.connect(port).onSuccess { saveLastPort(ctx, port) }
     }
 

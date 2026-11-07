@@ -168,15 +168,13 @@ class MainActivity : AppCompatActivity() {
         b.btnEnableAccessibility.text = "正在帮您打开…"
 
         lifecycleScope.launch {
-            val port = AdbAutomation.lastPort(this@MainActivity)
+            val port = AdbAutomation.resolvePort(this@MainActivity)
             var ok = false
-            if (port > 0) {
-                val mgr = SuspendManager(this@MainActivity)
-                try {
-                    ok = AdbAutomation.enableAccessibility(this@MainActivity, mgr, port).isSuccess
-                } finally {
-                    mgr.disconnect()
-                }
+            val mgr = SuspendManager(this@MainActivity)
+            try {
+                ok = AdbAutomation.enableAccessibility(this@MainActivity, mgr, port).isSuccess
+            } finally {
+                mgr.disconnect()
             }
             autoEnabling = false
             b.btnEnableAccessibility.isEnabled = true
@@ -221,44 +219,41 @@ class MainActivity : AppCompatActivity() {
             b.cardDone.visibility = View.GONE
             b.layoutProgress.visibility = View.VISIBLE
             speak(getString(R.string.tts_started))
-            // 增强通道：以前连过 ADB 就顺手把规则里的广告包也冻结（失败静默，不影响主流程）
-            suspendAdPackagesInBackground()
+            // 增强通道：顺手把品牌规则里的广告包也冻结（连不上就静默跳过，不影响主流程）
+            lifecycleScope.launch { suspendAdPackagesViaAdb() }
         }
     }
 
     /**
-     * 后台 ADB 冻结广告包：连上次端口 → 按品牌规则逐个 `pm suspend`。
+     * 后台 ADB 冻结广告包：连解析端口（上次端口或 5555）→ 按品牌规则逐个 `pm suspend`。
      * 只在「一键清理」时跟着跑一次；没连过 ADB / 连不上都静默跳过，
      * 老人主流程（无障碍点开关）不受任何影响。
      */
-    private fun suspendAdPackagesInBackground() {
-        val port = AdbAutomation.lastPort(this)
-        if (port <= 0) return
+    private suspend fun suspendAdPackagesViaAdb() {
+        val port = AdbAutomation.resolvePort(this)
         val brand = BrandDetector.detect().brand
         val rule = com.adcleaner.app.rules.RuleLoader.match(this, brand) ?: return
         val targets = rule.adPackages.filter { !it.neverSuspend }
         if (targets.isEmpty()) return
 
-        lifecycleScope.launch {
-            val mgr = SuspendManager(this@MainActivity)
-            try {
-                val r = mgr.connect(port)
-                if (r.isFailure) return@launch
-                CleanState.log("\n── 冻结广告组件（调试权限）──")
-                var ok = 0
-                for (p in targets) {
-                    val res = mgr.suspendPackage(p.pkg)
-                    if (res.isSuccess) {
-                        ok++
-                        CleanState.ok("已冻结 ${p.name}")
-                    } else {
-                        CleanState.warn("冻结 ${p.name} 未成功（可稍后在深度清理页重试）")
-                    }
+        val mgr = SuspendManager(this)
+        try {
+            val r = mgr.connect(port)
+            if (r.isFailure) return
+            CleanState.log("\n── 冻结广告组件（调试权限）──")
+            var ok = 0
+            for (p in targets) {
+                val res = mgr.suspendPackage(p.pkg)
+                if (res.isSuccess) {
+                    ok++
+                    CleanState.ok("已冻结 ${p.name}")
+                } else {
+                    CleanState.warn("冻结 ${p.name} 未成功（可稍后在深度清理页重试）")
                 }
-                if (ok > 0) CleanState.addClosed(ok)
-            } finally {
-                mgr.disconnect()
             }
+            if (ok > 0) CleanState.addClosed(ok)
+        } finally {
+            mgr.disconnect()
         }
     }
 

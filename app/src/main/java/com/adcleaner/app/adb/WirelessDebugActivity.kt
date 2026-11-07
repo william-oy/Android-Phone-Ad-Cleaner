@@ -89,10 +89,9 @@ class WirelessDebugActivity : AppCompatActivity() {
 
     // ---------- 连接 ----------
 
-    /** 打开页面自动连上次端口：连上直接进入操作区，老人零输入。 */
+    /** 打开页面自动连上次端口（或 5555 默认）：连上直接进入操作区，老人零输入。 */
     private fun tryAutoReconnect() {
-        val port = AdbAutomation.lastPort(this)
-        if (port <= 0) return
+        val port = AdbAutomation.resolvePort(this)
         b.tvStatus.text = getString(R.string.wd_auto_reconnecting)
         lifecycleScope.launch {
             val r = manager.connect(port)
