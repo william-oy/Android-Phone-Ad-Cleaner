@@ -276,8 +276,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun renderProgress(ui: CleanState.Ui) {
+        // 只在真正清理（跑过段/进行中/已完成）时显示进度卡：
+        // 服务绑定等后台日志不该把一张空进度卡顶到老人脸上
         b.layoutProgress.visibility =
-            if (ui.log.isNotEmpty() || ui.running) View.VISIBLE else View.GONE
+            if (ui.running || ui.done || ui.section.isNotEmpty()) View.VISIBLE else View.GONE
 
         b.tvProgress.text = if (ui.total > 0)
             "${ui.section}（${ui.progress}/${ui.total}）" else ui.section
