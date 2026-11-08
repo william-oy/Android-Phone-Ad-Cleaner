@@ -66,6 +66,7 @@ object AdbPairing {
         val tlsClient = PairingTlsClient(priv, cert)
         try {
             protocol.connect(tlsClient)
+            Log.i(TAG, "TLS 握手成功")
         } catch (e: Exception) {
             socket.close()
             throw IllegalStateException("TLS 握手失败：${e.message}")
@@ -73,6 +74,7 @@ object AdbPairing {
 
         // TLS-Exporter：BoringSSL 的 label 含 '\0'，无 context
         val exported = tlsClient.exportKey("adb-label\u0000", 64) ?: ByteArray(0)
+        Log.i(TAG, "exporter=${exported.size}B ${exported.take(8).joinToString("") { "%02x".format(it) }}")
         val fullPswd = pairingCode.toByteArray(Charsets.US_ASCII) + exported
 
         // ---- PairingPacket 交换 ----
@@ -80,10 +82,13 @@ object AdbPairing {
         val out: OutputStream = protocol.outputStream
 
         val spake = Spake2.client(fullPswd)
+        Log.i(TAG, "my spake2 msg=${spake.myMsg.joinToString("") { "%02x".format(it) }}")
         writePacket(out, PA_SPAKE2_MSG, spake.myMsg)
         val (theirType, theirMsg) = readPacket(inp)
         check(theirType == PA_SPAKE2_MSG) { "期望 SPAKE2_MSG，收到 type=$theirType" }
+        Log.i(TAG, "their spake2 msg=${theirMsg.joinToString("") { "%02x".format(it) }}")
         val keyMaterial = spake.process(theirMsg)
+        Log.i(TAG, "spake2 key=${keyMaterial.take(8).joinToString("") { "%02x".format(it) }}…")
 
         // ---- 加密交换 PeerInfo ----
         val gcmKey = deriveGcmKey(keyMaterial)
@@ -96,7 +101,11 @@ object AdbPairing {
 
         val (respType, respCt) = readPacket(inp)
         check(respType == PA_PEER_INFO) { "期望 PEER_INFO，收到 type=$respType" }
-        val theirInfo = gcmOpen(gcmKey, 0, respCt)
+        val theirInfo = try {
+            gcmOpen(gcmKey, 0, respCt)
+        } catch (e: Exception) {
+            throw IllegalStateException("解密对端信息失败（配对码不符或 SPAKE2 实现差异）：${e.javaClass.simpleName}")
+        }
 
         // 设备侧 PeerInfo：type=1(ADB_DEVICE_GUID)，data 为 GUID 字符串
         val guid = theirInfo.drop(1).takeWhile { it != 0.toByte() }

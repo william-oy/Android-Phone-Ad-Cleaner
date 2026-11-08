@@ -207,6 +207,8 @@ class WirelessDebugActivity : AppCompatActivity() {
             val guid = try {
                 AdbPairing.pair(this@WirelessDebugActivity, "127.0.0.1", port, code)
             } catch (e: Exception) {
+                android.util.Log.e("AdbPair", "手动配对失败", e)
+                log("< 配对异常：${e.javaClass.simpleName}: ${e.message}")
                 null
             }
             b.btnPair.isEnabled = true
