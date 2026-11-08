@@ -527,15 +527,22 @@ class AccessibilityEngine(private val service: AdCleanerService) {
     }
 
     /** 配对导航专用手势滚动：down=true 看后面的内容。真实手势，与手动滑动一致。 */
-    private fun gestureScroll(down: Boolean): Boolean {
+    private fun gestureScroll(down: Boolean): Boolean = gestureScroll(down, 350, 0.78f, 0.28f)
+
+    /**
+     * 手势滚动（可调速度/距离）。
+     * 慢速短距 = 无惯性甩动，一步约 1/3 屏，逐屏精确搜索不跳行；
+     * 快速长距 = 带惯性，用于快速回顶。
+     */
+    private fun gestureScroll(down: Boolean, durationMs: Long, from: Float, to: Float): Boolean {
         val dm = service.resources.displayMetrics
         val cx = dm.widthPixels / 2f
         val h = dm.heightPixels
         return try {
             val path = Path()
-            if (down) { path.moveTo(cx, h * 0.78f); path.lineTo(cx, h * 0.28f) }
-            else { path.moveTo(cx, h * 0.28f); path.lineTo(cx, h * 0.78f) }
-            val stroke = GestureDescription.StrokeDescription(path, 0, 350)
+            if (down) { path.moveTo(cx, h * from); path.lineTo(cx, h * to) }
+            else { path.moveTo(cx, h * to); path.lineTo(cx, h * from) }
+            val stroke = GestureDescription.StrokeDescription(path, 0, durationMs)
             service.dispatchGesture(GestureDescription.Builder().addStroke(stroke).build(), null, null)
         } catch (e: Exception) { false }
     }
@@ -576,7 +583,7 @@ class AccessibilityEngine(private val service: AdCleanerService) {
                 tappedWireless = true
                 delay(1500)
             } else if (page < scrolls) {
-                gestureScroll(true); delay(900)
+                gestureScroll(true, 900, 0.60f, 0.32f); delay(1000)
             } else {
                 break
             }
