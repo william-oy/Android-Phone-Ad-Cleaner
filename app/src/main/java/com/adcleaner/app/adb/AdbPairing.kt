@@ -1,24 +1,23 @@
 package com.adcleaner.app.adb
 
 import android.util.Log
+import org.bouncycastle.cert.X509CertificateHolder
+import org.bouncycastle.crypto.params.RSAPrivateCrtKeyParameters
 import org.bouncycastle.tls.Certificate
 import org.bouncycastle.tls.DefaultTlsClient
 import org.bouncycastle.tls.TlsAuthentication
 import org.bouncycastle.tls.TlsClientProtocol
-import org.bouncycastle.tls.TlsServerCertificate
 import org.bouncycastle.tls.TlsCredentials
+import org.bouncycastle.tls.TlsServerCertificate
 import org.bouncycastle.tls.crypto.impl.bc.BcDefaultTlsCredentialedSigner
 import org.bouncycastle.tls.crypto.impl.bc.BcTlsCertificate
 import org.bouncycastle.tls.crypto.impl.bc.BcTlsCrypto
-import org.bouncycastle.crypto.params.RSAPrivateCrtKeyParameters
 import java.io.InputStream
 import java.io.OutputStream
-import java.math.BigInteger
 import java.security.KeyFactory
 import java.security.PrivateKey
 import java.security.SecureRandom
 import java.security.spec.RSAPrivateCrtKeySpec
-import java.util.Base64 as JBase64
 import javax.crypto.Cipher
 import javax.crypto.spec.GCMParameterSpec
 import javax.crypto.spec.SecretKeySpec
@@ -33,6 +32,7 @@ import javax.crypto.spec.SecretKeySpec
  *  4. HKDF-SHA256 派生 AES-128-GCM 密钥，加密交换 PeerInfo（8192 字节定长：type + 公钥行）
  *
  * 实现先在 Python 原型（scratch/pair_proto.py）上真机验证通过后移植。
+ * TLS 层两条路径：JSSE(Conscrypt)+反射 exporter 优先，失败回退 BouncyCastle TLS。
  */
 object AdbPairing {
 
@@ -62,28 +62,165 @@ object AdbPairing {
         socket.connect(java.net.InetSocketAddress(host, port), 8000)
         socket.soTimeout = 15000
 
+        // 路径A：JSSE(Conscrypt) TLS + 反射 exporter；不可用再走路径B（BC TLS）
+        val jsse = runCatching { jsseHandshake(socket, host, port, ctx) }.getOrNull()
+        if (jsse != null) {
+            Log.i(TAG, "路径A（JSSE）：握手成功，exporter=${jsse.exported.size}B")
+            val fullPswd = pairingCode.toByteArray(Charsets.US_ASCII) + jsse.exported
+            val guid = exchangePairingPackets(jsse.ssl.inputStream, jsse.ssl.outputStream, km, fullPswd)
+            jsse.ssl.close()
+            guid
+        } else {
+            Log.i(TAG, "路径A不可用，走路径B（BC TLS）")
+            socket.close()
+            pairBcTls(ctx, host, port, pairingCode, priv, cert, km)
+        }
+    }
+
+    // ---------------- 路径A：JSSE(Conscrypt) ----------------
+
+    class JsseSession(val ssl: javax.net.ssl.SSLSocket, val exported: ByteArray)
+
+    /** JSSE TLS 握手（客户端证书 + 信任全放行）+ 反射探测 Conscrypt exporter。 */
+    private fun jsseHandshake(
+        raw: java.net.Socket,
+        host: String,
+        port: Int,
+        ctx: android.content.Context,
+    ): JsseSession {
+        val ks = AdbCertManager.buildKeyStore(ctx)
+        val kmf = javax.net.ssl.KeyManagerFactory.getInstance(javax.net.ssl.KeyManagerFactory.getDefaultAlgorithm())
+        kmf.init(ks, CharArray(0))
+        val trustAll = arrayOf<javax.net.ssl.TrustManager>(object : javax.net.ssl.X509TrustManager {
+            override fun checkClientTrusted(c: Array<java.security.cert.X509Certificate>, a: String?) {}
+            override fun checkServerTrusted(c: Array<java.security.cert.X509Certificate>, a: String?) {}
+            override fun getAcceptedIssuers(): Array<java.security.cert.X509Certificate> = arrayOf()
+        })
+        val sslCtx = javax.net.ssl.SSLContext.getInstance("TLS")
+        sslCtx.init(kmf.keyManagers, trustAll, null)
+        val ssl = sslCtx.socketFactory.createSocket(raw, host, port, true) as javax.net.ssl.SSLSocket
+        ssl.enabledProtocols = arrayOf("TLSv1.3", "TLSv1.2")
+        ssl.startHandshake()
+        ssl.soTimeout = 15000
+        Log.i(TAG, "JSSE 握手成功 ${ssl.session.protocol} ${ssl.session.cipherSuite}")
+
+        // 反射探测 Conscrypt 的 exportKeyingMaterial（隐藏 API，各版本签名不一）
+        val m = ssl.javaClass.methods.firstOrNull { it.name == "exportKeyingMaterial" }
+            ?: ssl.javaClass.methods.firstOrNull { it.name.contains("xport") }
+        if (m == null) {
+            val names = ssl.javaClass.methods.map { it.name }.filter { it.contains("xport") || it.contains("Keying") }
+            throw IllegalStateException("Conscrypt 无 exporter API（候选=$names）")
+        }
+        Log.i(TAG, "exporter 方法: ${m.name}(${m.parameterTypes.joinToString()})")
+        val exported: ByteArray = when (m.parameterTypes.size) {
+            3 -> {
+                // (label: String, length: Int, context: bytes) 或 (bytes, len, ctx) 两种顺序都试
+                runCatching { m.invoke(ssl, "adb-label\u0000", 64, null) as? ByteArray }
+                    .getOrElse { m.invoke(ssl, b("adb-label\u0000"), 64) as? ByteArray }
+            }
+            2 -> m.invoke(ssl, b("adb-label\u0000"), 64) as? ByteArray
+            else -> null
+        } ?: throw IllegalStateException("exporter 调用返回空")
+        if (exported.size != 64) throw IllegalStateException("exporter 长度异常: ${exported.size}")
+        return JsseSession(ssl, exported)
+    }
+
+    private fun b(s: String): ByteArray = s.toByteArray(Charsets.US_ASCII)
+
+    // ---------------- 路径B：BouncyCastle TLS ----------------
+
+    private suspend fun pairBcTls(
+        ctx: android.content.Context,
+        host: String,
+        port: Int,
+        pairingCode: String,
+        priv: PrivateKey,
+        cert: java.security.cert.X509Certificate,
+        km: AdbKeyManager,
+    ): String = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+        val socket = java.net.Socket()
+        socket.tcpNoDelay = true
+        socket.connect(java.net.InetSocketAddress(host, port), 8000)
+        socket.soTimeout = 15000
+
         val protocol = TlsClientProtocol(socket.getInputStream(), socket.getOutputStream())
         val tlsClient = PairingTlsClient(priv, cert)
         try {
             kotlinx.coroutines.withTimeoutOrNull(25000) { protocol.connect(tlsClient) }
                 ?: throw IllegalStateException("TLS1.3 握手超时（25s）——BC 与 BoringSSL 协商卡住")
-            Log.i(TAG, "TLS 握手成功")
+            Log.i(TAG, "BC TLS 握手成功")
         } catch (e: IllegalStateException) {
             socket.close(); throw e
         } catch (e: Exception) {
             socket.close()
             throw IllegalStateException("TLS 握手失败：${e.message}")
         }
-
-        // TLS-Exporter：BoringSSL 的 label 含 '\0'，无 context
         val exported = tlsClient.exportKey("adb-label\u0000", 64) ?: ByteArray(0)
-        Log.i(TAG, "exporter=${exported.size}B ${exported.take(8).joinToString("") { "%02x".format(it) }}")
         val fullPswd = pairingCode.toByteArray(Charsets.US_ASCII) + exported
 
-        // ---- PairingPacket 交换 ----
-        val inp: InputStream = protocol.inputStream
-        val out: OutputStream = protocol.outputStream
+        val guid = exchangePairingPackets(protocol.inputStream, protocol.outputStream, km, fullPswd)
+        socket.close()
+        guid
+    }
 
+    /** 配对专用 TLS 客户端：TLS1.3、客户端证书、服务端证书全放行。 */
+    private class PairingTlsClient(
+        private val clientPriv: PrivateKey,
+        private val clientCert: java.security.cert.X509Certificate,
+    ) : DefaultTlsClient(BcTlsCrypto(SecureRandom())) {
+
+        /** 公开访问器：在子类内部读 protected 的 context 没问题。 */
+        fun cryptoParameters(): org.bouncycastle.tls.crypto.TlsCryptoParameters =
+            org.bouncycastle.tls.crypto.TlsCryptoParameters(context)
+
+        override fun getAuthentication(): TlsAuthentication = object : TlsAuthentication {
+            override fun notifyServerCertificate(serverCertificate: TlsServerCertificate?) {
+                // 配对阶段不校验服务端证书（对齐 AOSP：verify callback 全放行）
+                Log.d(TAG, "server cert accepted: ${serverCertificate != null}")
+            }
+
+            override fun getClientCredentials(request: org.bouncycastle.tls.CertificateRequest): TlsCredentials {
+                android.util.Log.i(TAG, "getClientCredentials: sigAlgs=${request.supportedSignatureAlgorithms?.size}")
+                val sigAlg = org.bouncycastle.tls.SignatureAndHashAlgorithm(
+                    org.bouncycastle.tls.HashAlgorithm.sha256,
+                    org.bouncycastle.tls.SignatureAlgorithm.rsa_pss_rsae_sha256
+                )
+                return makeClientSigner(clientPriv, clientCert, cryptoParameters(), sigAlg)
+            }
+        }
+    }
+
+    private fun makeClientSigner(
+        priv: PrivateKey,
+        cert: java.security.cert.X509Certificate,
+        cryptoParams: org.bouncycastle.tls.crypto.TlsCryptoParameters,
+        sigAlg: org.bouncycastle.tls.SignatureAndHashAlgorithm,
+    ): TlsCredentials {
+        val kf = KeyFactory.getInstance("RSA")
+        val crt = kf.getKeySpec(priv, RSAPrivateCrtKeySpec::class.java)
+        val params = RSAPrivateCrtKeyParameters(
+            crt.modulus, crt.publicExponent, crt.privateExponent,
+            crt.primeP, crt.primeQ, crt.primeExponentP, crt.primeExponentQ, crt.crtCoefficient
+        )
+        val crypto = BcTlsCrypto(SecureRandom())
+        val tlsCert = BcTlsCertificate(crypto, cert.encoded)
+        return BcDefaultTlsCredentialedSigner(
+            cryptoParams,
+            crypto,
+            params,
+            Certificate(arrayOf(tlsCert)),
+            sigAlg
+        )
+    }
+
+    // ---------------- PairingPacket 交换（两条路径共用） ----------------
+
+    private fun exchangePairingPackets(
+        inp: InputStream,
+        out: OutputStream,
+        km: AdbKeyManager,
+        fullPswd: ByteArray,
+    ): String {
         val spake = Spake2.client(fullPswd)
         Log.i(TAG, "my spake2 msg=${spake.myMsg.joinToString("") { "%02x".format(it) }}")
         writePacket(out, PA_SPAKE2_MSG, spake.myMsg)
@@ -114,72 +251,17 @@ object AdbPairing {
         val guid = theirInfo.drop(1).takeWhile { it != 0.toByte() }
             .toByteArray().toString(Charsets.UTF_8)
         Log.i(TAG, "配对成功，设备 GUID=$guid")
-        socket.close()
-        guid
+        return guid
     }
 
-    /** 配对专用 TLS 客户端：TLS1.3、客户端证书、服务端证书全放行。 */
-    private class PairingTlsClient(
-        private val clientPriv: PrivateKey,
-        private val clientCert: java.security.cert.X509Certificate,
-    ) : DefaultTlsClient(BcTlsCrypto(SecureRandom())) {
-
-        /** 公开访问器：在子类内部读 protected 的 context 没问题。 */
-        fun cryptoParameters(): org.bouncycastle.tls.crypto.TlsCryptoParameters =
-            org.bouncycastle.tls.crypto.TlsCryptoParameters(context)
-
-        /** RFC 5705/8446 exporter（label 含 NUL、无 context，与 BoringSSL 一致）。 */
-        fun exportKey(label: String, length: Int): ByteArray? =
-            context.exportKeyingMaterial(label, null, length)
-
-        override fun getAuthentication(): TlsAuthentication = object : TlsAuthentication {
-            override fun notifyServerCertificate(serverCertificate: TlsServerCertificate?) {
-                // 配对阶段不校验服务端证书（对齐 AOSP：verify callback 全放行）
-                Log.d(TAG, "server cert accepted: ${serverCertificate != null}")
-            }
-
-            override fun getClientCredentials(request: org.bouncycastle.tls.CertificateRequest): TlsCredentials {
-                android.util.Log.i(TAG, "getClientCredentials: 收到证书请求 sigAlgs=${request.supportedSignatureAlgorithms?.size}")
-                val sigAlg = org.bouncycastle.tls.SignatureAndHashAlgorithm(
-                    org.bouncycastle.tls.HashAlgorithm.sha256,
-                    org.bouncycastle.tls.SignatureAlgorithm.rsa_pss_rsae_sha256
-                )
-                val cred = makeClientSigner(clientPriv, clientCert, cryptoParameters(), sigAlg)
-                android.util.Log.i(TAG, "getClientCredentials: 完成 -> ${cred.javaClass.simpleName}")
-                return cred
-            }
-        }
-    }
-
-    private fun makeClientSigner(
-        priv: PrivateKey,
-        cert: java.security.cert.X509Certificate,
-        cryptoParams: org.bouncycastle.tls.crypto.TlsCryptoParameters,
-        sigAlg: org.bouncycastle.tls.SignatureAndHashAlgorithm,
-    ): TlsCredentials {
-        val kf = KeyFactory.getInstance("RSA")
-        val crt = kf.getKeySpec(priv, java.security.spec.RSAPrivateCrtKeySpec::class.java)
-        val params = RSAPrivateCrtKeyParameters(
-            crt.modulus, crt.publicExponent, crt.privateExponent,
-            crt.primeP, crt.primeQ, crt.primeExponentP, crt.primeExponentQ, crt.crtCoefficient
-        )
-        val crypto = BcTlsCrypto(SecureRandom())
-        val tlsCert = BcTlsCertificate(crypto, cert.encoded)
-        return BcDefaultTlsCredentialedSigner(
-            cryptoParams,
-            crypto,
-            params,
-            Certificate(arrayOf(tlsCert)),
-            sigAlg
-        )
-    }
-
-    // ---------------- PairingPacket ----------------
+    // ---------------- PairingPacket 读写 ----------------
 
     private fun writePacket(out: OutputStream, type: Int, payload: ByteArray) {
-        val header = byteArrayOf(1.toByte(), type.toByte(),
+        val header = byteArrayOf(
+            1.toByte(), type.toByte(),
             (payload.size shr 24).toByte(), (payload.size shr 16).toByte(),
-            (payload.size shr 8).toByte(), payload.size.toByte())
+            (payload.size shr 8).toByte(), payload.size.toByte()
+        )
         out.write(header)
         out.write(payload)
         out.flush()
