@@ -135,12 +135,15 @@ class AdCleanerService : AccessibilityService() {
                 }
                 com.adcleaner.app.adb.AdbPairState.status.value = "正在打开配对码页…"
                 CleanState.log("\n── 无线调试自动配对 ──")
+                android.util.Log.i("AdbPair", "flow: 开始自动配对")
                 val info = eng.openPairingDialog(8)
                 if (info == null) {
+                    android.util.Log.i("AdbPair", "flow: openPairingDialog 失败（没找到配对码页）")
                     fail("没找到配对码页：请手动打开「使用配对码配对设备」后重试")
                     return@launch
                 }
                 val (code, addr) = info
+                android.util.Log.i("AdbPair", "flow: 读到配对码 $code addr=$addr")
                 CleanState.step("读取到配对码 $code（$addr）")
                 com.adcleaner.app.adb.AdbPairState.status.value = "正在配对（配对码 $code）…"
 
@@ -151,12 +154,14 @@ class AdCleanerService : AccessibilityService() {
                     return@launch
                 }
                 val guid = com.adcleaner.app.adb.AdbPairing.pair(applicationContext, host, pairPort, code)
+                android.util.Log.i("AdbPair", "flow: 配对成功 guid=$guid")
                 CleanState.ok("配对成功（设备 $guid）")
                 com.adcleaner.app.adb.AdbPairState.status.value = "配对成功！正在寻找连接端口…"
 
                 val ep = com.adcleaner.app.adb.AdbWireless.discover(
                     applicationContext, com.adcleaner.app.adb.AdbWireless.SERVICE_CONNECT
                 )
+                android.util.Log.i("AdbPair", "flow: NSD connect 端点=${ep?.host}:${ep?.port}")
                 if (ep == null) {
                     fail("没发现连接端口：请保持「无线调试」打开后重试")
                     return@launch
