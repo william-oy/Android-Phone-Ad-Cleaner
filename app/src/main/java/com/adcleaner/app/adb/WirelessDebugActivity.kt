@@ -201,11 +201,25 @@ class WirelessDebugActivity : AppCompatActivity() {
         }
         b.btnPair.isEnabled = false
         setStatus(getString(R.string.wd_pairing))
-        log("> pair 127.0.0.1:$port code=$code")
+        log("> pair code=$code port=$port")
 
         lifecycleScope.launch {
+            // 配对服务只监听 WLAN 网卡，不监听 127.0.0.1：优先 NSD 发现端点（含正确 host）
+            var host = "127.0.0.1"
+            var realPort = port
+            val ep = AdbWireless.discover(this@WirelessDebugActivity, AdbWireless.SERVICE_PAIRING, 8000)
+            if (ep != null) {
+                host = ep.host
+                realPort = ep.port
+                log("< NSD 发现配对端点 $host:$realPort")
+            } else {
+                wlanIp()?.let {
+                    host = it
+                    log("< 未发现 NSD，用 wlan 地址 $it:$realPort")
+                }
+            }
             val guid = try {
-                AdbPairing.pair(this@WirelessDebugActivity, "127.0.0.1", port, code)
+                AdbPairing.pair(this@WirelessDebugActivity, host, realPort, code)
             } catch (e: Exception) {
                 android.util.Log.e("AdbPair", "手动配对失败", e)
                 log("< 配对异常：${e.javaClass.simpleName}: ${e.message}")
@@ -221,6 +235,17 @@ class WirelessDebugActivity : AppCompatActivity() {
                 log("< 配对失败：$reason")
             }
         }
+    }
+
+    /** 本机 wlan0 的站点本地 IPv4（作为手动配对的兜底 host）。 */
+    private fun wlanIp(): String? = try {
+        java.net.NetworkInterface.getNetworkInterfaces().asSequence()
+            .filter { it.isUp && it.name.startsWith("wlan") }
+            .flatMap { it.inetAddresses.asSequence() }
+            .firstOrNull { it is java.net.Inet4Address && it.isSiteLocalAddress }
+            ?.hostAddress
+    } catch (_: Exception) {
+        null
     }
 
     // ---------- 一键冻结 / 全部还原 ----------
