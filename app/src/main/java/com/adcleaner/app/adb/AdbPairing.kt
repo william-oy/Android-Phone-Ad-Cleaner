@@ -145,7 +145,7 @@ object AdbPairing {
                     org.bouncycastle.tls.SignatureAlgorithm.rsa_pss_rsae_sha256
                 )
                 val cred = makeClientSigner(clientPriv, clientCert, cryptoParameters(), sigAlg)
-                android.util.Log.i(TAG, "getClientCredentials: 完成 -> ${cred.getSignatureAndHashAlgorithm()}")
+                android.util.Log.i(TAG, "getClientCredentials: 完成 -> ${cred.javaClass.simpleName}")
                 return cred
             }
         }
