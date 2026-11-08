@@ -540,8 +540,8 @@ class AccessibilityEngine(private val service: AdCleanerService) {
      * 都没有→滚动。设置页保留旧滚动位置，所以先滚回顶部。
      */
     suspend fun openPairingDialog(scrolls: Int = 12): Pair<String, String>? {
-        // 先回顶（最多 10 次），再进入状态机
-        repeat(10) { scrollUpOnce() }
+        // 先回顶（最多 25 次：开发者选项页很长，位置不定），再进入状态机
+        repeat(25) { scrollUpOnce() }
         delay(600)
         var tappedWireless = false
         var page = 0
