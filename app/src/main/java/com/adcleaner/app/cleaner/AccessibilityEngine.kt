@@ -544,7 +544,8 @@ class AccessibilityEngine(private val service: AdCleanerService) {
         repeat(10) { scrollUpOnce() }
         delay(600)
         var tappedWireless = false
-        repeat(scrolls + 4) { page ->
+        var page = 0
+        while (page <= scrolls + 4) {
             readPairingCodeOnScreen()?.let { return it }
             if (findTextNodes("使用配对码配对设备", exact = false).isNotEmpty()) {
                 for (n in findTextNodes("使用配对码配对设备", exact = false)) {
@@ -561,8 +562,11 @@ class AccessibilityEngine(private val service: AdCleanerService) {
                 delay(1500)
             } else if (page < scrolls) {
                 scrollDownOnce()
-            } else break
+            } else {
+                break
+            }
             delay(400)
+            page++
         }
         // 诊断：引擎到底看到了哪个窗口、哪些文本
         val r = root()
