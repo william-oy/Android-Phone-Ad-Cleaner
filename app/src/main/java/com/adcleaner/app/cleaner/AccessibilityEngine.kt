@@ -548,24 +548,42 @@ class AccessibilityEngine(private val service: AdCleanerService) {
     }
 
     /**
-     * 可靠点击：先沿祖先链 performAction(CLICK)（引擎清理流程验证过的方式），
-     * 失败再用 260ms 长按手势（70ms 轻点在 vivo 设置行上会被吞）。
+     * 找到文本节点所属的「全宽行容器」：vivo 设置行里，文本节点不可点，
+     * 带 same 文本的可点节点往往是开关（点了=切换而不是导航）。
+     * 因此只认宽度 ≥ 60% 屏幕的可点祖先作为行容器。
      */
-    private fun tapNodeReliably(node: AccessibilityNodeInfo): Boolean {
+    private fun rowContainerOf(node: AccessibilityNodeInfo): AccessibilityNodeInfo {
+        val dm = service.resources.displayMetrics
+        val minW = (dm.widthPixels * 0.6f).toInt()
         var n: AccessibilityNodeInfo? = node
         var d = 0
-        while (n != null && d < 6) {
-            if (n.isClickable && n.performAction(AccessibilityNodeInfo.ACTION_CLICK)) {
-                android.util.Log.i("AdbNav", "performAction click ok (level=$d)")
-                return true
+        var fallback: AccessibilityNodeInfo? = null
+        while (n != null && d < 8) {
+            val r = Rect()
+            n.getBoundsInScreen(r)
+            if (n.isClickable) {
+                if (r.width() >= minW) return n
+                if (fallback == null) fallback = n
             }
             n = n.parent; d++
         }
+        return fallback ?: node
+    }
+
+    /**
+     * 可靠点击设置行：定位全宽行容器 → performAction(CLICK)；
+     * vivo 上该动作可能被静默忽略，因此再补一次 300ms 手势按压行中心。
+     */
+    private fun tapNodeReliably(node: AccessibilityNodeInfo): Boolean {
+        val container = rowContainerOf(node)
         val r = Rect()
-        node.getBoundsInScreen(r)
-        val ok = clickPoint(r.exactCenterX(), r.exactCenterY(), 260)
-        android.util.Log.i("AdbNav", "gesture press (${r.exactCenterX()},${r.exactCenterY()}) -> $ok")
-        return ok
+        container.getBoundsInScreen(r)
+        val w = r.width()
+        var ok = container.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+        android.util.Log.i("AdbNav", "container click ($w px) -> $ok")
+        val press = clickPoint(r.exactCenterX(), r.exactCenterY(), 300)
+        android.util.Log.i("AdbNav", "gesture press (${r.exactCenterX()},${r.exactCenterY()}) -> $press")
+        return ok || press
     }
 
     /** 真实手势点击节点中心（vivo 设置行对 performAction 有时不响应，手势与人手一致）。 */
