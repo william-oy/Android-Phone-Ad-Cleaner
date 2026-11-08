@@ -184,12 +184,21 @@ object AdbPairing {
             }
 
             override fun getClientCredentials(request: org.bouncycastle.tls.CertificateRequest): TlsCredentials {
-                android.util.Log.i(TAG, "getClientCredentials: sigAlgs=${request.supportedSignatureAlgorithms?.size}")
-                val sigAlg = org.bouncycastle.tls.SignatureAndHashAlgorithm(
-                    org.bouncycastle.tls.HashAlgorithm.sha256,
-                    org.bouncycastle.tls.SignatureAlgorithm.rsa_pss_rsae_sha256
-                )
-                return makeClientSigner(clientPriv, clientCert, cryptoParameters(), sigAlg)
+                // 关键：必须用服务端请求里的 wire 实例。手搓的 alg 经
+                // SignatureScheme.from 得到错误 id（0x0404），会错走 PKCS1 签名器
+                val algs = request.supportedSignatureAlgorithms
+                var alg: org.bouncycastle.tls.SignatureAndHashAlgorithm? = null
+                if (algs != null) {
+                    for (o in algs) {
+                        val a = o as org.bouncycastle.tls.SignatureAndHashAlgorithm
+                        if (a.signature == org.bouncycastle.tls.SignatureAlgorithm.rsa_pss_rsae_sha256) { alg = a; break }
+                    }
+                }
+                if (alg == null) {
+                    android.util.Log.i(TAG, "服务端未请求 rsa_pss_rsae_sha256，返回 null（不发客户端证书）")
+                    return null
+                }
+                return makeClientSigner(clientPriv, clientCert, cryptoParameters(), alg)
             }
         }
     }
@@ -212,7 +221,7 @@ object AdbPairing {
             cryptoParams,
             crypto,
             params,
-            Certificate(arrayOf(tlsCert)),
+            Certificate(org.bouncycastle.tls.CertificateRequestContext(ByteArray(0)), arrayOf(tlsCert)),
             sigAlg
         )
     }
