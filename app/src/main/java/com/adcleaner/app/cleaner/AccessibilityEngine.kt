@@ -177,6 +177,32 @@ class AccessibilityEngine(private val service: AdCleanerService) {
         swipeUp(); delay(420); return true
     }
 
+    private fun scrollBackward(): Boolean {
+        val r = root() ?: return false
+        for (n in collectAll(r)) {
+            if (n.isScrollable && n.performAction(AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD)) return true
+        }
+        return false
+    }
+
+    private fun swipeDown(durationMs: Long = 380): Boolean {
+        val dm = service.resources.displayMetrics
+        val cx = dm.widthPixels / 2f
+        val h = dm.heightPixels
+        return try {
+            val path = Path()
+            path.moveTo(cx, h * 0.30f)
+            path.lineTo(cx, h * 0.78f)
+            val stroke = GestureDescription.StrokeDescription(path, 0, durationMs)
+            service.dispatchGesture(GestureDescription.Builder().addStroke(stroke).build(), null, null)
+        } catch (e: Exception) { false }
+    }
+
+    private suspend fun scrollUpOnce(): Boolean {
+        if (scrollBackward()) { delay(300); return true }
+        swipeDown(); delay(420); return true
+    }
+
     // ---------------- 确认框 ----------------
     private val CONFIRM_WORDS = listOf("确定", "确认", "知道了", "仍要关闭", "确定关闭", "关闭", "好的", "仍要", "继续")
     private val CANCEL_WORDS = listOf("取消", "以后再说", "不允许", "禁止", "暂不", "不了", "放弃", "返回")
@@ -516,7 +542,7 @@ class AccessibilityEngine(private val service: AdCleanerService) {
 
     /**
      * 自动导航到「使用配对码配对设备」对话框并读出 (配对码, ip:端口)。
-     * 依次尝试：已在对话框 → 子页直接点入口 → 主页滚屏找「无线调试」再进。
+     * 先滚回顶部（设置页会保留上次滚动位置），再向下搜索；已在对话框/子页时直接处理。
      */
     suspend fun openPairingDialog(scrolls: Int = 8): Pair<String, String>? {
         readPairingCodeOnScreen()?.let { return it }
@@ -524,6 +550,9 @@ class AccessibilityEngine(private val service: AdCleanerService) {
             delay(1200)
             readPairingCodeOnScreen()?.let { return it }
         }
+        // 设置页保留旧滚动位置：先回顶再向下找
+        repeat(scrolls) { scrollUpOnce() }
+        delay(500)
         if (findAndTapText(listOf("无线调试"), scrolls)) {
             delay(1200)
             if (findAndTapText(listOf("使用配对码配对设备"), 3)) {
