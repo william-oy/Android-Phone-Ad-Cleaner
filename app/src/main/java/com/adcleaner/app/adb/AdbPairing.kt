@@ -173,6 +173,10 @@ object AdbPairing {
         fun cryptoParameters(): org.bouncycastle.tls.crypto.TlsCryptoParameters =
             org.bouncycastle.tls.crypto.TlsCryptoParameters(context)
 
+        /** RFC 5705/8446 exporter（label 含 NUL、无 context，与 BoringSSL 一致）。 */
+        fun exportKey(label: String, length: Int): ByteArray? =
+            context.exportKeyingMaterial(label, null, length)
+
         override fun getAuthentication(): TlsAuthentication = object : TlsAuthentication {
             override fun notifyServerCertificate(serverCertificate: TlsServerCertificate?) {
                 // 配对阶段不校验服务端证书（对齐 AOSP：verify callback 全放行）
