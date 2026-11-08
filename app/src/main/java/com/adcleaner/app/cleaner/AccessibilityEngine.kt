@@ -555,11 +555,12 @@ class AccessibilityEngine(private val service: AdCleanerService) {
      */
     suspend fun openPairingDialog(scrolls: Int = 12): Pair<String, String>? {
         // 先回顶（手势上滑 22 次，覆盖最长页面），再进入状态机
-        repeat(22) { gestureScroll(false); delay(230) }
-        delay(700)
+        repeat(22) { gestureScroll(false); delay(560) }
+        delay(900)
         var tappedWireless = false
         var page = 0
         while (page <= scrolls + 4) {
+            waitStable(700, 4)
             readPairingCodeOnScreen()?.let { return it }
             if (findTextNodes("使用配对码配对设备", exact = false).isNotEmpty()) {
                 for (n in findTextNodes("使用配对码配对设备", exact = false)) {
@@ -575,11 +576,10 @@ class AccessibilityEngine(private val service: AdCleanerService) {
                 tappedWireless = true
                 delay(1500)
             } else if (page < scrolls) {
-                gestureScroll(true); delay(500)
+                gestureScroll(true); delay(900)
             } else {
                 break
             }
-            delay(300)
             page++
         }
         // 诊断：引擎到底看到了哪个窗口、哪些文本
