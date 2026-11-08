@@ -560,6 +560,10 @@ class AccessibilityEngine(private val service: AdCleanerService) {
                 readPairingCodeOnScreen()?.let { return it }
             }
         }
+        // 诊断：引擎到底看到了哪个窗口、哪些文本
+        val r = root()
+        val sample = collectAll(r).take(60).mapNotNull { n -> nodeText(n).ifEmpty { null } }
+        android.util.Log.i("AdbPair", "nav失败 diag: root=${r?.packageName} wins=${diagWindows()} texts=$sample")
         return null
     }
 
