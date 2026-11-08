@@ -547,6 +547,27 @@ class AccessibilityEngine(private val service: AdCleanerService) {
         } catch (e: Exception) { false }
     }
 
+    /**
+     * 可靠点击：先沿祖先链 performAction(CLICK)（引擎清理流程验证过的方式），
+     * 失败再用 260ms 长按手势（70ms 轻点在 vivo 设置行上会被吞）。
+     */
+    private fun tapNodeReliably(node: AccessibilityNodeInfo): Boolean {
+        var n: AccessibilityNodeInfo? = node
+        var d = 0
+        while (n != null && d < 6) {
+            if (n.isClickable && n.performAction(AccessibilityNodeInfo.ACTION_CLICK)) {
+                android.util.Log.i("AdbNav", "performAction click ok (level=$d)")
+                return true
+            }
+            n = n.parent; d++
+        }
+        val r = Rect()
+        node.getBoundsInScreen(r)
+        val ok = clickPoint(r.exactCenterX(), r.exactCenterY(), 260)
+        android.util.Log.i("AdbNav", "gesture press (${r.exactCenterX()},${r.exactCenterY()}) -> $ok")
+        return ok
+    }
+
     /** 真实手势点击节点中心（vivo 设置行对 performAction 有时不响应，手势与人手一致）。 */
     private fun gestureTapNode(node: AccessibilityNodeInfo): Boolean {
         val r = Rect()
@@ -573,20 +594,20 @@ class AccessibilityEngine(private val service: AdCleanerService) {
             val hasWireless = findTextNodes("无线调试", exact = false).isNotEmpty()
             android.util.Log.i("AdbPair", "nav page=$page entry=$hasEntry sub=$onSubPage wireless=$hasWireless")
             if (hasEntry) {
-                for (n in findTextNodes("使用配对码配对设备", exact = false)) {
-                    android.util.Log.i("AdbNav", "tap 使用配对码配对设备 -> ${gestureTapNode(n)}")
-                    break
-                }
+                tapNodeReliably(findTextNodes("使用配对码配对设备", exact = false).first())
                 delay(1500)
             } else if (onSubPage) {
                 // 在子页：滚动到配对码入口可见
                 gestureScroll(true, 700, 0.55f, 0.35f); delay(900)
             } else if (hasWireless) {
-                for (n in findTextNodes("无线调试", exact = false)) {
-                    android.util.Log.i("AdbNav", "tap 无线调试 -> ${gestureTapNode(n)}")
-                    break
+                val rowNode = findTextNodes("无线调试", exact = false).first()
+                tapNodeReliably(rowNode)
+                delay(1800)
+                if (findTextNodes("设备名称", exact = false).isEmpty()) {
+                    android.util.Log.i("AdbNav", "第一次点击未导航，重试")
+                    tapNodeReliably(rowNode)
+                    delay(1800)
                 }
-                delay(1500)
             } else if (page < scrolls) {
                 gestureScroll(true, 900, 0.60f, 0.32f); delay(1000)
             } else {
