@@ -509,26 +509,6 @@ class AccessibilityEngine(private val service: AdCleanerService) {
 
     // ---------------- 无线调试自动配对导航 ----------------
 
-    /** 在当前设置页找到含 [texts] 之一的行并点击（向下翻 scrolls 屏）。 */
-    suspend fun findAndTapText(texts: List<String>, scrolls: Int = 6): Boolean {
-        repeat(scrolls + 1) { page ->
-            waitStable(600, 3)
-            for (t in texts) {
-                for (n in findTextNodes(t, exact = false)) {
-                    if (clickNode(n)) return true
-                }
-            }
-            // 诊断：每轮搜索的 root 与前几个可见文本
-            if (page < scrolls) {
-                val r = root()
-                val head = collectAll(r).take(24).mapNotNull { n -> nodeText(n).ifEmpty { null } }.take(6)
-                android.util.Log.i("AdbPair", "nav page=$page root=${r?.packageName} head=$head")
-                scrollDownOnce()
-            }
-        }
-        return false
-    }
-
     /** 读当前屏幕上的配对码对话框（设置页在前台时 root 即对话框内容）。 */
     fun readPairingCodeOnScreen(): Pair<String, String>? {
         val codeRegex = Regex("^\\d{6}$")
@@ -546,25 +526,43 @@ class AccessibilityEngine(private val service: AdCleanerService) {
         return c to a
     }
 
+    /** 真实手势点击节点中心（vivo 设置行对 performAction 有时不响应，手势与人手一致）。 */
+    private fun gestureTapNode(node: AccessibilityNodeInfo): Boolean {
+        val r = Rect()
+        node.getBoundsInScreen(r)
+        if (r.isEmpty) return false
+        return clickPoint(r.exactCenterX(), r.exactCenterY())
+    }
+
     /**
      * 自动导航到「使用配对码配对设备」对话框并读出 (配对码, ip:端口)。
-     * 先滚回顶部（设置页会保留上次滚动位置），再向下搜索；已在对话框/子页时直接处理。
+     * 状态机：看到配对码框→读；看到配对码入口→点；主列表看到无线调试行→点；
+     * 都没有→滚动。设置页保留旧滚动位置，所以先滚回顶部。
      */
-    suspend fun openPairingDialog(scrolls: Int = 8): Pair<String, String>? {
-        readPairingCodeOnScreen()?.let { return it }
-        if (findAndTapText(listOf("使用配对码配对设备"), 2)) {
-            delay(1200)
+    suspend fun openPairingDialog(scrolls: Int = 12): Pair<String, String>? {
+        // 先回顶（最多 10 次），再进入状态机
+        repeat(10) { scrollUpOnce() }
+        delay(600)
+        var tappedWireless = false
+        repeat(scrolls + 4) { page ->
             readPairingCodeOnScreen()?.let { return it }
-        }
-        // 设置页保留旧滚动位置：先回顶再向下找
-        repeat(scrolls) { scrollUpOnce() }
-        delay(500)
-        if (findAndTapText(listOf("无线调试"), scrolls)) {
-            delay(1200)
-            if (findAndTapText(listOf("使用配对码配对设备"), 3)) {
-                delay(1200)
-                readPairingCodeOnScreen()?.let { return it }
-            }
+            if (findTextNodes("使用配对码配对设备", exact = false).isNotEmpty()) {
+                for (n in findTextNodes("使用配对码配对设备", exact = false)) {
+                    gestureTapNode(n); break
+                }
+                delay(1500)
+            } else if (!tappedWireless &&
+                findTextNodes("设备名称", exact = false).isEmpty() &&   // 子页才有设备名称行
+                findTextNodes("无线调试", exact = false).isNotEmpty()) {
+                for (n in findTextNodes("无线调试", exact = false)) {
+                    gestureTapNode(n); break
+                }
+                tappedWireless = true
+                delay(1500)
+            } else if (page < scrolls) {
+                scrollDownOnce()
+            } else break
+            delay(400)
         }
         // 诊断：引擎到底看到了哪个窗口、哪些文本
         val r = root()
