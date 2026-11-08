@@ -73,6 +73,24 @@ class WirelessDebugActivity : AppCompatActivity() {
 
         buildPackageRows()
         tryAutoReconnect()
+
+        // 自动配对进度：服务在后台跑，这里只展示
+        lifecycleScope.launch {
+            com.adcleaner.app.adb.AdbPairState.status.collect { st ->
+                if (st.isNotEmpty()) {
+                    setStatus(st)
+                    log(st)
+                }
+            }
+        }
+        lifecycleScope.launch {
+            com.adcleaner.app.adb.AdbPairState.done.collect { d ->
+                if (d == true) {
+                    val port = com.adcleaner.app.adb.AdbPairState.connectedPort.value
+                    if (port > 0) onConnected(port, tls = true)
+                }
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -155,58 +173,23 @@ class WirelessDebugActivity : AppCompatActivity() {
 
     /**
      * 一键自动配对（零输入）：
-     * 1. 无障碍读取屏幕上的 6 位配对码和配对端口（要求配对码对话框在屏幕上）
-     * 2. 走 SPAKE2 + TLS 配对协议（设备登记我们的公钥）
-     * 3. NSD 发现连接端口，TLS 直连
+     * 1. app 在前台时拉起开发者选项页（后台启动 Activity 受系统限制，必须此刻）
+     * 2. 无障碍服务接管：自动点开「使用配对码配对设备」、读码、SPAKE2 配对、
+     *    NSD 发现端口、TLS 连接（全程设置页在前台，读屏必然成功）
      */
     private fun onAutoPair() {
-        lifecycleScope.launch {
-            setStatus(getString(R.string.wd_auto_pair_reading))
-            val info = com.adcleaner.app.cleaner.AdCleanerService.instance?.readPairingCodeAndPort()
-            if (info == null) {
-                setStatus(getString(R.string.wd_auto_pair_need_dialog))
-                log("< 没读到配对码：请先打开「使用配对码配对设备」对话框")
-                return@launch
-            }
-            val (code, addr) = info
-            val host = addr.substringBefore(":")
-            val pairPort = addr.substringAfter(":").toIntOrNull() ?: 0
-            if (pairPort <= 0) {
-                setStatus(getString(R.string.wd_auto_pair_need_dialog))
-                return@launch
-            }
-            setStatus(getString(R.string.wd_auto_pairing_fmt, code))
-            log("> 自动配对 $host:$pairPort code=$code")
-
-            val guid = try {
-                AdbPairing.pair(this@WirelessDebugActivity, host, pairPort, code)
-            } catch (e: Exception) {
-                setStatus(getString(R.string.wd_connect_failed, e.message ?: "未知错误"))
-                log("< 配对失败：${e.message}")
-                return@launch
-            }
-            log("< 配对成功（设备 $guid），正在发现连接端口…")
-            setStatus(getString(R.string.wd_auto_pair_ok))
-
-            val ep = AdbWireless.discover(this@WirelessDebugActivity, AdbWireless.SERVICE_CONNECT)
-            val tlsPort = ep?.port
-            if (tlsPort == null) {
-                setStatus(getString(R.string.wd_nsd_no_connect))
-                log("< 没发现连接端口：请确认「无线调试」保持打开")
-                return@launch
-            }
-            setStatus(getString(R.string.wd_auto_pair_connecting_fmt, tlsPort))
-            log("> TLS connect 127.0.0.1:$tlsPort")
-            val r = manager.connectTls(tlsPort)
-            if (r.isSuccess) {
-                onConnected(tlsPort, tls = true)
-                log("< 已连接无线调试（TLS）")
-            } else {
-                val reason = r.exceptionOrNull()?.message ?: "未知错误"
-                setStatus(getString(R.string.wd_connect_failed, reason))
-                log("< TLS 连接失败：$reason")
-            }
+        val svc = com.adcleaner.app.cleaner.AdCleanerService.instance
+        if (svc == null) {
+            setStatus(getString(R.string.wd_need_accessibility))
+            log("< 无障碍服务没开，无法自动配对")
+            return
         }
+        // 必须在 app 还在前台时启动设置页
+        startActivity(Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS))
+        com.adcleaner.app.adb.AdbPairState.reset()
+        setStatus(getString(R.string.wd_auto_pair_running))
+        log("> 自动配对开始（无障碍接管中）")
+        svc.startAutoPairFlow()
     }
 
     private fun onPair() {

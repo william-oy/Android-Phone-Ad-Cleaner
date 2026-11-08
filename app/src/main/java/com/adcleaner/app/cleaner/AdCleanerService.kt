@@ -115,6 +115,82 @@ class AdCleanerService : AccessibilityService() {
         return c to a
     }
 
+    /**
+     * 一键自动配对流（后台执行，界面订阅 [com.adcleaner.app.adb.AdbPairState.status]）：
+     * 无障碍引擎驱动设置页打开配对码对话框 → 读码 → SPAKE2 配对 → NSD 发现端口 → TLS 连接。
+     * 调用前调用方需已把开发者选项页拉起（app 在前台时启动 Activity 才不受限制）。
+     */
+    fun startAutoPairFlow() {
+        scope.launch {
+            fun fail(msg: String) {
+                com.adcleaner.app.adb.AdbPairState.status.value = msg
+                com.adcleaner.app.adb.AdbPairState.done.value = false
+                CleanState.log("  ✗ $msg")
+            }
+            try {
+                val eng = engine
+                if (eng == null) {
+                    fail("无障碍服务未就绪")
+                    return@launch
+                }
+                com.adcleaner.app.adb.AdbPairState.status.value = "正在打开配对码页…"
+                CleanState.log("\n── 无线调试自动配对 ──")
+                val info = eng.openPairingDialog(8)
+                if (info == null) {
+                    fail("没找到配对码页：请手动打开「使用配对码配对设备」后重试")
+                    return@launch
+                }
+                val (code, addr) = info
+                CleanState.step("读取到配对码 $code（$addr）")
+                com.adcleaner.app.adb.AdbPairState.status.value = "正在配对（配对码 $code）…"
+
+                val host = addr.substringBefore(":")
+                val pairPort = addr.substringAfter(":").toIntOrNull() ?: 0
+                if (pairPort <= 0) {
+                    fail("配对端口异常：$addr")
+                    return@launch
+                }
+                val guid = com.adcleaner.app.adb.AdbPairing.pair(applicationContext, host, pairPort, code)
+                CleanState.ok("配对成功（设备 $guid）")
+                com.adcleaner.app.adb.AdbPairState.status.value = "配对成功！正在寻找连接端口…"
+
+                val ep = com.adcleaner.app.adb.AdbWireless.discover(
+                    applicationContext, com.adcleaner.app.adb.AdbWireless.SERVICE_CONNECT
+                )
+                if (ep == null) {
+                    fail("没发现连接端口：请保持「无线调试」打开后重试")
+                    return@launch
+                }
+                com.adcleaner.app.adb.AdbPairState.status.value = "正在连接端口 ${ep.port}…"
+                CleanState.step("NSD 发现连接端口 ${ep.port}，TLS 连接中…")
+                val mgr = com.adcleaner.app.adb.SuspendManager(applicationContext)
+                val r = mgr.connectTls(ep.port)
+                if (r.isFailure) {
+                    fail("TLS 连接失败：${r.exceptionOrNull()?.message}")
+                    return@launch
+                }
+                com.adcleaner.app.adb.AdbAutomation.saveLastPort(applicationContext, ep.port, tls = true)
+                CleanState.ok("已连接无线调试（端口 ${ep.port}）")
+                com.adcleaner.app.adb.AdbPairState.status.value = "配对并连接成功（端口 ${ep.port}）"
+                com.adcleaner.app.adb.AdbPairState.connectedPort.value = ep.port
+                com.adcleaner.app.adb.AdbPairState.done.value = true
+                // 尝试回到本应用；后台启动受限时留通知即可
+                try {
+                    startActivity(
+                        android.content.Intent(this@AdCleanerService, com.adcleaner.app.MainActivity::class.java)
+                            .addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
+                    )
+                } catch (_: Exception) {}
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                com.adcleaner.app.adb.AdbPairState.status.value = "配对失败：${e.message}"
+                com.adcleaner.app.adb.AdbPairState.done.value = false
+                CleanState.log("  ✗ 配对失败：${e.message}")
+            }
+        }
+    }
+
     override fun onUnbind(intent: Intent?): Boolean {
         // 记录断点：清理仍在跑（没完成、没取消）才需要续跑
         val ui = CleanState.ui.value

@@ -481,6 +481,59 @@ class AccessibilityEngine(private val service: AdCleanerService) {
         return opened
     }
 
+    // ---------------- 无线调试自动配对导航 ----------------
+
+    /** 在当前设置页找到含 [texts] 之一的行并点击（向下翻 scrolls 屏）。 */
+    suspend fun findAndTapText(texts: List<String>, scrolls: Int = 6): Boolean {
+        repeat(scrolls + 1) { page ->
+            waitStable(600, 3)
+            for (t in texts) {
+                for (n in findTextNodes(t, exact = false)) {
+                    if (clickNode(n)) return true
+                }
+            }
+            if (page < scrolls) scrollDownOnce()
+        }
+        return false
+    }
+
+    /** 读当前屏幕上的配对码对话框（设置页在前台时 root 即对话框内容）。 */
+    fun readPairingCodeOnScreen(): Pair<String, String>? {
+        val codeRegex = Regex("^\\d{6}$")
+        val addrRegex = Regex("^(\\d{1,3}(\\.\\d{1,3}){3}):(\\d+)$")
+        val r = root() ?: return null
+        var code: String? = null
+        var addr: String? = null
+        for (n in collectAll(r)) {
+            val s = nodeText(n)
+            if (code == null && codeRegex.matches(s)) code = s
+            if (addr == null && addrRegex.matches(s)) addr = s
+        }
+        val c = code ?: return null
+        val a = addr ?: return null
+        return c to a
+    }
+
+    /**
+     * 自动导航到「使用配对码配对设备」对话框并读出 (配对码, ip:端口)。
+     * 依次尝试：已在对话框 → 子页直接点入口 → 主页滚屏找「无线调试」再进。
+     */
+    suspend fun openPairingDialog(scrolls: Int = 8): Pair<String, String>? {
+        readPairingCodeOnScreen()?.let { return it }
+        if (findAndTapText(listOf("使用配对码配对设备"), 2)) {
+            delay(1200)
+            readPairingCodeOnScreen()?.let { return it }
+        }
+        if (findAndTapText(listOf("无线调试"), scrolls)) {
+            delay(1200)
+            if (findAndTapText(listOf("使用配对码配对设备"), 3)) {
+                delay(1200)
+                readPairingCodeOnScreen()?.let { return it }
+            }
+        }
+        return null
+    }
+
     // ---------------- 段 / 品牌 ----------------
     data class SectionResult(val ok: Boolean = false, val skipped: Boolean = false)
 

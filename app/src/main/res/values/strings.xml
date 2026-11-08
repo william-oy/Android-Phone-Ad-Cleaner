@@ -85,6 +85,8 @@
     <string name="wd_auto_pair_connecting_fmt">正在连接无线调试端口 %1$d…</string>
     <string name="wd_nsd_no_connect">没发现连接端口。请保持「无线调试」打开后重试。</string>
     <string name="wd_tls_connected_fmt">已连接无线调试（端口 %1$d）！点下面的大按钮就行</string>
+    <string name="wd_need_accessibility">无障碍服务没开，无法自动配对。请先回主界面打开无障碍权限。</string>
+    <string name="wd_auto_pair_running">自动配对中：app 正在替您操作手机设置，请勿触碰…</string>
 
     <string name="wd_intro">打开「开发者选项 → 无线调试」，点「使用配对码配对设备」记下 6 位配对码和配对端口填到上面，点「先配对」；再记下无线调试端口填到下面点「连接本机」。挂起的广告包进程被冻结、不再弹广告，可随时还原。</string>
     <string name="wd_port_hint">无线调试端口（如 37121）</string>
