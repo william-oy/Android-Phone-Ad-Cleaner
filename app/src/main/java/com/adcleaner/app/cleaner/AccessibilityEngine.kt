@@ -574,7 +574,7 @@ class AccessibilityEngine(private val service: AdCleanerService) {
             android.util.Log.i("AdbPair", "nav page=$page entry=$hasEntry sub=$onSubPage wireless=$hasWireless")
             if (hasEntry) {
                 for (n in findTextNodes("使用配对码配对设备", exact = false)) {
-                    Log.i("AdbNav", "tap 使用配对码配对设备 -> ${gestureTapNode(n)}")
+                    android.util.Log.i("AdbNav", "tap 使用配对码配对设备 -> ${gestureTapNode(n)}")
                     break
                 }
                 delay(1500)
@@ -583,7 +583,7 @@ class AccessibilityEngine(private val service: AdCleanerService) {
                 gestureScroll(true, 700, 0.55f, 0.35f); delay(900)
             } else if (hasWireless) {
                 for (n in findTextNodes("无线调试", exact = false)) {
-                    Log.i("AdbNav", "tap 无线调试 -> ${gestureTapNode(n)}")
+                    android.util.Log.i("AdbNav", "tap 无线调试 -> ${gestureTapNode(n)}")
                     break
                 }
                 delay(1500)
