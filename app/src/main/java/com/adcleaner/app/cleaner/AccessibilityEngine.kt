@@ -564,23 +564,28 @@ class AccessibilityEngine(private val service: AdCleanerService) {
         // 先回顶（手势上滑 22 次，覆盖最长页面），再进入状态机
         repeat(22) { gestureScroll(false); delay(560) }
         delay(900)
-        var tappedWireless = false
         var page = 0
         while (page <= scrolls + 4) {
             waitStable(700, 4)
             readPairingCodeOnScreen()?.let { return it }
-            if (findTextNodes("使用配对码配对设备", exact = false).isNotEmpty()) {
+            val hasEntry = findTextNodes("使用配对码配对设备", exact = false).isNotEmpty()
+            val onSubPage = findTextNodes("设备名称", exact = false).isNotEmpty()
+            val hasWireless = findTextNodes("无线调试", exact = false).isNotEmpty()
+            android.util.Log.i("AdbPair", "nav page=$page entry=$hasEntry sub=$onSubPage wireless=$hasWireless")
+            if (hasEntry) {
                 for (n in findTextNodes("使用配对码配对设备", exact = false)) {
-                    gestureTapNode(n); break
+                    Log.i("AdbNav", "tap 使用配对码配对设备 -> ${gestureTapNode(n)}")
+                    break
                 }
                 delay(1500)
-            } else if (!tappedWireless &&
-                findTextNodes("设备名称", exact = false).isEmpty() &&   // 子页才有设备名称行
-                findTextNodes("无线调试", exact = false).isNotEmpty()) {
+            } else if (onSubPage) {
+                // 在子页：滚动到配对码入口可见
+                gestureScroll(true, 700, 0.55f, 0.35f); delay(900)
+            } else if (hasWireless) {
                 for (n in findTextNodes("无线调试", exact = false)) {
-                    gestureTapNode(n); break
+                    Log.i("AdbNav", "tap 无线调试 -> ${gestureTapNode(n)}")
+                    break
                 }
-                tappedWireless = true
                 delay(1500)
             } else if (page < scrolls) {
                 gestureScroll(true, 900, 0.60f, 0.32f); delay(1000)
