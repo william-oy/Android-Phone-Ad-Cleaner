@@ -518,7 +518,13 @@ class AccessibilityEngine(private val service: AdCleanerService) {
                     if (clickNode(n)) return true
                 }
             }
-            if (page < scrolls) scrollDownOnce()
+            // 诊断：每轮搜索的 root 与前几个可见文本
+            if (page < scrolls) {
+                val r = root()
+                val head = collectAll(r).take(24).mapNotNull { n -> nodeText(n).ifEmpty { null } }.take(6)
+                android.util.Log.i("AdbPair", "nav page=$page root=${r?.packageName} head=$head")
+                scrollDownOnce()
+            }
         }
         return false
     }
