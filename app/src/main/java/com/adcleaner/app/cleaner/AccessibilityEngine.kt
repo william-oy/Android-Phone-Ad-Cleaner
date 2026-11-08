@@ -526,6 +526,20 @@ class AccessibilityEngine(private val service: AdCleanerService) {
         return c to a
     }
 
+    /** 配对导航专用手势滚动：down=true 看后面的内容。真实手势，与手动滑动一致。 */
+    private fun gestureScroll(down: Boolean): Boolean {
+        val dm = service.resources.displayMetrics
+        val cx = dm.widthPixels / 2f
+        val h = dm.heightPixels
+        return try {
+            val path = Path()
+            if (down) { path.moveTo(cx, h * 0.78f); path.lineTo(cx, h * 0.28f) }
+            else { path.moveTo(cx, h * 0.28f); path.lineTo(cx, h * 0.78f) }
+            val stroke = GestureDescription.StrokeDescription(path, 0, 350)
+            service.dispatchGesture(GestureDescription.Builder().addStroke(stroke).build(), null, null)
+        } catch (e: Exception) { false }
+    }
+
     /** 真实手势点击节点中心（vivo 设置行对 performAction 有时不响应，手势与人手一致）。 */
     private fun gestureTapNode(node: AccessibilityNodeInfo): Boolean {
         val r = Rect()
@@ -540,9 +554,9 @@ class AccessibilityEngine(private val service: AdCleanerService) {
      * 都没有→滚动。设置页保留旧滚动位置，所以先滚回顶部。
      */
     suspend fun openPairingDialog(scrolls: Int = 12): Pair<String, String>? {
-        // 先回顶（最多 25 次：开发者选项页很长，位置不定），再进入状态机
-        repeat(25) { scrollUpOnce() }
-        delay(600)
+        // 先回顶（手势上滑 22 次，覆盖最长页面），再进入状态机
+        repeat(22) { gestureScroll(false); delay(230) }
+        delay(700)
         var tappedWireless = false
         var page = 0
         while (page <= scrolls + 4) {
@@ -561,11 +575,11 @@ class AccessibilityEngine(private val service: AdCleanerService) {
                 tappedWireless = true
                 delay(1500)
             } else if (page < scrolls) {
-                scrollDownOnce()
+                gestureScroll(true); delay(500)
             } else {
                 break
             }
-            delay(400)
+            delay(300)
             page++
         }
         // 诊断：引擎到底看到了哪个窗口、哪些文本
