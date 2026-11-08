@@ -222,7 +222,7 @@ object AdbPairing {
             cryptoParams,
             crypto,
             params,
-            Certificate(org.bouncycastle.tls.CertificateRequestContext(ByteArray(0)), arrayOf(tlsCert)),
+            Certificate(ByteArray(0), arrayOf(org.bouncycastle.tls.CertificateEntry(tlsCert, null))),
             sigAlg
         )
     }
