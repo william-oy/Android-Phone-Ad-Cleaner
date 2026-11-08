@@ -65,8 +65,11 @@ object AdbPairing {
         val protocol = TlsClientProtocol(socket.getInputStream(), socket.getOutputStream())
         val tlsClient = PairingTlsClient(priv, cert)
         try {
-            protocol.connect(tlsClient)
+            kotlinx.coroutines.withTimeoutOrNull(25000) { protocol.connect(tlsClient) }
+                ?: throw IllegalStateException("TLS1.3 握手超时（25s）——BC 与 BoringSSL 协商卡住")
             Log.i(TAG, "TLS 握手成功")
+        } catch (e: IllegalStateException) {
+            socket.close(); throw e
         } catch (e: Exception) {
             socket.close()
             throw IllegalStateException("TLS 握手失败：${e.message}")
@@ -136,11 +139,14 @@ object AdbPairing {
             }
 
             override fun getClientCredentials(request: org.bouncycastle.tls.CertificateRequest): TlsCredentials {
+                android.util.Log.i(TAG, "getClientCredentials: 收到证书请求 sigAlgs=${request.supportedSignatureAlgorithms?.size}")
                 val sigAlg = org.bouncycastle.tls.SignatureAndHashAlgorithm(
                     org.bouncycastle.tls.HashAlgorithm.sha256,
                     org.bouncycastle.tls.SignatureAlgorithm.rsa_pss_rsae_sha256
                 )
-                return makeClientSigner(clientPriv, clientCert, cryptoParameters(), sigAlg)
+                val cred = makeClientSigner(clientPriv, clientCert, cryptoParameters(), sigAlg)
+                android.util.Log.i(TAG, "getClientCredentials: 完成 -> ${cred.signatureAndHashAlgorithm}")
+                return cred
             }
         }
     }
