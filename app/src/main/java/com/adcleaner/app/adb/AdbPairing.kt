@@ -183,7 +183,7 @@ object AdbPairing {
                 Log.d(TAG, "server cert accepted: ${serverCertificate != null}")
             }
 
-            override fun getClientCredentials(request: org.bouncycastle.tls.CertificateRequest): TlsCredentials {
+            override fun getClientCredentials(request: org.bouncycastle.tls.CertificateRequest): TlsCredentials? {
                 // 关键：必须用服务端请求里的 wire 实例。手搓的 alg 经
                 // SignatureScheme.from 得到错误 id（0x0404），会错走 PKCS1 签名器
                 val algs = request.supportedSignatureAlgorithms
@@ -196,7 +196,8 @@ object AdbPairing {
                 }
                 if (alg == null) {
                     android.util.Log.i(TAG, "服务端未请求 rsa_pss_rsae_sha256，返回 null（不发客户端证书）")
-                    return null
+                    @Suppress("USELESS_CAST")
+                    return null as TlsCredentials?
                 }
                 return makeClientSigner(clientPriv, clientCert, cryptoParameters(), alg)
             }
