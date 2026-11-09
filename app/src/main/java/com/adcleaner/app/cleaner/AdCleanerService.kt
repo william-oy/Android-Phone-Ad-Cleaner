@@ -171,8 +171,8 @@ class AdCleanerService : AccessibilityService() {
                 // 授权弹窗确认器：TLS 握手期间设备会弹「允许调试」，自动点允许
                 val watchJob = launch {
                     repeat(25) {
-                        delay(700)
-                        try { tapUsbAuthDialogIfAny() } catch (_: Exception) {}
+                        kotlinx.coroutines.delay(700)
+                        try { eng?.tapUsbAuthDialogIfAny() } catch (_: Exception) {}
                     }
                 }
                 val mgr = com.adcleaner.app.adb.SuspendManager(applicationContext)
