@@ -50,7 +50,7 @@ class AdbClient(private val keyManager: AdbKeyManager, private val appContext: a
         private const val A_WRTE = 0x45545257   // "WRTE"
         private const val A_OKAY = 0x59414b4f   // "OKAY"（即 READY：open 应答 / WRTE 流控确认）
         private const val A_CLSE = 0x45534c43   // "CLSE"
-        private const val A_STLS = 0x53544c53   // "STLS"
+        private const val A_STLS = 0x534c5453   // "STLS"（wire LE 编码 = "STLS"）
 
         // AUTH 的 arg0 类型
         private const val AUTH_TOKEN = 1        // server 下发 20 字节随机 token
