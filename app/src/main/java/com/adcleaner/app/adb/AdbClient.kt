@@ -97,6 +97,7 @@ class AdbClient(private val keyManager: AdbKeyManager, private val appContext: a
             sock.tcpNoDelay = true
             socket = sock
             if (tls) {
+                android.util.Log.i("AdbTls", "connectTls: socket ok, 发送 STLS")
                 val ctx0 = appContext ?: throw IOException("缺少上下文，无法建立 TLS")
                 // 客户端先发 STLS 横幅（实测连接端口等客户端先开口），
                 // 服务器不回横幅、直接进入 TLS 握手
@@ -111,8 +112,11 @@ class AdbClient(private val keyManager: AdbKeyManager, private val appContext: a
                 val priv = AdbCertManager.getPrivateKey(ctx0)
                 val tlsClient = com.adcleaner.app.adb.AdbPairing.newPairingTlsClient(priv, cert)
                 try {
+                    android.util.Log.i("AdbTls", "connectTls: 开始 BC 握手")
                     protocol.connect(tlsClient)
+                    android.util.Log.i("AdbTls", "connectTls: BC 握手成功")
                 } catch (e: Exception) {
+                    android.util.Log.e("AdbTls", "connectTls: BC 握手失败", e)
                     throw IOException("TLS 握手失败：${e.message}")
                 }
                 sock.soTimeout = READ_TIMEOUT_MS
