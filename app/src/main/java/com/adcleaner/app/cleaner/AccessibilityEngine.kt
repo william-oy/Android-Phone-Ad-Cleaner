@@ -509,6 +509,26 @@ class AccessibilityEngine(private val service: AdCleanerService) {
 
     // ---------------- 无线调试自动配对导航 ----------------
 
+    /**
+     * 处理「允许 USB 调试吗？」授权弹窗：勾选一律允许（若有）并点允许。
+     * 弹窗不在屏幕上时返回 false。配对/连接期间由后台协程轮询调用。
+     */
+    fun tapUsbAuthDialogIfAny(): Boolean {
+        val r = root() ?: return false
+        var allowNode: AccessibilityNodeInfo? = null
+        var alwaysNode: AccessibilityNodeInfo? = null
+        for (n in collectAll(r)) {
+            when (nodeText(n)) {
+                "允许" -> if (allowNode == null) allowNode = n
+                "一律允许使用这台计算机进行调试" -> if (alwaysNode == null) alwaysNode = n
+            }
+        }
+        var tapped = false
+        alwaysNode?.let { if (gestureTapNode(it)) tapped = true }
+        allowNode?.let { if (gestureTapNode(it)) tapped = true }
+        return tapped
+    }
+
     /** 读当前屏幕上的配对码对话框（设置页在前台时 root 即对话框内容）。 */
     fun readPairingCodeOnScreen(): Pair<String, String>? {
         val codeRegex = Regex("^\\d{6}$")

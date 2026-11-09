@@ -168,8 +168,16 @@ class AdCleanerService : AccessibilityService() {
                 }
                 com.adcleaner.app.adb.AdbPairState.status.value = "正在连接端口 ${ep.port}…"
                 CleanState.step("NSD 发现连接端口 ${ep.port}，TLS 连接中…")
+                // 授权弹窗确认器：TLS 握手期间设备会弹「允许调试」，自动点允许
+                val watchJob = launch {
+                    repeat(25) {
+                        delay(700)
+                        try { tapUsbAuthDialogIfAny() } catch (_: Exception) {}
+                    }
+                }
                 val mgr = com.adcleaner.app.adb.SuspendManager(applicationContext)
                 val r = mgr.connectTls(ep.port)
+                watchJob.cancel()
                 if (r.isFailure) {
                     fail("TLS 连接失败：${r.exceptionOrNull()?.message}")
                     return@launch
