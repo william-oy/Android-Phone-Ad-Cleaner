@@ -106,7 +106,7 @@ class AdbClient(private val keyManager: AdbKeyManager, private val appContext: a
 
                 sock.soTimeout = 15000
                 val protocol = org.bouncycastle.tls.TlsClientProtocol(
-                    sock.getInputStream(), sock.getOutputStream(), SecureRandom())
+                    sock.getInputStream(), sock.getOutputStream())
                 val cert = AdbCertManager.getCertificate(ctx0)
                 val priv = AdbCertManager.getPrivateKey(ctx0)
                 val tlsClient = com.adcleaner.app.adb.AdbPairing.newPairingTlsClient(priv, cert)
