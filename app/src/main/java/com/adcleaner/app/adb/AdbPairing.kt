@@ -165,7 +165,7 @@ object AdbPairing {
     }
 
     /** 配对专用 TLS 客户端：TLS1.3、客户端证书、服务端证书全放行。 */
-    private class PairingTlsClient(
+    internal class PairingTlsClient(
         private val clientPriv: PrivateKey,
         private val clientCert: java.security.cert.X509Certificate,
     ) : DefaultTlsClient(BcTlsCrypto(SecureRandom())) {
