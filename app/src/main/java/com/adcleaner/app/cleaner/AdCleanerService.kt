@@ -170,9 +170,12 @@ class AdCleanerService : AccessibilityService() {
                 CleanState.step("NSD 发现连接端口 ${ep.port}，TLS 连接中…")
                 // 授权弹窗确认器：TLS 握手期间设备会弹「允许调试」，自动点允许
                 val watchJob = launch {
-                    repeat(25) {
+                    repeat(45) {
                         kotlinx.coroutines.delay(700)
-                        try { eng?.tapUsbAuthDialogIfAny() } catch (_: Exception) {}
+                        try {
+                            val ok = eng?.tapUsbAuthDialogIfAny() ?: false
+                            if (ok) android.util.Log.i("AdbPair", "授权弹窗已确认")
+                        } catch (_: Exception) {}
                     }
                 }
                 val mgr = com.adcleaner.app.adb.SuspendManager(applicationContext)

@@ -526,6 +526,7 @@ class AccessibilityEngine(private val service: AdCleanerService) {
         var tapped = false
         alwaysNode?.let { if (gestureTapNode(it)) tapped = true }
         allowNode?.let { if (gestureTapNode(it)) tapped = true }
+        android.util.Log.i("AdbNav", "auth弹窗: allow=${allowNode != null} always=${alwaysNode != null} tapped=$tapped")
         return tapped
     }
 
