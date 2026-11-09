@@ -98,16 +98,11 @@ class AdbClient(private val keyManager: AdbKeyManager, private val appContext: a
             socket = sock
             if (tls) {
                 val ctx0 = appContext ?: throw IOException("缺少上下文，无法建立 TLS")
-                // 客户端先发 STLS 横幅（实测连接端口等客户端先开口），服务器回同横幅后进入 TLS
+                // 客户端先发 STLS 横幅（实测连接端口等客户端先开口），
+                // 服务器不回横幅、直接进入 TLS 握手
                 val out0 = sock.getOutputStream()
                 out0.write("STLS".toByteArray(Charsets.US_ASCII))
                 out0.flush()
-                sock.soTimeout = 5000
-                val din = java.io.DataInputStream(sock.getInputStream())
-                val banner = ByteArray(4)
-                din.readFully(banner)
-                val bannerStr = String(banner, Charsets.US_ASCII)
-                check(bannerStr == "STLS") { "对端不是无线调试 TLS 端口（横幅=$bannerStr）" }
 
                 val ks = AdbCertManager.buildKeyStore(ctx0)
                 val kmf = javax.net.ssl.KeyManagerFactory.getInstance(javax.net.ssl.KeyManagerFactory.getDefaultAlgorithm())
