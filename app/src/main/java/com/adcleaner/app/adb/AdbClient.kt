@@ -125,13 +125,6 @@ class AdbClient(private val keyManager: AdbKeyManager, private val appContext: a
                 val first = readAdbPacket()
                 android.util.Log.i("AdbTls", "服务器首包命令=0x${"%08x".format(first)}")
                 check(first == A_STLS) { "对端不是无线调试 TLS 端口（首包=0x${"%08x".format(first)}）" }
-                // 丢弃服务器包的其余部分（arg0/arg1/len/crc/magic/payload）
-                val rest = ByteArray(20)
-                var roff = 0
-                while (roff < 20) { val r = din0.read(rest, roff, 20 - roff); if (r < 0) throw IOException("对端关闭"); roff += r }
-                val bb2 = java.nio.ByteBuffer.wrap(rest).order(java.nio.ByteOrder.LITTLE_ENDIAN)
-                val plen = bb2.int  // data_length 位于第 4 个 int（arg0 已跳过——重新定位）
-                android.util.Log.i("AdbTls", "服务器 A_STLS 版本=0x${"%08x".format(plen)}")
                 // 发送我们的 A_STLS（arg0=A_STLS_VERSION=1）
                 writeAdbPacket(A_STLS, 1)
                 android.util.Log.i("AdbTls", "已发送 A_STLS，开始 BC TLS 握手")
