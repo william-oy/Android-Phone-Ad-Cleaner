@@ -235,6 +235,10 @@ object AdbPairing {
         )
     }
 
+    /** 供 AdbClient 的 TLS 连接复用同一客户端证书/信任策略。 */
+    internal fun newPairingTlsClient(priv: PrivateKey, cert: java.security.cert.X509Certificate): PairingTlsClient =
+        PairingTlsClient(priv, cert)
+
     // ---------------- PairingPacket 交换（两条路径共用） ----------------
 
     private fun exchangePairingPackets(

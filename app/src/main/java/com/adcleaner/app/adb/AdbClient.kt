@@ -104,22 +104,20 @@ class AdbClient(private val keyManager: AdbKeyManager, private val appContext: a
                 out0.write("STLS".toByteArray(Charsets.US_ASCII))
                 out0.flush()
 
-                val ks = AdbCertManager.buildKeyStore(ctx0)
-                val kmf = javax.net.ssl.KeyManagerFactory.getInstance(javax.net.ssl.KeyManagerFactory.getDefaultAlgorithm())
-                kmf.init(ks, CharArray(0))
-                val trustAll = arrayOf<javax.net.ssl.TrustManager>(object : javax.net.ssl.X509TrustManager {
-                    override fun checkClientTrusted(c: Array<java.security.cert.X509Certificate>, a: String?) {}
-                    override fun checkServerTrusted(c: Array<java.security.cert.X509Certificate>, a: String?) {}
-                    override fun getAcceptedIssuers(): Array<java.security.cert.X509Certificate> = arrayOf()
-                })
-                val sslCtx = javax.net.ssl.SSLContext.getInstance("TLS")
-                sslCtx.init(kmf.keyManagers, trustAll, null)
-                val ssl = sslCtx.socketFactory.createSocket(sock, HOST, port, true) as javax.net.ssl.SSLSocket
-                ssl.enabledProtocols = arrayOf("TLSv1.3", "TLSv1.2")
-                ssl.startHandshake()
+                sock.soTimeout = 15000
+                val protocol = org.bouncycastle.tls.TlsClientProtocol(
+                    sock.getInputStream(), sock.getOutputStream(), SecureRandom())
+                val cert = AdbCertManager.getCertificate(ctx0)
+                val priv = AdbCertManager.getPrivateKey(ctx0)
+                val tlsClient = com.adcleaner.app.adb.AdbPairing.newPairingTlsClient(priv, cert)
+                try {
+                    protocol.connect(tlsClient)
+                } catch (e: Exception) {
+                    throw IOException("TLS 握手失败：${e.message}")
+                }
                 sock.soTimeout = READ_TIMEOUT_MS
-                input = DataInputStream(BufferedInputStream(ssl.inputStream))
-                output = BufferedOutputStream(ssl.outputStream)
+                input = DataInputStream(BufferedInputStream(protocol.inputStream))
+                output = BufferedOutputStream(protocol.outputStream)
             } else {
                 sock.soTimeout = READ_TIMEOUT_MS
                 input = DataInputStream(BufferedInputStream(sock.getInputStream()))
