@@ -35,6 +35,33 @@ class SuspendManager(context: Context) {
     suspend fun shell(cmd: String): Result<String> = client.shellExec(cmd)
 
     /**
+     * 查询设备上已安装的包名集合（`pm list packages`）。
+     * 用于在挂起前过滤掉设备上不存在的包，防止「空成功」。
+     */
+    suspend fun listInstalledPackages(): Result<Set<String>> =
+        client.shellExec("pm list packages").map { out ->
+            out.lineSequence()
+                .mapNotNull { line ->
+                    if (line.startsWith("package:")) line.removePrefix("package:").trim() else null
+                }
+                .toSet()
+        }
+
+    /**
+     * 挂起前检查包是否真的安装了（`pm path <pkg>` 有输出 = 已安装）。
+     * 返回 (存在?, 错误信息?)。
+     */
+    suspend fun packageExists(pkg: String): Pair<Boolean, String?> {
+        val r = client.shellExec("pm path $pkg")
+        return if (r.isSuccess) {
+            val out = r.getOrNull()?.trim().orEmpty()
+            Pair(out.startsWith("package:"), null)
+        } else {
+            Pair(false, r.exceptionOrNull()?.message)
+        }
+    }
+
+    /**
      * 查询当前已挂起的包名列表（best-effort）。
      *
      * Android 没有直接的「列出已挂起包」命令，这里跑一次 `dumpsys package`，

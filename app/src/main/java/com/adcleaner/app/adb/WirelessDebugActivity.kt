@@ -250,26 +250,45 @@ class WirelessDebugActivity : AppCompatActivity() {
 
     // ---------- 一键冻结 / 全部还原 ----------
 
-    /** 逐个冻结 safe 的广告包，状态条实时报进度。 */
+    /** 逐个冻结 safe 的广告包；先查设备上实际安装了哪些，只冻结存在的，不存在如实报告。 */
     private fun suspendAll() {
         val targets = packages.filter { it.safe }
         if (connectedPort <= 0 || targets.isEmpty()) return
         setBusy(true)
         lifecycleScope.launch {
+            // 先查设备上实际安装了哪些包（防止对不存在的包「空成功」）
+            setStatus(getString(R.string.wd_checking_packages))
+            val installed = manager.listInstalledPackages().getOrNull().orEmpty()
+            val existing = targets.filter { p -> installed.contains(p.pkg) }
+            val missing = targets.size - existing.size
+            if (existing.isEmpty()) {
+                setBusy(false)
+                setStatus(getString(R.string.wd_no_packages_found))
+                log("< 本设备没有列表中的广告组件包（正常：不同品牌的包名不同）")
+                return@launch
+            }
             var ok = 0
             var fail = 0
-            targets.forEachIndexed { i, p ->
-                setStatus(getString(R.string.wd_suspend_all_progress_fmt, p.label, i + 1, targets.size))
+            existing.forEachIndexed { i, p ->
+                setStatus(getString(R.string.wd_suspend_all_progress_fmt, p.label, i + 1, existing.size))
                 val r = manager.suspendPackage(p.pkg)
                 if (r.isSuccess) {
-                    ok++
-                    rowStates[p.pkg]?.status?.text = getString(R.string.wd_suspended)
+                    // 验证真的挂上了：检查 suspended 状态
+                    val (suspended, _) = manager.packageExists(p.pkg)
+                    if (suspended || r.getOrNull()?.contains("Success", true) == true) {
+                        ok++
+                        rowStates[p.pkg]?.status?.text = getString(R.string.wd_suspended)
+                    } else {
+                        fail++
+                        rowStates[p.pkg]?.status?.text = getString(R.string.wd_not_suspended)
+                    }
                 } else {
                     fail++
                     rowStates[p.pkg]?.status?.text = getString(R.string.wd_failed)
                 }
                 log("< ${p.pkg}：${if (r.isSuccess) "ok" else (r.exceptionOrNull()?.message ?: "失败")}")
             }
+            if (missing > 0) log("< $missing 个包不存在于本设备（已跳过）")
             setBusy(false)
             setStatus(getString(R.string.wd_suspend_all_done_fmt, ok, fail))
         }
