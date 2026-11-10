@@ -625,18 +625,34 @@ class AccessibilityEngine(private val service: AdCleanerService) {
         repeat(22) { gestureScroll(false); delay(560) }
         delay(900)
         var page = 0
-        while (page <= scrolls + 4) {
+        var switchOn = false
+        while (page <= scrolls + 8) {
             waitStable(700, 4)
             readPairingCodeOnScreen()?.let { return it }
             val hasEntry = findTextNodes("使用配对码配对设备", exact = false).isNotEmpty()
             val onSubPage = findTextNodes("设备名称", exact = false).isNotEmpty()
             val hasWireless = findTextNodes("无线调试", exact = false).isNotEmpty()
-            android.util.Log.i("AdbPair", "nav page=$page entry=$hasEntry sub=$onSubPage wireless=$hasWireless")
+            android.util.Log.i("AdbPair", "nav page=$page entry=$hasEntry sub=$onSubPage wireless=$hasWireless sw=$switchOn")
             if (hasEntry) {
                 tapNodeReliably(findTextNodes("使用配对码配对设备", exact = false).first())
                 delay(1500)
             } else if (onSubPage) {
-                // 在子页：滚动到配对码入口可见
+                // 子页：确保主开关打开，然后滚动到配对码入口可见
+                if (!switchOn) {
+                    val sw = collectAll(root() ?: continue).firstOrNull { it.isCheckable }
+                    if (sw != null && !sw.isChecked) {
+                        android.util.Log.i("AdbNav", "主开关关闭，自动打开")
+                        gestureTapNode(sw)
+                        delay(3500)
+                        val sw2 = collectAll(root() ?: continue).firstOrNull { it.isCheckable }
+                        if (sw2?.isChecked == true) {
+                            switchOn = true
+                            android.util.Log.i("AdbNav", "主开关已打开")
+                        }
+                    } else if (sw?.isChecked == true) {
+                        switchOn = true
+                    }
+                }
                 gestureScroll(true, 700, 0.55f, 0.35f); delay(900)
             } else if (hasWireless) {
                 val rowNode = findTextNodes("无线调试", exact = false).first()
