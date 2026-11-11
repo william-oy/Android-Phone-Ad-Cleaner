@@ -122,98 +122,102 @@ class AdCleanerService : AccessibilityService() {
      */
     fun startAutoPairFlow() {
         scope.launch {
-            kotlinx.coroutines.withTimeoutOrNull(120_000L) { autoPairInner() }
-                ?: run {
-                    android.util.Log.w("AdbPair", "自动配对整体超时（120s）")
-                    com.adcleaner.app.adb.AdbPairState.status.value = "自动配对超时，请重试"
-                    com.adcleaner.app.adb.AdbPairState.done.value = false
-                }
-        }
-    }
-
-    private suspend fun autoPairInner() {
-            fun fail(msg: String) {
-                com.adcleaner.app.adb.AdbPairState.status.value = msg
-                com.adcleaner.app.adb.AdbPairState.done.value = false
-                CleanState.log("  ✗ $msg")
-            }
-            try {
-                val eng = engine
-                if (eng == null) {
-                    fail("无障碍服务未就绪")
-                    return
-                }
-                com.adcleaner.app.adb.AdbPairState.status.value = "正在打开配对码页…"
-                CleanState.log("\n── 无线调试自动配对 ──")
-                android.util.Log.i("AdbPair", "flow: 开始自动配对")
-                val info = eng.openPairingDialog(8)
-                if (info == null) {
-                    android.util.Log.i("AdbPair", "flow: openPairingDialog 失败（没找到配对码页）")
-                    fail("没找到配对码页：请手动打开「使用配对码配对设备」后重试")
-                    return
-                }
-                val (code, addr) = info
-                android.util.Log.i("AdbPair", "flow: 读到配对码 $code addr=$addr")
-                CleanState.step("读取到配对码 $code（$addr）")
-                com.adcleaner.app.adb.AdbPairState.status.value = "正在配对（配对码 $code）…"
-
-                val host = addr.substringBefore(":")
-                val pairPort = addr.substringAfter(":").toIntOrNull() ?: 0
-                if (pairPort <= 0) {
-                    fail("配对端口异常：$addr")
-                    return
-                }
-                val guid = com.adcleaner.app.adb.AdbPairing.pair(applicationContext, host, pairPort, code)
-                android.util.Log.i("AdbPair", "flow: 配对成功 guid=$guid")
-                CleanState.ok("配对成功（设备 $guid）")
-                com.adcleaner.app.adb.AdbPairState.status.value = "配对成功！正在寻找连接端口…"
-
-                val ep = com.adcleaner.app.adb.AdbWireless.discover(
-                    applicationContext, com.adcleaner.app.adb.AdbWireless.SERVICE_CONNECT
-                )
-                android.util.Log.i("AdbPair", "flow: NSD connect 端点=${ep?.host}:${ep?.port}")
-                if (ep == null) {
-                    fail("没发现连接端口：请保持「无线调试」打开后重试")
-                    return
-                }
-                com.adcleaner.app.adb.AdbPairState.status.value = "正在连接端口 ${ep.port}…"
-                CleanState.step("NSD 发现连接端口 ${ep.port}，TLS 连接中…")
+            kotlinx.coroutines.withTimeoutOrNull(120_000L) {
                 // 授权弹窗确认器：TLS 握手期间设备会弹「允许调试」，自动点允许
                 val watchJob = launch {
                     repeat(45) {
                         kotlinx.coroutines.delay(700)
                         try {
-                            val ok = eng?.tapUsbAuthDialogIfAny() ?: false
+                            val ok = engine?.tapUsbAuthDialogIfAny() ?: false
                             if (ok) android.util.Log.i("AdbPair", "授权弹窗已确认")
                         } catch (_: Exception) {}
                     }
                 }
-                val mgr = com.adcleaner.app.adb.SuspendManager(applicationContext)
-                val r = mgr.connectTls(ep.port)
-                watchJob.cancel()
-                if (r.isFailure) {
-                    fail("TLS 连接失败：${r.exceptionOrNull()?.message}")
-                    return
-                }
-                com.adcleaner.app.adb.AdbAutomation.saveLastPort(applicationContext, ep.port, tls = true)
-                CleanState.ok("已连接无线调试（端口 ${ep.port}）")
-                com.adcleaner.app.adb.AdbPairState.status.value = "配对并连接成功（端口 ${ep.port}）"
-                com.adcleaner.app.adb.AdbPairState.connectedPort.value = ep.port
-                com.adcleaner.app.adb.AdbPairState.done.value = true
-                // 尝试回到本应用；后台启动受限时留通知即可
                 try {
-                    startActivity(
-                        android.content.Intent(this@AdCleanerService, com.adcleaner.app.MainActivity::class.java)
-                            .addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
-                    )
-                } catch (_: Exception) {}
-            } catch (e: kotlinx.coroutines.CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                com.adcleaner.app.adb.AdbPairState.status.value = "配对失败：${e.message}"
+                    autoPairInner()
+                } finally {
+                    watchJob.cancel()
+                }
+            } ?: run {
+                android.util.Log.w("AdbPair", "自动配对整体超时（120s）")
+                com.adcleaner.app.adb.AdbPairState.status.value = "自动配对超时，请重试"
                 com.adcleaner.app.adb.AdbPairState.done.value = false
-                CleanState.log("  ✗ 配对失败：${e.message}")
             }
+        }
+    }
+
+    private suspend fun autoPairInner() {
+        fun fail(msg: String) {
+            com.adcleaner.app.adb.AdbPairState.status.value = msg
+            com.adcleaner.app.adb.AdbPairState.done.value = false
+            CleanState.log("  ✗ $msg")
+        }
+        try {
+            val eng = engine
+            if (eng == null) {
+                fail("无障碍服务未就绪")
+                return
+            }
+            com.adcleaner.app.adb.AdbPairState.status.value = "正在打开配对码页…"
+            CleanState.log("\n── 无线调试自动配对 ──")
+            android.util.Log.i("AdbPair", "flow: 开始自动配对")
+            val info = eng.openPairingDialog(8)
+            if (info == null) {
+                android.util.Log.i("AdbPair", "flow: openPairingDialog 失败（没找到配对码页）")
+                fail("没找到配对码页：请手动打开「使用配对码配对设备」后重试")
+                return
+            }
+            val (code, addr) = info
+            android.util.Log.i("AdbPair", "flow: 读到配对码 $code addr=$addr")
+            CleanState.step("读取到配对码 $code（$addr）")
+            com.adcleaner.app.adb.AdbPairState.status.value = "正在配对（配对码 $code）…"
+
+            val host = addr.substringBefore(":")
+            val pairPort = addr.substringAfter(":").toIntOrNull() ?: 0
+            if (pairPort <= 0) {
+                fail("配对端口异常：$addr")
+                return
+            }
+            val guid = com.adcleaner.app.adb.AdbPairing.pair(applicationContext, host, pairPort, code)
+            android.util.Log.i("AdbPair", "flow: 配对成功 guid=$guid")
+            CleanState.ok("配对成功（设备 $guid）")
+            com.adcleaner.app.adb.AdbPairState.status.value = "配对成功！正在寻找连接端口…"
+
+            val ep = com.adcleaner.app.adb.AdbWireless.discover(
+                applicationContext, com.adcleaner.app.adb.AdbWireless.SERVICE_CONNECT
+            )
+            android.util.Log.i("AdbPair", "flow: NSD connect 端点=${ep?.host}:${ep?.port}")
+            if (ep == null) {
+                fail("没发现连接端口：请保持「无线调试」打开后重试")
+                return
+            }
+            com.adcleaner.app.adb.AdbPairState.status.value = "正在连接端口 ${ep.port}…"
+            CleanState.step("NSD 发现连接端口 ${ep.port}，TLS 连接中…")
+            val mgr = com.adcleaner.app.adb.SuspendManager(applicationContext)
+            val r = mgr.connectTls(ep.port)
+            if (r.isFailure) {
+                fail("TLS 连接失败：${r.exceptionOrNull()?.message}")
+                return
+            }
+            com.adcleaner.app.adb.AdbAutomation.saveLastPort(applicationContext, ep.port, tls = true)
+            CleanState.ok("已连接无线调试（端口 ${ep.port}）")
+            com.adcleaner.app.adb.AdbPairState.status.value = "配对并连接成功（端口 ${ep.port}）"
+            com.adcleaner.app.adb.AdbPairState.connectedPort.value = ep.port
+            com.adcleaner.app.adb.AdbPairState.done.value = true
+            // 尝试回到本应用；后台启动受限时留通知即可
+            try {
+                startActivity(
+                    android.content.Intent(this@AdCleanerService, com.adcleaner.app.MainActivity::class.java)
+                        .addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
+                )
+            } catch (_: Exception) {}
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            com.adcleaner.app.adb.AdbPairState.status.value = "配对失败：${e.message}"
+            com.adcleaner.app.adb.AdbPairState.done.value = false
+            CleanState.log("  ✗ 配对失败：${e.message}")
+        }
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
