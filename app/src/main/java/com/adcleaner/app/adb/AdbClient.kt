@@ -106,6 +106,7 @@ class AdbClient(private val keyManager: AdbKeyManager, private val appContext: a
                 // 3) 客户端回 A_STLS(arg0=A_STLS_VERSION)；4) 双方进入 TLS 握手；
                 // 5) TLS 内重新 CNXN/AUTH 完成连接。
                 val cnxnPayload = "host::\u0000".toByteArray(Charsets.UTF_8)
+                val out0 = sock.getOutputStream()
                 fun writeAdbPacket(cmd: Int, arg0: Int, arg1: Int, payload: ByteArray) {
                     val hdr = java.nio.ByteBuffer.allocate(24).order(java.nio.ByteOrder.LITTLE_ENDIAN)
                     hdr.putInt(cmd); hdr.putInt(arg0); hdr.putInt(arg1)

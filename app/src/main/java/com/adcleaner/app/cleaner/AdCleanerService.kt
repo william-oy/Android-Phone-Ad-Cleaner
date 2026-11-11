@@ -124,7 +124,7 @@ class AdCleanerService : AccessibilityService() {
         scope.launch {
             kotlinx.coroutines.withTimeoutOrNull(120_000L) { autoPairInner() }
                 ?: run {
-                    Log.w("AdbPair", "自动配对整体超时（120s）")
+                    android.util.Log.w("AdbPair", "自动配对整体超时（120s）")
                     com.adcleaner.app.adb.AdbPairState.status.value = "自动配对超时，请重试"
                     com.adcleaner.app.adb.AdbPairState.done.value = false
                 }
