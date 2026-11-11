@@ -50,7 +50,6 @@ class MainActivity : AppCompatActivity() {
         setupBrandCard()
         setupTts()
         setupButtons()
-        setupEnhanceStatus()
         observeCleanState()
     }
 
