@@ -12,19 +12,36 @@ android {
         applicationId = "com.adcleaner.app"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "0.1.0"
+        versionCode = 2
+        versionName = "0.2.0"
         vectorDrawables { useSupportLibrary = true }
+        // Conscrypt/spake2 的原生库只保留 ARM（老人手机全为 ARM）：
+        // 裁掉 x86/x86_64 可减约 5MB，且不影响任何真机安装
+        ndk {
+            abiFilters += listOf("arm64-v8a", "armeabi-v7a")
+        }
+    }
+
+    // 固定签名（keystore 提交在仓库 keystore/ 下，调试密钥非机密）：
+    // 每次构建产物签名一致 → 覆盖安装不用卸载，app 数据与配对密钥保留，
+    // 老人升级 app 不需要重新配对无线调试
+    signingConfigs {
+        create("adcleaner") {
+            storeFile = rootProject.file("keystore/adcleaner-debug.keystore")
+            storePassword = "android"
+            keyAlias = "adcleaner"
+            keyPassword = "android"
+        }
     }
 
     buildTypes {
         debug {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("adcleaner")
         }
         release {
             isMinifyEnabled = false
-            // 云构建用 debug 签名也能装；release 签名由 CI secrets 注入
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("adcleaner")
         }
     }
 

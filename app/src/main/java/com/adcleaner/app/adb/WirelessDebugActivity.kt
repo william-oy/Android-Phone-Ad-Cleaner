@@ -260,7 +260,13 @@ class WirelessDebugActivity : AppCompatActivity() {
     /** 逐个冻结 safe 的广告包；先查设备上实际安装了哪些，只冻结存在的，不存在如实报告。 */
     private fun suspendAll() {
         val targets = packages.filter { it.safe }
-        if (connectedPort <= 0 || targets.isEmpty()) return
+        if (connectedPort <= 0) return
+        // 规则本身没有可挂起包（如 vivo：系统限制挂起需 root）——直接说真话，不误导
+        if (targets.isEmpty()) {
+            setStatus(getString(R.string.wd_rule_no_packages))
+            log("< ${getString(R.string.wd_rule_no_packages)}")
+            return
+        }
         setBusy(true)
         lifecycleScope.launch {
             // 先查设备上实际安装了哪些包（防止对不存在的包「空成功」）

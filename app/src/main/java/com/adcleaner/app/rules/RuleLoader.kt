@@ -9,7 +9,7 @@ object RuleLoader {
 
     private val json = Json { ignoreUnknownKeys = true; isLenient = true; coerceInputValues = true }
 
-    private val BRAND_FILES = listOf("xiaomi", "oppo", "vivo", "honor", "huawei", "meizu")
+    private val BRAND_FILES = listOf("xiaomi", "oppo", "vivo", "honor", "huawei", "meizu", "samsung")
 
     fun loadAll(ctx: Context): List<BrandRule> {
         val out = ArrayList<BrandRule>()

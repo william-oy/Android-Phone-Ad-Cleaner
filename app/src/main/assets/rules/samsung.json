@@ -1,0 +1,119 @@
+{
+  "brand": "samsung",
+  "displayName": "三星（One UI）",
+  "manufacturerKeywords": ["samsung"],
+  "romIdentifiers": ["oneui"],
+  "notes": "国行 One UI 广告集中在负一屏（三星首页）、游戏中心、主题商店和浏览器推送。挂起类操作 adb shell 可用（无需 root），但 Samsung Free/首页挂起会连负一屏一起没了，倾向只关开关不挂包。",
+  "sections": [
+    {
+      "id": "system_ad",
+      "name": "系统：广告与隐私",
+      "description": "关闭个性化广告、广告标识符重置类入口；打开限制广告跟踪",
+      "guidePath": "设置 → 搜索「广告」直达",
+      "steps": [
+        {"action": "openSettings", "intent": {"action": "android.settings.SETTINGS"}},
+        {"action": "search", "text": "广告"},
+        {"action": "switchOff", "targets": ["个性化广告", "兴趣点广告", "广告个性化"]},
+        {"action": "switchOn", "targets": ["限制广告跟踪", "广告标识符重置"], "note": "保护类开关：打开是好事"},
+        {"action": "readBack", "targets": ["个性化广告"]}
+      ],
+      "targets": ["个性化广告", "兴趣点广告"],
+      "protectedKeywords": ["限制广告跟踪", "重置广告标识符"],
+      "requiresAdb": false,
+      "pitfalls": ["国行 One UI 入口在「Google → 广告」或「隐私 → 广告」，搜索直达最稳"]
+    },
+    {
+      "id": "minus_screen",
+      "name": "负一屏（三星首页）",
+      "description": "关闭三星首页负一屏的新闻、资讯推荐；整屏可以关掉",
+      "guidePath": "桌面左滑到最左 → 右上角齿轮 → 关闭三星首页",
+      "steps": [
+        {"action": "skipIfMissing", "text": "三星首页"},
+        {"action": "tap", "text": "设置", "note": "负一屏右上齿轮进设置"},
+        {"action": "switchOff", "targets": ["三星首页", "新闻", "资讯推荐", "内容推荐"], "protectedKeywords": ["天气", "日程", "便捷"]},
+        {"action": "readBack", "targets": ["三星首页"]}
+      ],
+      "targets": ["三星首页", "新闻", "资讯推荐"],
+      "protectedKeywords": ["天气", "日程"],
+      "requiresAdb": false,
+      "pitfalls": ["老版本叫「Samsung Free」「Bixby Home」，新版叫「三星首页」，找不到入口就跳过本段"]
+    },
+    {
+      "id": "game_center",
+      "name": "游戏中心",
+      "description": "关游戏中心的资讯、直播推荐与热门游戏推送",
+      "guidePath": "游戏中心 → 我的 → 设置",
+      "steps": [
+        {"action": "launchApp", "intent": {"component": "com.samsung.android.game.gamehome/com.samsung.android.game.gamehome.MainActivity"}},
+        {"action": "skipIfMissing", "text": "我的"},
+        {"action": "tapTab", "text": "我的"},
+        {"action": "tapIconLast"},
+        {"action": "switchOff", "targets": ["资讯推荐", "热门推荐", "个性化推荐", "消息推送"], "protectedKeywords": ["游戏时间提醒"]},
+        {"action": "readBack", "targets": ["资讯推荐"]}
+      ],
+      "targets": ["资讯推荐", "热门推荐", "消息推送"],
+      "requiresAdb": false,
+      "pitfalls": ["不打游戏的老人若整个 App 没用过，可在增强模式挂起包（见 adPackages）"]
+    },
+    {
+      "id": "theme_store",
+      "name": "主题商店",
+      "description": "关主题商店的推荐通知与个性化推荐",
+      "guidePath": "主题商店 → 我的 → 设置",
+      "steps": [
+        {"action": "launchApp", "intent": {"component": "com.samsung.android.themestore/com.samsung.android.themestore.activity.MainActivity"}},
+        {"action": "skipIfMissing", "text": "我的"},
+        {"action": "tapTab", "text": "我的"},
+        {"action": "tapIconLast"},
+        {"action": "switchOff", "targets": ["个性化推荐", "营销通知", "活动通知", "接收推广信息"], "protectedKeywords": ["下载记录"]},
+        {"action": "readBack", "targets": ["个性化推荐"]}
+      ],
+      "targets": ["个性化推荐", "营销通知"],
+      "requiresAdb": false
+    },
+    {
+      "id": "browser",
+      "name": "三星浏览器",
+      "description": "极简首页、关新闻推送、关个性化内容",
+      "guidePath": "三星浏览器 → 右下角菜单 → 设置",
+      "steps": [
+        {"action": "launchApp", "intent": {"component": "com.sec.android.app.sbrowser/com.sec.android.app.sbrowser.SBrowserMainActivity"}},
+        {"action": "skipIfMissing", "text": "设置"},
+        {"action": "goInto", "text": "三星浏览器设置"},
+        {"action": "goInto", "text": "首页"},
+        {"action": "switchOff", "targets": ["显示新闻", "新闻聚合", "个性化内容", "内容推荐"], "protectedKeywords": ["书签", "快捷方式"]},
+        {"action": "back"},
+        {"action": "goInto", "text": "通知"},
+        {"action": "switchOff", "targets": ["允许通知", "接收新闻推送"]}
+      ],
+      "targets": ["显示新闻", "新闻聚合", "个性化内容", "接收新闻推送"],
+      "protectedKeywords": ["书签"],
+      "requiresAdb": false,
+      "pitfalls": ["国行浏览器首页板块可在「首页」设置里整块隐藏"]
+    },
+    {
+      "id": "galaxy_store_notify",
+      "name": "Galaxy 商店营销通知",
+      "description": "关 Galaxy 商店的营销推送；保留应用更新提醒",
+      "guidePath": "设置 → 通知 → 应用通知 → Galaxy 商店",
+      "steps": [
+        {"action": "openSettings", "intent": {"action": "android.settings.APP_NOTIFICATION_SETTINGS", "extras": {"android.provider.extra.APP_PACKAGE": "com.sec.android.app.samsungapps"}}},
+        {"action": "switchOff", "targets": ["允许通知"], "scrolls": 2},
+        {"action": "readBack", "targets": ["允许通知"]}
+      ],
+      "targets": ["允许通知"],
+      "requiresAdb": false,
+      "pitfalls": ["Galaxy 商店是纯营销+商店 App，直接关总开关；应用更新提醒跟随关闭，可接受"]
+    }
+  ],
+  "adPackages": [
+    {"pkg": "com.samsung.android.game.gamehome", "name": "游戏中心", "effect": "游戏中心入口与它的资讯推送消失；系统游戏模式不受影响", "restoreHint": "增强模式点「全部还原」"},
+    {"pkg": "com.samsung.android.themestore", "name": "主题商店", "effect": "主题商店打不开、不再推主题广告；已装主题继续生效", "restoreHint": "增强模式点「全部还原」"},
+    {"pkg": "com.samsung.android.app.spage", "name": "三星首页（负一屏）", "effect": "负一屏消失；桌面正常。三星输入法/系统更新不受影响", "neverSuspend": false, "restoreHint": "增强模式点「全部还原」"}
+  ],
+  "pitfalls": [
+    {"title": "国行版本差异", "desc": "国行 One UI 部分机型负一屏是「三星首页」，海外是「Samsung Free」；找不到入口按 skipIfMissing 跳过，不影响其他段。", "severity": "info"},
+    {"title": "别挂起系统更新", "desc": "com.wssyncmldm / com.sec.android.soagent 是系统更新组件，绝不能挂起；列表里没有收录，勿手动添加。", "severity": "danger"},
+    {"title": "挂起需谨慎验证", "desc": "三星对挂起的支持最好（shell 无需 root），但各机型 One UI 版本差异大，挂起后先在桌面与常用 App 走一圈确认无异常。", "severity": "warn"}
+  ]
+}

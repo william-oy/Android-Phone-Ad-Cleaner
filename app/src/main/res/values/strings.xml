@@ -91,6 +91,7 @@
     <string name="wd_tls_connected_fmt">已连接无线调试（端口 %1$d）！点下面的大按钮就行</string>
     <string name="wd_checking_packages">正在检查本设备上安装的广告组件…</string>
     <string name="wd_no_packages_found">本设备上没有列表中的广告组件包（不同品牌的包名不同，属正常现象）</string>
+    <string name="wd_rule_no_packages">您的手机系统不允许挂起广告组件（系统限制），用首页「一键清理广告」即可，效果一样</string>
     <string name="wd_not_suspended">未生效</string>
     <string name="wd_need_accessibility">无障碍服务没开，无法自动配对。请先回主界面打开无障碍权限。</string>
     <string name="wd_auto_pair_running">自动配对中：app 正在替您操作手机设置，请勿触碰…</string>

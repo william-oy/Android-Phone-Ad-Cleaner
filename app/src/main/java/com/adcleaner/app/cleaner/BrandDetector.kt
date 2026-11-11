@@ -6,7 +6,7 @@ import android.os.Build
 object BrandDetector {
 
     data class Info(
-        val brand: String,        // xiaomi / oppo / vivo / honor / huawei / meizu / unknown
+        val brand: String,        // xiaomi / oppo / vivo / honor / huawei / meizu / samsung / unknown
         val display: String,      // 给用户看的品牌名
         val rom: String,          // Build.DISPLAY
         val model: String,        // Build.MODEL
@@ -25,6 +25,7 @@ object BrandDetector {
             mfr.contains("honor") || brand.contains("honor") -> "honor" to "荣耀"
             mfr.contains("huawei") || brand.contains("huawei") -> "huawei" to "华为"
             mfr.contains("meizu") || brand.contains("meizu") -> "meizu" to "魅族"
+            mfr.contains("samsung") || brand.contains("samsung") -> "samsung" to "三星"
             else -> "unknown" to "未识别"
         }
         return Info(b, disp, Build.DISPLAY ?: "", Build.MODEL ?: "", Build.VERSION.SDK_INT)
