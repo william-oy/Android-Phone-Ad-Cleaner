@@ -42,7 +42,7 @@ class AdbKeyManager(context: Context) {
 
     /**
      * 返回发给 adbd 的 AUTH(RSAPUBKEY) 载荷：`base64(android_pubkey 结构) + '\0'`。
-     * 调用方在 [AdbClient] 的 IO 协程里使用。
+     * 调用方在 IO 协程里使用。
      */
     fun getPublicKeyAdbPayload(): ByteArray {
         val pub = keyPair.public as? RSAPublicKey

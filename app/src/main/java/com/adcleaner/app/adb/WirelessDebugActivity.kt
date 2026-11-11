@@ -231,17 +231,11 @@ class WirelessDebugActivity : AppCompatActivity() {
                     log("< 未发现 NSD，用 wlan 地址 $it:$realPort")
                 }
             }
-            val guid = try {
-                AdbPairing.pair(this@WirelessDebugActivity, host, realPort, code)
-            } catch (e: Exception) {
-                android.util.Log.e("AdbPair", "手动配对失败", e)
-                log("< 配对异常：${e.javaClass.simpleName}: ${e.message}")
-                null
-            }
+            val guid = manager.pair(host, realPort, code).isSuccess
             b.btnPair.isEnabled = true
-            if (guid != null) {
+            if (guid) {
                 setStatus(getString(R.string.wd_paired))
-                log("< 配对成功（设备 $guid），去点「自动配对并连接」即可连上")
+                log("< 配对成功，去点「自动配对并连接」即可连上")
             } else {
                 val reason = "配对握手失败"
                 setStatus(getString(R.string.wd_pair_failed, reason))

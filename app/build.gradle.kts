@@ -60,8 +60,13 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
-    // 无线调试配对：BC TLS（exporter）+ 自签证书生成
+    // 无线调试配对/连接：libadb-android（SPAKE2 配对 + TLS 连接 + shell）
+    // 证书生成仍用 BC（bcpkix）；bcprov 是 libadb-android 的传递依赖，显式声明固定版本
     implementation("org.bouncycastle:bcprov-jdk18on:1.78.1")
-    implementation("org.bouncycastle:bctls-jdk18on:1.78.1")
     implementation("org.bouncycastle:bcpkix-jdk18on:1.78.1")
+    implementation("com.github.MuntashirAkon:libadb-android:3.1.1") {
+        // 库带的是 bcprov-jdk15to18:1.81（包名与 jdk18on 相同，共存会 DEX 重复类），
+        // 排除后统一用我们固定的 bcprov-jdk18on（HKDF/AES-GCM 等 API 完全兼容）
+        exclude(group = "org.bouncycastle")
+    }
 }

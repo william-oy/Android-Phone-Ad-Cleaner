@@ -178,32 +178,38 @@ class AdCleanerService : AccessibilityService() {
                 fail("配对端口异常：$addr")
                 return
             }
-            val guid = com.adcleaner.app.adb.AdbPairing.pair(applicationContext, host, pairPort, code)
-            android.util.Log.i("AdbPair", "flow: 配对成功 guid=$guid")
-            CleanState.ok("配对成功（设备 $guid）")
-            com.adcleaner.app.adb.AdbPairState.status.value = "配对成功！正在寻找连接端口…"
-
-            val ep = com.adcleaner.app.adb.AdbWireless.discover(
-                applicationContext, com.adcleaner.app.adb.AdbWireless.SERVICE_CONNECT
-            )
-            android.util.Log.i("AdbPair", "flow: NSD connect 端点=${ep?.host}:${ep?.port}")
-            if (ep == null) {
-                fail("没发现连接端口：请保持「无线调试」打开后重试")
-                return
-            }
-            com.adcleaner.app.adb.AdbPairState.status.value = "正在连接端口 ${ep.port}…"
-            CleanState.step("NSD 发现连接端口 ${ep.port}，TLS 连接中…")
             val mgr = com.adcleaner.app.adb.SuspendManager(applicationContext)
-            val r = mgr.connectTls(ep.port)
-            if (r.isFailure) {
-                fail("TLS 连接失败：${r.exceptionOrNull()?.message}")
-                return
+            try {
+                com.adcleaner.app.adb.AdbPairState.status.value = "正在配对（配对码 $code）…"
+                val pr = mgr.pair(host, pairPort, code)
+                if (pr.isFailure) throw (pr.exceptionOrNull() ?: RuntimeException("配对未成功"))
+                android.util.Log.i("AdbPair", "flow: 配对成功")
+                CleanState.ok("配对成功")
+                com.adcleaner.app.adb.AdbPairState.status.value = "配对成功！正在寻找连接端口…"
+
+                val ep = com.adcleaner.app.adb.AdbWireless.discover(
+                    applicationContext, com.adcleaner.app.adb.AdbWireless.SERVICE_CONNECT
+                )
+                android.util.Log.i("AdbPair", "flow: NSD connect 端点=${ep?.host}:${ep?.port}")
+                if (ep == null) {
+                    fail("没发现连接端口：请保持「无线调试」打开后重试")
+                    return
+                }
+                com.adcleaner.app.adb.AdbPairState.status.value = "正在连接端口 ${ep.port}…"
+                CleanState.step("NSD 发现连接端口 ${ep.port}，TLS 连接中…")
+                val r = mgr.connectTls(ep.port)
+                if (r.isFailure) {
+                    fail("TLS 连接失败：${r.exceptionOrNull()?.message}")
+                    return
+                }
+                com.adcleaner.app.adb.AdbAutomation.saveLastPort(applicationContext, ep.port, tls = true)
+                CleanState.ok("已连接无线调试（端口 ${ep.port}）")
+                com.adcleaner.app.adb.AdbPairState.status.value = "配对并连接成功（端口 ${ep.port}）"
+                com.adcleaner.app.adb.AdbPairState.connectedPort.value = ep.port
+                com.adcleaner.app.adb.AdbPairState.done.value = true
+            } finally {
+                mgr.disconnect()
             }
-            com.adcleaner.app.adb.AdbAutomation.saveLastPort(applicationContext, ep.port, tls = true)
-            CleanState.ok("已连接无线调试（端口 ${ep.port}）")
-            com.adcleaner.app.adb.AdbPairState.status.value = "配对并连接成功（端口 ${ep.port}）"
-            com.adcleaner.app.adb.AdbPairState.connectedPort.value = ep.port
-            com.adcleaner.app.adb.AdbPairState.done.value = true
             // 尝试回到本应用；后台启动受限时留通知即可
             try {
                 startActivity(
