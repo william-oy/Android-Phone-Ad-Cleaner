@@ -50,12 +50,14 @@ class MainActivity : AppCompatActivity() {
         setupBrandCard()
         setupTts()
         setupButtons()
+        setupEnhanceStatus()
         observeCleanState()
     }
 
     override fun onResume() {
         super.onResume()
         refreshAccessibility()
+        refreshEnhanceStatus()
     }
 
     override fun onDestroy() {
@@ -75,6 +77,54 @@ class MainActivity : AppCompatActivity() {
         } else {
             b.tvBrand.text = "你的手机：${info.display}"
             b.tvBrandPlan.text = getString(R.string.tv_brand_plan_fmt, info.display)
+        }
+        b.tvEnhance.setOnClickListener { startActivity(Intent(this, WirelessDebugActivity::class.java)) }
+    }
+
+    // ---------- 增强清理状态行：主页一眼看到深度冻结是否就绪 ----------
+
+    /**
+     * 后台真实探测一次连接（TLS 握手 + `echo` 验证 shell 真通），结果口语化展示。
+     * - 从没配对过 → 引导开通
+     * - 连接活着 → 绿色就绪
+     * - 记住端口但连不上（手机重启/无线调试关了）→ 一键恢复引导
+     * 探测带 4 秒上限，失败不阻塞 UI；探测用的连接即关（真正清理时另外连）。
+     */
+    private fun refreshEnhanceStatus() {
+        val port = AdbAutomation.lastPort(this)
+        if (port <= 0) {
+            b.tvEnhance.text = getString(R.string.tv_enhance_off)
+            b.tvEnhance.setBackgroundResource(R.drawable.bg_status_idle)
+            b.tvEnhance.setTextColor(getColor(R.color.text_secondary))
+            return
+        }
+        b.tvEnhance.text = getString(R.string.tv_enhance_probing)
+        b.tvEnhance.setBackgroundResource(R.drawable.bg_status_idle)
+        lifecycleScope.launch {
+            val ok = kotlinx.coroutines.withTimeoutOrNull(4_000L) { probeEnhanceConnection() } == true
+            if (ok) {
+                b.tvEnhance.text = getString(R.string.tv_enhance_ok)
+                b.tvEnhance.setBackgroundResource(R.drawable.bg_status_safe)
+                b.tvEnhance.setTextColor(getColor(R.color.safe_green))
+            } else {
+                b.tvEnhance.text = getString(R.string.tv_enhance_dead)
+                b.tvEnhance.setBackgroundResource(R.drawable.bg_status_danger)
+                b.tvEnhance.setTextColor(getColor(R.color.warn_orange))
+            }
+        }
+    }
+
+    private suspend fun probeEnhanceConnection(): Boolean {
+        // 探测专用短超时：连接不活着快速失败，不让状态行挂 15 秒
+        val mgr = SuspendManager(this, connectTimeoutSeconds = 3)
+        return try {
+            val port = AdbAutomation.resolvePort(this)
+            val r = if (AdbAutomation.lastIsTls(this)) mgr.connectTls(port) else mgr.connect(port)
+            r.isSuccess && mgr.shell("echo ok").getOrNull()?.contains("ok") == true
+        } catch (_: Exception) {
+            false
+        } finally {
+            mgr.disconnect()
         }
     }
 

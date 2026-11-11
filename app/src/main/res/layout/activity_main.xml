@@ -88,6 +88,24 @@
                     android:text=""
                     android:textColor="@color/text_secondary"
                     android:textSize="15sp" />
+
+                <!-- 增强清理状态行：老人一眼看到深度冻结是否就绪；点击直达增强模式页 -->
+                <TextView
+                    android:id="@+id/tvEnhance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:background="@drawable/bg_status_idle"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="@string/tv_enhance_probing"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

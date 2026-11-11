@@ -15,10 +15,10 @@ import java.io.ByteArrayOutputStream
  * 连接层自动区分协议：经典端口（5555，CNXN+AUTH）与无线调试 TLS 端口
  * （A_STLS 升级）都走 [io.github.muntashirakon.adb.AdbConnection.connect]。
  */
-class SuspendManager(context: Context) {
+class SuspendManager(context: Context, connectTimeoutSeconds: Long = 15) {
 
     private val appContext = context.applicationContext
-    private val mgr = AdbLibManager(context)
+    private val mgr = AdbLibManager(context, connectTimeoutSeconds)
 
     /** 连接本机 adbd 经典端口（如 5555）。首次会弹「允许 USB 调试」。 */
     suspend fun connect(port: Int): Result<Unit> = ioConnect(port)

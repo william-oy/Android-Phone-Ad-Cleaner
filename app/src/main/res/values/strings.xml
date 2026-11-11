@@ -32,6 +32,10 @@
     <string name="tv_accessibility_on_elder">权限已打开，可以点上面的大按钮清理了</string>
     <string name="tv_brand_plan_fmt">已为您准备「%1$s」专用清理方案，点大按钮即可开始</string>
     <string name="tv_brand_plan_unknown">未识别手机品牌，请点「图文使用引导」对照操作</string>
+    <string name="tv_enhance_probing">增强清理：检测中…</string>
+    <string name="tv_enhance_off">增强清理：未开通（可选，能多冻一层广告）。点这里开通</string>
+    <string name="tv_enhance_ok">增强清理：已就绪 ✓ 点这里深度冻结广告</string>
+    <string name="tv_enhance_dead">增强清理：手机重启后要重新连。点这里一键恢复</string>
     <string name="btn_start_clean_running">停止清理</string>
     <string name="btn_show_logs">▸ 查看详细过程</string>
     <string name="btn_hide_logs">▾ 收起详细过程</string>

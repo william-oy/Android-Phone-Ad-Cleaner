@@ -26,6 +26,11 @@ class AdCleanerService : AccessibilityService() {
     private var engine: AccessibilityEngine? = null
     private var job: Job? = null
 
+    // 配对流程语音播报（老人点完按钮不用盯屏幕，听声音即可）
+    private var tts: android.speech.tts.TextToSpeech? = null
+    @Volatile
+    private var ttsReady = false
+
     companion object {
         @Volatile
         var instance: AdCleanerService? = null
@@ -62,6 +67,7 @@ class AdCleanerService : AccessibilityService() {
         // 服务可能复用同一实例（scope 已被 onUnbind 取消），必须重建 scope
         scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
         engine = AccessibilityEngine(this)
+        initTts()
         CleanState.log("无障碍服务已就绪，可以开始清理。")
         // 若清理被系统中断过，自动续跑
         val rule = pendingRule
@@ -80,6 +86,20 @@ class AdCleanerService : AccessibilityService() {
     }
 
     override fun onInterrupt() {}
+
+    private fun initTts() {
+        tts = android.speech.tts.TextToSpeech(applicationContext) { status ->
+            ttsReady = status == android.speech.tts.TextToSpeech.SUCCESS
+            if (ttsReady) tts?.language = java.util.Locale.SIMPLIFIED_CHINESE
+        }
+    }
+
+    /** 与主界面共用同一语音开关（adcleaner_prefs / voice_on）。 */
+    private fun speak(text: String) {
+        val on = getSharedPreferences("adcleaner_prefs", MODE_PRIVATE).getBoolean("voice_on", true)
+        if (!on || !ttsReady) return
+        tts?.speak(text, android.speech.tts.TextToSpeech.QUEUE_ADD, null, "pair_$text")
+    }
 
     /**
      * 从当前屏幕读取无线调试「配对码对话框」的内容：
@@ -142,6 +162,7 @@ class AdCleanerService : AccessibilityService() {
                 android.util.Log.w("AdbPair", "自动配对整体超时（120s）")
                 com.adcleaner.app.adb.AdbPairState.status.value = "自动配对超时，请重试"
                 com.adcleaner.app.adb.AdbPairState.done.value = false
+                speak("配对超时了，请再试一次")
             }
         }
     }
@@ -185,6 +206,7 @@ class AdCleanerService : AccessibilityService() {
                 if (pr.isFailure) throw (pr.exceptionOrNull() ?: RuntimeException("配对未成功"))
                 android.util.Log.i("AdbPair", "flow: 配对成功")
                 CleanState.ok("配对成功")
+                speak("配对成功，正在连接")
                 com.adcleaner.app.adb.AdbPairState.status.value = "配对成功！正在寻找连接端口…"
 
                 val ep = com.adcleaner.app.adb.AdbWireless.discover(
@@ -207,6 +229,7 @@ class AdCleanerService : AccessibilityService() {
                 com.adcleaner.app.adb.AdbPairState.status.value = "配对并连接成功（端口 ${ep.port}）"
                 com.adcleaner.app.adb.AdbPairState.connectedPort.value = ep.port
                 com.adcleaner.app.adb.AdbPairState.done.value = true
+                speak("已经连上了，深度清理可以用啦")
             } finally {
                 mgr.disconnect()
             }
@@ -223,6 +246,7 @@ class AdCleanerService : AccessibilityService() {
             com.adcleaner.app.adb.AdbPairState.status.value = "配对失败：${e.message}"
             com.adcleaner.app.adb.AdbPairState.done.value = false
             CleanState.log("  ✗ 配对失败：${e.message}")
+            speak("配对没有成功，您可以再点一次试试")
         }
     }
 
@@ -237,6 +261,12 @@ class AdCleanerService : AccessibilityService() {
         instance = null
         engine = null
         scope.cancel()
+        try {
+            tts?.stop()
+            tts?.shutdown()
+        } catch (_: Exception) {}
+        tts = null
+        ttsReady = false
         return super.onUnbind(intent)
     }
 
