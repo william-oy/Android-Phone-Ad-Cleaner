@@ -17,13 +17,14 @@ import java.io.ByteArrayOutputStream
  */
 class SuspendManager(context: Context) {
 
+    private val appContext = context.applicationContext
     private val mgr = AdbLibManager(context)
 
     /** 连接本机 adbd 经典端口（如 5555）。首次会弹「允许 USB 调试」。 */
-    suspend fun connect(port: Int): Result<Unit> = ioConnect { mgr.connect(port) }
+    suspend fun connect(port: Int): Result<Unit> = ioConnect(port)
 
     /** 连接无线调试（TLS）端口。已配对设备静默通过；未配对会抛 [io.github.muntashirakon.adb.AdbPairingRequiredException]。 */
-    suspend fun connectTls(port: Int): Result<Unit> = ioConnect { mgr.connect(port) }
+    suspend fun connectTls(port: Int): Result<Unit> = ioConnect(port)
 
     /** 与配对端口完成 `adb pair`，成功后 [connectTls] 连接端口即可免授权直连。 */
     suspend fun pair(host: String, port: Int, code: String): Result<Unit> =
@@ -110,16 +111,29 @@ class SuspendManager(context: Context) {
 
     // ---------- 内部 ----------
 
-    private suspend fun ioConnect(block: () -> Boolean): Result<Unit> =
+    /**
+     * 连接语义：库在「已连接」时返回 false（表示无需重连，是正常情况而非失败），
+     * 只有连接尝试真正失败时才抛异常。
+     */
+    private suspend fun ioConnect(port: Int): Result<Unit> =
         withContext(Dispatchers.IO) {
             runCatching {
-                check(block()) { "连接失败" }
+                if (!mgr.connect(port) && !mgr.isConnected) error("连接失败")
                 Unit
             }
         }
 
+    /** 用记住的端口/模式重连（上次 TLS 或经典，缺省回退 5555）。 */
+    private suspend fun reconnect(): Result<Unit> {
+        val port = AdbAutomation.resolvePort(appContext)
+        return ioConnect(port)
+    }
+
     /**
      * legacy shell：写命令 → 读到流关闭（adbd 输出完即关）。
+     *
+     * 自愈：adbd 对空闲 TLS 连接约 10 秒即关闭（`adb connection max_idle_timeout_ms`），
+     * 首次执行失败时自动按记住的端口重连一次再试。
      *
      * 注意：libadb-android 的 [io.github.muntashirakon.adb.AdbStream.read] 在对端
      * 关闭流（= shell 正常输出完毕）时抛 `IOException("Stream closed.")` 而非返回 -1，
@@ -127,28 +141,34 @@ class SuspendManager(context: Context) {
      */
     private suspend fun shellExec(cmd: String): Result<String> =
         withContext(Dispatchers.IO) {
-            runCatching {
-                val stream = mgr.openStream("shell:$cmd")
-                val out = ByteArrayOutputStream()
-                val buf = ByteArray(8192)
-                try {
-                    while (true) {
-                        val n = try {
-                            stream.read(buf, 0, buf.size)
-                        } catch (e: java.io.IOException) {
-                            if (e.message?.contains("closed", ignoreCase = true) == true) break
-                            throw e
-                        }
-                        if (n < 0) break
-                        out.write(buf, 0, n)
-                    }
-                } finally {
-                    try {
-                        stream.close()
-                    } catch (_: Exception) {
-                    }
-                }
-                out.toString("UTF-8")
+            runCatching { execShell(cmd) }.recoverCatching {
+                disconnect()
+                reconnect().exceptionOrNull()?.let { throw it }
+                execShell(cmd)
             }
         }
+
+    private fun execShell(cmd: String): String {
+        val stream = mgr.openStream("shell:$cmd")
+        val out = ByteArrayOutputStream()
+        val buf = ByteArray(8192)
+        try {
+            while (true) {
+                val n = try {
+                    stream.read(buf, 0, buf.size)
+                } catch (e: java.io.IOException) {
+                    if (e.message?.contains("closed", ignoreCase = true) == true) break
+                    throw e
+                }
+                if (n < 0) break
+                out.write(buf, 0, n)
+            }
+        } finally {
+            try {
+                stream.close()
+            } catch (_: Exception) {
+            }
+        }
+        return out.toString("UTF-8")
+    }
 }
