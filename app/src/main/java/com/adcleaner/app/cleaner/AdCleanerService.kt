@@ -122,6 +122,16 @@ class AdCleanerService : AccessibilityService() {
      */
     fun startAutoPairFlow() {
         scope.launch {
+            kotlinx.coroutines.withTimeoutOrNull(120_000L) { autoPairInner() }
+                ?: run {
+                    Log.w("AdbPair", "自动配对整体超时（120s）")
+                    com.adcleaner.app.adb.AdbPairState.status.value = "自动配对超时，请重试"
+                    com.adcleaner.app.adb.AdbPairState.done.value = false
+                }
+        }
+    }
+
+    private suspend fun autoPairInner() {
             fun fail(msg: String) {
                 com.adcleaner.app.adb.AdbPairState.status.value = msg
                 com.adcleaner.app.adb.AdbPairState.done.value = false
@@ -131,7 +141,7 @@ class AdCleanerService : AccessibilityService() {
                 val eng = engine
                 if (eng == null) {
                     fail("无障碍服务未就绪")
-                    return@launch
+                    return
                 }
                 com.adcleaner.app.adb.AdbPairState.status.value = "正在打开配对码页…"
                 CleanState.log("\n── 无线调试自动配对 ──")
@@ -140,7 +150,7 @@ class AdCleanerService : AccessibilityService() {
                 if (info == null) {
                     android.util.Log.i("AdbPair", "flow: openPairingDialog 失败（没找到配对码页）")
                     fail("没找到配对码页：请手动打开「使用配对码配对设备」后重试")
-                    return@launch
+                    return
                 }
                 val (code, addr) = info
                 android.util.Log.i("AdbPair", "flow: 读到配对码 $code addr=$addr")
@@ -151,7 +161,7 @@ class AdCleanerService : AccessibilityService() {
                 val pairPort = addr.substringAfter(":").toIntOrNull() ?: 0
                 if (pairPort <= 0) {
                     fail("配对端口异常：$addr")
-                    return@launch
+                    return
                 }
                 val guid = com.adcleaner.app.adb.AdbPairing.pair(applicationContext, host, pairPort, code)
                 android.util.Log.i("AdbPair", "flow: 配对成功 guid=$guid")
@@ -164,7 +174,7 @@ class AdCleanerService : AccessibilityService() {
                 android.util.Log.i("AdbPair", "flow: NSD connect 端点=${ep?.host}:${ep?.port}")
                 if (ep == null) {
                     fail("没发现连接端口：请保持「无线调试」打开后重试")
-                    return@launch
+                    return
                 }
                 com.adcleaner.app.adb.AdbPairState.status.value = "正在连接端口 ${ep.port}…"
                 CleanState.step("NSD 发现连接端口 ${ep.port}，TLS 连接中…")
@@ -183,7 +193,7 @@ class AdCleanerService : AccessibilityService() {
                 watchJob.cancel()
                 if (r.isFailure) {
                     fail("TLS 连接失败：${r.exceptionOrNull()?.message}")
-                    return@launch
+                    return
                 }
                 com.adcleaner.app.adb.AdbAutomation.saveLastPort(applicationContext, ep.port, tls = true)
                 CleanState.ok("已连接无线调试（端口 ${ep.port}）")
@@ -204,7 +214,6 @@ class AdCleanerService : AccessibilityService() {
                 com.adcleaner.app.adb.AdbPairState.done.value = false
                 CleanState.log("  ✗ 配对失败：${e.message}")
             }
-        }
     }
 
     override fun onUnbind(intent: Intent?): Boolean {

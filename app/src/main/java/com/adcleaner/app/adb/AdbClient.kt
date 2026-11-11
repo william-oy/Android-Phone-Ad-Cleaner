@@ -101,32 +101,42 @@ class AdbClient(private val keyManager: AdbKeyManager, private val appContext: a
                 android.util.Log.i("AdbTls", "connectTls: socket ok")
                 val ctx0 = appContext ?: throw IOException("缺少上下文，无法建立 TLS")
                 // 按 AOSP adb.cpp 的 TLS 升级流程：
-                // 1) 客户端发 A_CNXN；2) 服务器回 A_STLS(arg0=版本)；
+                // 1) 客户端发 A_CNXN(version, max_payload, "host::\0")；
+                // 2) 服务器回 A_STLS(arg0=版本)；
                 // 3) 客户端回 A_STLS(arg0=A_STLS_VERSION)；4) 双方进入 TLS 握手；
                 // 5) TLS 内重新 CNXN/AUTH 完成连接。
-                val out0 = sock.getOutputStream()
                 val cnxnPayload = "host::\u0000".toByteArray(Charsets.UTF_8)
-                fun writeAdbPacket(cmd: Int, arg0: Int) {
+                fun writeAdbPacket(cmd: Int, arg0: Int, arg1: Int, payload: ByteArray) {
                     val hdr = java.nio.ByteBuffer.allocate(24).order(java.nio.ByteOrder.LITTLE_ENDIAN)
-                    hdr.putInt(cmd); hdr.putInt(arg0); hdr.putInt(0)
-                    hdr.putInt(0); hdr.putInt(0); hdr.putInt(cmd.inv())
-                    out0.write(hdr.array()); out0.flush()
+                    hdr.putInt(cmd); hdr.putInt(arg0); hdr.putInt(arg1)
+                    hdr.putInt(payload.size); hdr.putInt(0); hdr.putInt(cmd.inv())
+                    out0.write(hdr.array())
+                    if (payload.isNotEmpty()) out0.write(payload)
+                    out0.flush()
                 }
                 sock.soTimeout = 15000
-                writeAdbPacket(A_CNXN, ADB_VERSION)
+                // 1) 发送完整的 CNXN（含 max_payload 和系统标识）
+                writeAdbPacket(A_CNXN, ADB_VERSION, MAX_PAYLOAD, cnxnPayload)
                 val din0 = java.io.DataInputStream(sock.getInputStream())
-                fun readAdbPacket(): Int {
-                    val hdr = ByteArray(24)
-                    var off = 0
-                    while (off < 24) { val r = din0.read(hdr, off, 24 - off); if (r < 0) throw IOException("对端关闭"); off += r }
-                    val bb = java.nio.ByteBuffer.wrap(hdr).order(java.nio.ByteOrder.LITTLE_ENDIAN)
-                    return bb.int
+                // 2) 读服务器首包：应为 A_STLS（完整 24 字节 header）
+                val hdrBuf = ByteArray(24)
+                var hoff = 0
+                while (hoff < 24) { val r = din0.read(hdrBuf, hoff, 24 - hoff); if (r < 0) throw IOException("对端关闭"); hoff += r }
+                val hbb = java.nio.ByteBuffer.wrap(hdrBuf).order(java.nio.ByteOrder.LITTLE_ENDIAN)
+                val firstCmd = hbb.int
+                val stlsArg0 = hbb.int
+                val stlsArg1 = hbb.int
+                val stlsDataLen = hbb.int
+                android.util.Log.i("AdbTls", "服务器首包命令=0x${"%08x".format(firstCmd)} arg0=$stlsArg0 dataLen=$stlsDataLen")
+                check(firstCmd == A_STLS) { "对端不是无线调试 TLS 端口（首包=0x${"%08x".format(firstCmd)}）" }
+                // 跳过服务器 A_STLS 的 payload（如果有）
+                if (stlsDataLen > 0) {
+                    val skip = ByteArray(stlsDataLen)
+                    var soff = 0
+                    while (soff < stlsDataLen) { val r = din0.read(skip, soff, stlsDataLen - soff); if (r < 0) throw IOException("对端关闭"); soff += r }
                 }
-                val first = readAdbPacket()
-                android.util.Log.i("AdbTls", "服务器首包命令=0x${"%08x".format(first)}")
-                check(first == A_STLS) { "对端不是无线调试 TLS 端口（首包=0x${"%08x".format(first)}）" }
-                // 发送我们的 A_STLS（arg0=A_STLS_VERSION=1）
-                writeAdbPacket(A_STLS, 1)
+                // 3) 发送我们的 A_STLS（arg0=A_STLS_VERSION=1）
+                writeAdbPacket(A_STLS, 1, 0, ByteArray(0))
                 android.util.Log.i("AdbTls", "已发送 A_STLS，开始 BC TLS 握手")
                 val protocol = org.bouncycastle.tls.TlsClientProtocol(
                     sock.getInputStream(), sock.getOutputStream())
@@ -134,6 +144,7 @@ class AdbClient(private val keyManager: AdbKeyManager, private val appContext: a
                 val priv = AdbCertManager.getPrivateKey(ctx0)
                 val tlsClient = com.adcleaner.app.adb.AdbPairing.newPairingTlsClient(priv, cert)
                 try {
+                    android.util.Log.i("AdbTls", "BC TLS 握手开始")
                     protocol.connect(tlsClient)
                     android.util.Log.i("AdbTls", "BC TLS 握手成功")
                 } catch (e: Exception) {
@@ -273,6 +284,7 @@ class AdbClient(private val keyManager: AdbKeyManager, private val appContext: a
         if (!connected) return@withContext Result.failure(IOException("未连接 adbd"))
         mutex.withLock {
             try {
+                val deadline = System.currentTimeMillis() + 30_000L  // 30s 超时
                 val localId = localIdCounter++
                 val openPayload = ("shell:" + cmd + "\n").toByteArray(Charsets.UTF_8)
                 writeMessage(A_OPEN, localId, 0, openPayload)
@@ -289,6 +301,9 @@ class AdbClient(private val keyManager: AdbKeyManager, private val appContext: a
 
                 val sb = StringBuilder()
                 while (true) {
+                    if (System.currentTimeMillis() > deadline) {
+                        throw IOException("shell 执行超时（30s）：命令可能过长或服务器无响应")
+                    }
                     val msg = readMessage()
                     when (msg.command) {
                         A_WRTE -> {

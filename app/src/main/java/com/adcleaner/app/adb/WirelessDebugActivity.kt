@@ -33,7 +33,7 @@ class WirelessDebugActivity : AppCompatActivity() {
     private data class AdPkg(val pkg: String, val label: String, val safe: Boolean)
 
     /** 各品牌常见广告/推荐组件。safe=false 的标红不参与冻结（挂起会坏功能）。 */
-    private val packages = listOf(
+    private val hardcodedPackages = listOf(
         AdPkg("com.miui.systemAdSolution", "小米·系统广告", true),
         AdPkg("com.opos.ads", "OPPO/一加·广告服务", true),
         AdPkg("com.heytap.pictorial", "OPPO·画报", true),
@@ -43,6 +43,19 @@ class WirelessDebugActivity : AppCompatActivity() {
         AdPkg("com.coloros.assistantscreen", "ColorOS·智能侧边栏", false),
         AdPkg("com.oplus.appdetail", "OPPO·应用详情", false),
     )
+
+    /** 根据设备品牌从规则文件加载对应的可挂起广告包列表。 */
+    private val packages: List<AdPkg> by lazy {
+        val brand = com.adcleaner.app.cleaner.BrandDetector.detect().brand
+        val rule = com.adcleaner.app.rules.RuleLoader.match(this, brand)
+        if (rule != null && rule.adPackages.isNotEmpty()) {
+            // 规则文件有该品牌的专用包列表 → 用它
+            rule.adPackages.map { AdPkg(it.pkg, it.name, !it.neverSuspend) }
+        } else {
+            // 规则没有 → 回退到硬编码列表
+            hardcodedPackages
+        }
+    }
 
     /** 行视图句柄，便于刷新状态。 */
     private class RowState(val status: TextView, val suspendBtn: Button, val unsuspendBtn: Button)

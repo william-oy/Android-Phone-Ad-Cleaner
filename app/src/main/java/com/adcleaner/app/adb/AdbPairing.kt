@@ -175,6 +175,7 @@ object AdbPairing {
             org.bouncycastle.tls.crypto.TlsCryptoParameters(context)
 
         /** 握手完成时在 BC 允许的窗口内导出 keying material（其他时机抛 IllegalStateException）。 */
+        @Volatile
         var exported: ByteArray? = null
         override fun notifyHandshakeComplete() {
             try {

@@ -2,6 +2,7 @@ package com.adcleaner.app.adb
 
 import android.content.Context
 import android.util.Base64
+import android.util.Log
 import org.bouncycastle.asn1.x500.X500Name
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter
 import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder
@@ -27,7 +28,7 @@ object AdbCertManager {
     private fun prefs(ctx: Context) =
         ctx.applicationContext.getSharedPreferences("adb_keys", Context.MODE_PRIVATE)
 
-    /** 生成（或取缓存）自签证书。 */
+    /** 生成（或取缓存）自签证书；过期则自动重新生成。 */
     fun getCertificate(ctx: Context): X509Certificate {
         val cached = prefs(ctx).getString(KEY_CERT, null)
         if (cached != null) {
@@ -36,8 +37,13 @@ object AdbCertManager {
                 val b64 = pem.lines()
                     .filter { !it.startsWith("-----") }
                     .joinToString("")
-                return CertificateFactory.getInstance("X.509")
+                val cert = CertificateFactory.getInstance("X.509")
                     .generateCertificate(Base64.decode(b64, Base64.NO_WRAP).inputStream()) as X509Certificate
+                // 过期检查：有效期剩余不足 7 天则重新生成
+                if (cert.notAfter.time > System.currentTimeMillis() + 7L * 24 * 3600 * 1000) {
+                    return cert
+                }
+                Log.i("AdbCert", "证书即将过期或已过期，重新生成")
             } catch (_: Exception) {
                 // 解析失败则重新生成
             }
