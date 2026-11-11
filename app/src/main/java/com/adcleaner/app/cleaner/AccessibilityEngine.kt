@@ -634,7 +634,13 @@ class AccessibilityEngine(private val service: AdCleanerService) {
             val hasWireless = findTextNodes("无线调试", exact = false).isNotEmpty()
             android.util.Log.i("AdbPair", "nav page=$page entry=$hasEntry sub=$onSubPage wireless=$hasWireless sw=$switchOn")
             if (hasEntry) {
-                tapNodeReliably(findTextNodes("使用配对码配对设备", exact = false).first())
+                val entryNode = findTextNodes("使用配对码配对设备", exact = false)
+                    .filter { n ->
+                        val r = Rect(); n.getBoundsInScreen(r)
+                        r.top > 300 && r.width() > 200
+                    }
+                    .firstOrNull()
+                if (entryNode != null) tapNodeReliably(entryNode)
                 delay(1500)
             } else if (onSubPage) {
                 // 子页：确保主开关打开，然后滚动到配对码入口可见
@@ -655,13 +661,23 @@ class AccessibilityEngine(private val service: AdCleanerService) {
                 }
                 gestureScroll(true, 700, 0.55f, 0.35f); delay(900)
             } else if (hasWireless) {
-                val rowNode = findTextNodes("无线调试", exact = false).first()
-                tapNodeReliably(rowNode)
-                delay(1800)
-                if (findTextNodes("设备名称", exact = false).isEmpty()) {
-                    android.util.Log.i("AdbNav", "第一次点击未导航，重试")
+                // 过滤掉工具栏标题（y < 300 是状态栏/工具栏区域）和不可点节点
+                val rowNode = findTextNodes("无线调试", exact = false)
+                    .filter { n ->
+                        val r = Rect(); n.getBoundsInScreen(r)
+                        r.top > 300 && r.width() > 200  // 排除工具栏标题和过窄节点
+                    }
+                    .firstOrNull()
+                if (rowNode != null) {
                     tapNodeReliably(rowNode)
                     delay(1800)
+                    if (findTextNodes("设备名称", exact = false).isEmpty()) {
+                        android.util.Log.i("AdbNav", "第一次点击未导航，重试")
+                        tapNodeReliably(rowNode)
+                        delay(1800)
+                    }
+                } else {
+                    gestureScroll(true, 900, 0.60f, 0.32f); delay(1000)
                 }
             } else if (page < scrolls) {
                 gestureScroll(true, 900, 0.60f, 0.32f); delay(1000)
