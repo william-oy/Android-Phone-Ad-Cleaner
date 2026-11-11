@@ -69,4 +69,7 @@ dependencies {
         // 排除后统一用我们固定的 bcprov-jdk18on（HKDF/AES-GCM 等 API 完全兼容）
         exclude(group = "org.bouncycastle")
     }
+    // 自带 Conscrypt（TLS1.3 + 公开 exportKeyingMaterial）：平台门面类的同名隐藏 API
+    // 在 vivo 上被 hiddenapi 拦截，配对导出密钥材料必须用这个 APK 内置的公开类
+    implementation("org.conscrypt:conscrypt-android:2.5.3")
 }
