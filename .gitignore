@@ -6,3 +6,9 @@ generated/
 reference/
 
 scratch/
+
+# 构建产物/测试日志
+dist/
+artifact.zip
+artifact_url.txt
+pair_test*.log
