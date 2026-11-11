@@ -48,11 +48,12 @@ class WirelessDebugActivity : AppCompatActivity() {
     private val packages: List<AdPkg> by lazy {
         val brand = com.adcleaner.app.cleaner.BrandDetector.detect().brand
         val rule = com.adcleaner.app.rules.RuleLoader.match(this, brand)
-        if (rule != null && rule.adPackages.isNotEmpty()) {
-            // 规则文件有该品牌的专用包列表 → 用它
+        if (rule != null) {
+            // 有规则文件就以它为准：adPackages 为空是该品牌有意为之
+            // （如 vivo 挂起需 root，见 vivo.json notes），不得回退到其他品牌的列表
             rule.adPackages.map { AdPkg(it.pkg, it.name, !it.neverSuspend) }
         } else {
-            // 规则没有 → 回退到硬编码列表
+            // 完全没有规则文件的未知品牌 → 兜底通用列表
             hardcodedPackages
         }
     }
